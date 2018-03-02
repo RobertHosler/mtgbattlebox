@@ -1,69 +1,14 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="myApp">
   <head>
     <title>Chat Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/mycss.css">
-    <style>
-      body {
-        padding-top: 60px;
-      }
-    </style>
-    <script>
-      function LobbyController($scope) {
-        var socket = io.connect();
-
-        $scope.messages = [];
-        $scope.roster = [];
-        $scope.name = '';
-        $scope.text = '';
-        $scope.draftTypes = [
-          {name: 'Winston', description: 'Take turns looking through 3 piles of cards refiled with the pool of extra cards.'},
-          {name: 'Grid', description: 'Take turns picking a row or column from a grid of 9 cards.'},
-          {name: 'Pancake', description: '9 Rounds of 3 turns\nPack size 11 cards\nTurn 1 Each player takes 1 card then passes the pack to the other player.\nTurn 2 Each player takes 2 cards then burns 2 and passes back to the other player.\nTurn 3 each player takes 2 cards then discards the remaining card.\nEach player will draft 45 cards total.'}
-        ];
-        $scope.selectedDraftType = $scope.draftTypes[0];
-        $scope.cubes = ['360', 'Pauper', 'Peasant', 'Legacy'];
-        $scope.selectedCube = "360";
-        $scope.drafts = [];
-
-        socket.on('connect', function () {
-          $scope.setName();
-        });
-
-        socket.on('message', function (msg) {
-          $scope.messages.push(msg);
-          $scope.$apply();
-        });
-
-        socket.on('drafts', function (draftList) {
-          $scope.drafts = draftList;
-          $scope.$apply();
-        });
-
-        socket.on('roster', function (names) {
-          $scope.roster = names;
-          $scope.$apply();
-        });
-
-        $scope.send = function send() {
-          console.log('Sending message:', $scope.text);
-          socket.emit('message', $scope.text);
-          $scope.text = '';
-        };
-
-        $scope.createDraft = function createDraft() {
-          console.log('Creating draft:', $scope.selectedCube, $scope.selectedDraftType);
-          socket.emit('createDraft', $scope.name, $scope.selectedDraftType, $scope.selectedCube);
-        };
-
-        $scope.setName = function setName() {
-          socket.emit('identify', $scope.name);
-        };
-      }
-    </script>
+    <script src="/js/lobby.js"></script>
+    <script src="/sections/lobby/createDraft.js"></script>
+    <script src="/sections/chat/chat.js"></script>
   </head>
   <body>
     <div class="container" ng-controller="LobbyController">
@@ -74,109 +19,27 @@
           </div>
         </div>
       </div>
+      
       <div class="page-header">
         <h1>Lobby</h1>
       </div>
+      
       <div class="row">
-        <div class="col-xs-12">
-          <div>
-            <form ng-submit="createDraft()">
-              <div class="panel panel-default">
-                  <div class="panel-heading">
-                    Create a Draft
-                  </div>
-                  <div class="panel-body">
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-6">
-                        <label for="draftTypeSelection">Type of draft</label>
-                        <div>
-                          <select id="draftTypeSelection" class="form-control" ng-model="selectedDraftType" ng-options="x.name for x in draftTypes">
-                          </select>
-                        </div>
-                        <div>{{selectedDraftType.description}}</div>
-                      </div>
-                      <div class="col-xs-12 col-sm-6">
-                        <br class="visible-xs">
-                        <label for="cubeSelection">Cube</label>
-                        <div>
-                          <select id="cubeSelection" class="form-control" ng-model="selectedCube" ng-options="x for x in cubes">
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel-footer">
-                    <span class="input-btn">
-                      <input type="submit" class="btn btn-primary" value="Create draft">
-                    </span>
-                  </div>
-              </div>
-            </form>
-          </div>
+        <div class="col-xs-12 col-md-6">
+          <div ng-include="'/sections/lobby/createDraft.html'"></div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <div ng-include="'/sections/lobby/joinDraft.html'"></div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              Join a Draft
-            </div>
-            <div class="panel-body draft-viewer">
-              <div class="row-draft" ng-repeat="x in drafts">
-                <button class="btn btn-default form-control">{{x.players[0]}} {{x.draftType}} {{x.cube}} {{x.displayTime}}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-9">
-          <div class="scrollable-chat">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th class="span2">Name</th>
-                  <th class="span7">Text</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="msg in messages">
-                  <td class="span2" ng-bind="msg.name"></td>
-                  <td class="span7" ng-bind="msg.text"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="row controls">
-            <form ng-submit="send()">
-              <p class="col-xs-12">
-                <input type="text" class="form-control" ng-model="name" ng-change="setName()" placeholder="Your Name">
-              </p>
-              <div class="col-xs-12">
-                <div class="input-group">
-                  <input type="text" class="form-control" ng-model="text" placeholder="Message">
-                  <span class="input-group-btn">
-                    <input type="submit" class="btn btn-primary" value="Send" ng-disabled="!text">
-                  </span>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-3">
-          <div>
-            <ul class="nav nav-list well">
-              <li class="nav-header">Local Users</li>
-              <li ng-repeat="user in roster" ng-bind="user">
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      
+      <div ng-include="'/sections/chat/chat.html'"></div>
+      
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/angular.min.js"></script>
+    <script src="/js/services.js"></script>
   </body>
 </html>

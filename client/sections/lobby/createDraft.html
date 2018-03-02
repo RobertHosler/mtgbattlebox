@@ -1,0 +1,34 @@
+<div ng-controller="CreateDraftController">
+    <form ng-submit="createDraft()">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Create a Draft
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="draftTypeSelection">Type of draft</label>
+                        <div>
+                            <select id="draftTypeSelection" class="form-control" ng-model="selectedDraftType" ng-options="x.name for x in draftTypes">
+                  </select>
+                        </div>
+                        <div>{{selectedDraftType.description}}</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <br class="visible-xs">
+                        <label for="cubeSelection">Cube</label>
+                        <div>
+                            <select id="cubeSelection" class="form-control" ng-model="selectedCube" ng-options="x.name for x in cubes" onchange="">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <span class="input-btn">
+              <input type="submit" class="btn btn-primary" value="Create draft">
+            </span>
+            </div>
+        </div>
+    </form>
+</div>

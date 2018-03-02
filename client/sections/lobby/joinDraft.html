@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Join a Draft
+    </div>
+    <div class="panel-body draft-viewer">
+        <div class="row-draft" ng-repeat="x in drafts">
+            <button class="btn btn-default form-control">{{x.players[0]}} {{x.draftType}} {{x.cube.name}} {{x.displayTime}}</button>
+        </div>
+    </div>
+</div>
