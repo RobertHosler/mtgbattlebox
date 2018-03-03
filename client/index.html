@@ -1,45 +1,80 @@
 <!doctype html>
 <html lang="en" ng-app="myApp">
-  <head>
-    <title>Chat Example</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/mycss.css">
-    <script src="/js/lobby.js"></script>
-    <script src="/sections/lobby/createDraft.js"></script>
-    <script src="/sections/chat/chat.js"></script>
-  </head>
-  <body>
-    <div class="container" ng-controller="LobbyController">
-      <div class="navbar navbar-fixed-top navbar-inverse">
-        <div class="navbar-inner">
-          <div class="pull-right">
-            <a href="https://c9.io" class="brand">Cloud9 IDE</a>
-          </div>
-        </div>
+
+<head>
+  <title>Chat Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/css/mycss.css">
+  <script src="/js/lobby.js"></script>
+  <script src="/sections/lobby/createDraft.js"></script>
+  <script src="/sections/chat/chat.js"></script>
+  
+  <base href="/">
+  
+</head>
+
+<body>
+  
+  <div class="container" ng-controller="LobbyController">
+    
+    <div class="navbar navbar-fixed-top navbar-inverse">
+      <div class="navbar-inner">
+          <a href="chat" class="btn btn-link">Just Chat</a>
+          <a href="createDraft" class="btn btn-link">Create Draft</a>
+          <a href="joinDraft" class="btn btn-link">Join Draft</a>
+          <a href="splitBattlebox" class="btn btn-link">Split Battlebox</a>
+          <a href="addList" class="btn btn-link">Add a List</a>
+          <a href="editList" class="btn btn-link">Edit a List</a>
       </div>
-      
-      <div class="page-header">
-        <h1>Lobby</h1>
-      </div>
-      
-      <div class="row">
-        <div class="col-xs-12 col-md-6">
-          <div ng-include="'/sections/lobby/createDraft.html'"></div>
-        </div>
-        <div class="col-xs-12 col-md-6">
-          <div ng-include="'/sections/lobby/joinDraft.html'"></div>
-        </div>
-      </div>
-      
-      <div ng-include="'/sections/chat/chat.html'"></div>
-      
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/angular.min.js"></script>
-    <script src="/js/services.js"></script>
-  </body>
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="two">Restoration Angel-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--  </p>-->
+    <!--</div>-->
+
+    <div ng-view></div>
+    
+    
+    <div id="cardModal" class="modal modal-img" role="dialog" onclick="$('#cardModal').modal('hide');">
+      <div class="modal-dialog">
+        <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>
+      </div>
+    </div>
+
+    <div class="cardhover">
+      <p class="two">
+        <href href="#cardModal" data-toggle="modal" class="btn btn-link">Restoration Angel</href>
+        <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>
+      </p>
+    </div>
+
+  </div>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="/js/angular.min.js"></script>
+  <script src="/js/services.js"></script>
+  
+</body>
+
 </html>

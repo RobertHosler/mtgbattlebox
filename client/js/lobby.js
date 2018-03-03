@@ -12,3 +12,11 @@ function LobbyController($scope, UserService) {
     });
 
 }
+
+function copyToClipboard(target) {
+    var copyText = document.getElementById(target);
+    copyText.select();
+    document.execCommand('Copy');
+    // alert("Copied");
+    // $('#'+target).blur();//unselect text
+}

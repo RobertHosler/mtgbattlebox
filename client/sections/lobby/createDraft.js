@@ -10,10 +10,6 @@ function CreateDraftController($scope, UserService) {
     $scope.selectedCube = {};
     $scope.cubes = [];
 
-    socket.on('connect', function() {
-        $scope.setName();
-    });
-
     socket.on('cubes', function(cubeList) {
         $scope.cubes = cubeList;
         // if (!$scope.selectedCube) {

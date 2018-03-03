@@ -1,0 +1,49 @@
+<div ng-controller="BattleboxSplitController">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <form ng-submit="split()">
+                <label for="boxSelection">Battlebox</label>
+                <div>
+                    <select id="boxSelection" class="form-control" ng-model="selectedBox" ng-options="x.name for x in battleboxes" onchange="">
+        </select>
+                </div>
+                <br>
+                <label for="includeLands">Include Lands in Sideboard</label>
+                <div>
+                    <input id="includeLands" type="checkbox" ng-model="addLands">
+                </div>
+                <br>
+                <label for="addOnes">Prefix Ones</label>
+                <div>
+                    <input id="addOnes" type="checkbox" ng-model="addOnes">
+                </div>
+                <br>
+                <div>
+                    <input type="submit" class="btn btn-primary btn-lg" value="Split">
+                </div>
+            </form>
+            <br>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div>
+                        <button onclick="copyToClipboard('leftSide');" class="btn btn-default">Copy One</button>
+                    </div>
+                    <br>
+                    <div>
+                        <textarea id="leftSide" name="sideOne" ng-model="playerOne" class="battlebox-textarea" />
+                    </div>
+                </div>
+                <br class="visible-xs">
+                <div class="col-xs-12 col-sm-6">
+                    <div>
+                        <button onclick="copyToClipboard('rightSide');" class="btn btn-default">Copy Two</button>
+                    </div>
+                    <br>
+                    <div>
+                        <textarea id="rightSide" name="sideTwo" ng-model="playerTwo" class="battlebox-textarea" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
