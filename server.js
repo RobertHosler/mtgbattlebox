@@ -3,15 +3,12 @@
 //
 // A simple chat server using Socket.IO, Express, and Async.
 //
+var fs = require('fs');
 var http = require('http');
 var path = require('path');
-
 var async = require('async');
 var socketio = require('socket.io');
 var express = require('express');
-
-var fs = require('fs');
-
 const mtg = require('mtgsdk');
 const getMtgJson = require('mtg-json');
 var Scry = require("scryfall-sdk");
@@ -36,12 +33,10 @@ router.use(function(req, res) {
 var messages = [];
 var sockets = [];
 var drafts = [];
-var cubes = [];
+
+var battleboxLands = fs.readFileSync("files/battlebox_lands/lands_allied", 'utf8').split("\n");
+
 var battleboxes = [];
-var battleboxLands = [];
-
-battleboxLands = fs.readFileSync("files/battlebox_lands/lands_allied", 'utf8').split("\n");
-
 fs.readdirSync("files/battleboxes").forEach(file => {
   var battlebox = {};
   battlebox.name = file;
@@ -50,6 +45,7 @@ fs.readdirSync("files/battleboxes").forEach(file => {
   console.log("Battlebox: " + battlebox.name, "First Card: " + battlebox.cards[0]);
 });
 
+var cubes = [];
 fs.readdirSync("files/cubes").forEach(file => {
   var cube = {};
   cube.name = file;
@@ -58,48 +54,17 @@ fs.readdirSync("files/cubes").forEach(file => {
   console.log("Cube: " + cube.name, "First Card: " + cube.cards[0]);
 });
 
-// getMtgJson('cards', 'files')
-//   .then(json => {
-//     let stromCrow = json['stormCrow'];
-//     console.log(stromCrow.types);
-//   });
-
-
-// var cards = [];
-// Scry.Cards.byName("Restoration Angel").then(result => {
-//   cards.push(result);
-//   console.log(result.name);
-//   console.log(result);
-// });
-
-//get all cards with scryfall
-
 var allCardsPath = "files/AllCards";
 var refreshAllCards = !fs.existsSync(allCardsPath);
-
-console.log("Refresh All Cards?", refreshAllCards);
-
 var allCards = {};
 if (refreshAllCards) {
-  //Get all cards from srcyfall and save to file on server
-  // Scry.Cards.all().on("data", card => {
-  //     console.log(card.name);
-  //     allCards.set(card.name, card);
-  // }).on("end", () => {
-  //     console.log("done");
-  // });
   var allCardsJson = JSON.stringify(allCards);
-  console.log("All Cards JSON", allCardsJson);
   fs.writeFileSync(allCardsPath, allCardsJson);
 } else {
   //Get all cards from local server
   var allCardsRaw = fs.readFileSync(allCardsPath);
-  console.log("All cards raw", allCardsRaw);
   var allCardsJson = JSON.parse(allCardsRaw);
-  console.log("All cards json", allCardsJson);
   allCards = allCardsJson;
-  // allCards = new Map(allCardsJson);
-  // Array.from(allCardsJson).map(row => <RowRender key={id.row} row={row} />);
   console.log("All Cards read from file");
 }
 

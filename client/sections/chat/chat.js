@@ -5,13 +5,14 @@ function ChatController($scope, UserService) {
     $scope.roster = [];
     $scope.name = '';
     $scope.text = '';
+    $scope.autoScroll = true;
 
     socket.on('message', function(msg) {
         $scope.messages.push(msg);
         $scope.$apply();
         //TODO: modifying the dom is not recommended in controllers. is this considered modifying the dom?
         var lastRow = $(".scrollable-chat tbody tr:last-child")[0];
-        if (lastRow) {
+        if (lastRow && $scope.autoScroll) {
             lastRow.scrollIntoView();
         }
     });
