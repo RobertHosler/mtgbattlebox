@@ -6,6 +6,9 @@ function ChatController($scope, UserService) {
     $scope.name = '';
     $scope.text = '';
     $scope.autoScroll = true;
+    
+    
+    socket.emit('chatJoin');
 
     socket.on('message', function(msg) {
         $scope.messages.push(msg);

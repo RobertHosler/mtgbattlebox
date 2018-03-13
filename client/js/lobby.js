@@ -1,5 +1,3 @@
-
-
 function LobbyController($scope, UserService) {
     
     var socket = UserService.socket;

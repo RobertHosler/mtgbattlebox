@@ -2,16 +2,23 @@
 // # SimpleServer
 //
 // A simple chat server using Socket.IO, Express, and Async.
-//
+
+
+var Draft = require('model/Draft');
+Draft.log();
+
+var SocketManager = require('SocketManager');
+
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
 var async = require('async');
-var socketio = require('socket.io');
 var express = require('express');
 const mtg = require('mtgsdk');
 const getMtgJson = require('mtg-json');
 var Scry = require("scryfall-sdk");
+
+var Grid = require('draft/Grid');
 
 //
 // ## SimpleServer `SimpleServer(obj)`
@@ -21,7 +28,8 @@ var Scry = require("scryfall-sdk");
 //
 var router = express();
 var server = http.createServer(router);
-var io = socketio.listen(server);
+
+var io = SocketManager.init(server);
 
 router.use(express.static(path.resolve(__dirname, 'client')));
 router.use(function(req, res) {
@@ -32,7 +40,7 @@ router.use(function(req, res) {
 
 var messages = [];
 var sockets = [];
-var drafts = [];
+var drafts = {};
 
 var battleboxLands = fs.readFileSync("files/battlebox_lands/lands_allied", 'utf8').split("\n");
 
@@ -42,7 +50,7 @@ fs.readdirSync("files/battleboxes").forEach(file => {
   battlebox.name = file;
   battlebox.cards = fs.readFileSync("files/battleboxes/"+file, 'utf8').split("\n");
   battleboxes.push(battlebox);
-  console.log("Battlebox: " + battlebox.name, "First Card: " + battlebox.cards[0]);
+  // console.log("Battlebox: " + battlebox.name, "First Card: " + battlebox.cards[0]);
 });
 
 var cubes = [];
@@ -51,48 +59,50 @@ fs.readdirSync("files/cubes").forEach(file => {
   cube.name = file;
   cube.cards = fs.readFileSync("files/cubes/"+file, 'utf8').split("\n");
   cubes.push(cube);
-  console.log("Cube: " + cube.name, "First Card: " + cube.cards[0]);
+  // console.log("Cube: " + cube.name, "First Card: " + cube.cards[0]);
 });
 
+//TEST GRID
+// var gridDraft = Grid.createDraft('12345', cubes[0].cards, 18, 3);
+// console.log(gridDraft);
+
+//Get existing all cards json
 var allCardsPath = "files/AllCards";
-var refreshAllCards = !fs.existsSync(allCardsPath);
+var allCardsExists = fs.existsSync(allCardsPath);//check if path exists
 var allCards = {};
-if (refreshAllCards) {
-  var allCardsJson = JSON.stringify(allCards);
-  fs.writeFileSync(allCardsPath, allCardsJson);
-} else {
-  //Get all cards from local server
+if (allCardsExists) {
+  //Get all cards stored on local server
   var allCardsRaw = fs.readFileSync(allCardsPath);
   var allCardsJson = JSON.parse(allCardsRaw);
   allCards = allCardsJson;
-  console.log("All Cards read from file");
+  // console.log("All Cards read from file");
+} else {
+  //Create initial file
+  var allCardsJson = JSON.stringify(allCards);
+  fs.writeFileSync(allCardsPath, allCardsJson);
 }
 
-console.log(battleboxes[0].cards[0]);
-mtg.card.where( { name : battleboxes[0].cards[0] })
-  .then(cards => {
-    console.log(cards[0].name + " " + cards[0]);
-});
-
 io.on('connection', function(socket) {
-  messages.forEach(function(data) {
-    socket.emit('message', data);
-  });
-  socket.emit('drafts', drafts);
-  socket.emit('cubes', cubes);
-  socket.emit('battleboxes', battleboxes);
 
-  sockets.push(socket);
+  SocketManager.push(socket);
+  // sockets.push(socket);
   
   socket.on('disconnect', function() {
-    sockets.splice(sockets.indexOf(socket), 1);
-    updateRoster();
+    SocketManager.remove(socket);
+    updateRoster(SocketManager.sockets);
   });
 
   socket.on('createDraft', function(playerName, draftType, cube) {
     //TODO: prevent players from creating multiple drafts
     var draft = {};
-    draft.id = (Math.random() + 1).toString(36).slice(2, 18);//TODO: prevent same id from appearing
+    while (true) {
+      draft.id = (Math.random() + 1).toString(36).slice(2, 18);//TODO: prevent same id from appearing
+      if (drafts[draft.id]) {
+        continue;//id not unique, keep generating
+      } else {
+        break;//id is unique
+      }
+    }
     draft.playerCount = 1;
     draft.players = [];
     draft.players.push(String(playerName || 'Anonymous'));
@@ -100,8 +110,9 @@ io.on('connection', function(socket) {
     draft.cube = cube;
     draft.creationTime = Date.now();
     draft.displayTime = displayTime();
-    drafts.push(draft);//TODO: add drafts to map, not an array
-    socket.emit('drafts', drafts);
+    drafts[draft.id] = draft;//map draft to draft id
+    SocketManager.broadcast('drafts', drafts);
+    socket.emit('draftCreated', draft);
     // var draftFile = '';
     // drafts.forEach(function(draft) {
     //   draftFile += draft.id + "\n";
@@ -148,9 +159,23 @@ io.on('connection', function(socket) {
 
   socket.on('identify', function(name) {
     socket.set('name', String(name || 'Anonymous'), function(err) {
-      updateRoster();
+      updateRoster(SocketManager.sockets);
     });
   });
+
+  socket.on('chatJoin', function(name) {
+    messages.forEach(function(data) {
+      socket.emit('message', data);
+    });
+  });
+
+  socket.on('battleboxGet', function(name) {
+    socket.emit('battleboxes', battleboxes);
+  });
+  
+
+  socket.emit('drafts', drafts);
+  socket.emit('cubes', cubes);
 });
 
 function generateBattleboxString(array, options) {
@@ -181,7 +206,7 @@ function generateDecklistString(deck, sideboard, addOnes) {
   }
 }
 
-function updateRoster() {
+function updateRoster(sockets) {
   async.map(
     sockets,
     function(socket, callback) {
@@ -194,18 +219,18 @@ function updateRoster() {
 }
 
 function shuffle(array) {
-  let counter = array.length;
+  var counter = array.length;
 
   // While there are elements in the array
   while (counter > 0) {
       // Pick a random index
-      let index = Math.floor(Math.random() * counter);
+      var index = Math.floor(Math.random() * counter);
 
       // Decrease counter by 1
       counter--;
 
       // And swap the last element with it
-      let temp = array[counter];
+      var temp = array[counter];
       array[counter] = array[index];
       array[index] = temp;
   }
