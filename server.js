@@ -5,7 +5,7 @@
 
 
 var Draft = require('model/Draft');
-Draft.log();
+// Draft.log();
 
 var SocketManager = require('SocketManager');
 
@@ -41,6 +41,7 @@ router.use(function(req, res) {
 var messages = [];
 var sockets = [];
 var drafts = {};
+var publicDrafts = {};
 
 var battleboxLands = fs.readFileSync("files/battlebox_lands/lands_allied", 'utf8').split("\n");
 
@@ -94,37 +95,33 @@ io.on('connection', function(socket) {
 
   socket.on('createDraft', function(playerName, draftType, cube) {
     //TODO: prevent players from creating multiple drafts
-    var draft = {};
+    //generate unique draft id
+    var draftId;
     while (true) {
-      draft.id = (Math.random() + 1).toString(36).slice(2, 18);//TODO: prevent same id from appearing
-      if (drafts[draft.id]) {
+      draftId = (Math.random() + 1).toString(36).slice(2, 18);//TODO: prevent same id from appearing
+      if (drafts[draftId]) {
         continue;//id not unique, keep generating
       } else {
         break;//id is unique
       }
     }
-    draft.playerCount = 1;
-    draft.players = [];
-    draft.players.push(String(playerName || 'Anonymous'));
-    draft.draftType = draftType.name;
-    draft.cube = cube;
-    draft.creationTime = Date.now();
-    draft.displayTime = displayTime();
-    drafts[draft.id] = draft;//map draft to draft id
-    SocketManager.broadcast('drafts', drafts);
-    socket.emit('draftCreated', draft);
-    // var draftFile = '';
-    // drafts.forEach(function(draft) {
-    //   draftFile += draft.id + "\n";
-    // });
-    // console.log(draftFile);
-    // fs.writeFile("files/drafts", draftFile, function(err) {
-    //   if(err) {
-    //       return console.log(err);
-    //   } else {
-        
-    //   }
-    // }); 
+    var draft = {};
+    if (draftType === "grid") {
+      draft = Grid.createDraft(cube);
+    } else {
+      //Error - type not supported
+    }
+    draft.public.id = draftId;
+    draft.public.players.push(String(playerName || 'Anonymous'));
+    draft.public.type = draftType;
+    draft.public.cube = cube;
+    draft.public.creationTime = Date.now();
+    draft.public.displayTime = displayTime(draft.public.creationTime);
+    draft.sockets = ['', socket];//add socket as player one
+    drafts[draftId] = draft;//map draft to draft id
+    publicDrafts[draftId] = draft.public;//map draft to draft id
+    draft.sockets[1].emit('draftUpdate', draft.secret[1]);//notify individual player of secret draft update
+    SocketManager.broadcast('drafts', publicDrafts);//publish all public draft updates
   });
   
   socket.on('split', function(battlebox, options) {
@@ -238,26 +235,25 @@ function shuffle(array) {
   return array;
 }
 
-function displayTime() {
+function displayTime(time) {
   var str = "";
 
-  var currentTime = new Date()
-  var hours = currentTime.getHours()
-  var minutes = currentTime.getMinutes()
-  var seconds = currentTime.getSeconds()
+  var hours = time.getHours();
+  var minutes = time.getMinutes();
+  var seconds = time.getSeconds();
 
   if (minutes < 10) {
-    minutes = "0" + minutes
+    minutes = "0" + minutes;
   }
   if (seconds < 10) {
-    seconds = "0" + seconds
+    seconds = "0" + seconds;
   }
   var amPm = "";
   if (hours > 11) {
-    amPm += "PM"
+    amPm += "PM";
   }
   else {
-    amPm += "AM"
+    amPm += "AM";
   }
   if (hours > 12) {
     hours = hours - 12;
