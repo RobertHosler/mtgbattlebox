@@ -7,7 +7,7 @@
 var Draft = require('model/Draft');
 // Draft.log();
 
-var SocketManager = require('SocketManager');
+// var SocketManager = require('SocketManager');
 
 var fs = require('fs');
 var http = require('http');
@@ -17,6 +17,7 @@ var express = require('express');
 const mtg = require('mtgsdk');
 const getMtgJson = require('mtg-json');
 var Scry = require("scryfall-sdk");
+var socketio = require('socket.io');
 
 var Grid = require('draft/Grid');
 
@@ -28,8 +29,8 @@ var Grid = require('draft/Grid');
 //
 var router = express();
 var server = http.createServer(router);
-
-var io = SocketManager.init(server);
+var io = socketio.listen(server);
+io.set('log level', 1);
 
 router.use(express.static(path.resolve(__dirname, 'client')));
 router.use(function(req, res) {
@@ -83,14 +84,28 @@ if (allCardsExists) {
   fs.writeFileSync(allCardsPath, allCardsJson);
 }
 
+var chatNsp = io.of('/chat');
+chatNsp.on('connection', function(socket){
+  console.log('someone connected to chat');
+});
+var splitterNsp = io.of('splitBattlebox');
+splitterNsp.on('connection', function(socket){
+  console.log('someone connected to splitter');
+});
+var room = 'chatroom';  // whereas user._id is the user's unique id
+io.on('connection', function(socket){
+  socket.join(room);
+  console.log('someone connected to chatroom');
+});
+
 io.on('connection', function(socket) {
 
-  SocketManager.push(socket);
+  sockets.push(socket);
   // sockets.push(socket);
   
   socket.on('disconnect', function() {
-    SocketManager.remove(socket);
-    updateRoster(SocketManager.sockets);
+    sockets.splice(sockets.indexOf(socket), 1);
+    updateRoster(sockets);
   });
 
   socket.on('createDraft', function(playerName, draftType, cube) {
@@ -114,16 +129,16 @@ io.on('connection', function(socket) {
     draft.public.id = draftId;
     draft.public.players.push(String(playerName || 'Anonymous'));
     draft.public.type = draftType;
-    draft.public.cube = cube;
-    draft.public.creationTime = Date.now();
-    draft.public.displayTime = displayTime(draft.public.creationTime);
     draft.sockets = ['', socket];//add socket as player one
     drafts[draftId] = draft;//map draft to draft id
     publicDrafts[draftId] = draft.public;//map draft to draft id
     draft.sockets[1].emit('draftUpdate', draft.secret[1]);//notify individual player of secret draft update
-    SocketManager.broadcast('drafts', publicDrafts);//publish all public draft updates
+    broadcast('drafts', publicDrafts);//publish all public draft updates
   });
   
+  /**
+   *  Split a battlebox into two halves
+   */
   socket.on('split', function(battlebox, options) {
     var shuffledbox = shuffle(battlebox.cards);
     var half_length = Math.ceil(shuffledbox.length / 2);    
@@ -133,7 +148,6 @@ io.on('connection', function(socket) {
     result.push(generateBattleboxString(leftSide, options));
     result.push(generateBattleboxString(rightSide, options));
     broadcast('split', result);
-    // getFullCard(leftSide[0]);
   });
 
   socket.on('message', function(msg) {
@@ -156,7 +170,7 @@ io.on('connection', function(socket) {
 
   socket.on('identify', function(name) {
     socket.set('name', String(name || 'Anonymous'), function(err) {
-      updateRoster(SocketManager.sockets);
+      updateRoster(sockets);
     });
   });
 
@@ -234,34 +248,6 @@ function shuffle(array) {
 
   return array;
 }
-
-function displayTime(time) {
-  var str = "";
-
-  var hours = time.getHours();
-  var minutes = time.getMinutes();
-  var seconds = time.getSeconds();
-
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-  var amPm = "";
-  if (hours > 11) {
-    amPm += "PM";
-  }
-  else {
-    amPm += "AM";
-  }
-  if (hours > 12) {
-    hours = hours - 12;
-  }
-  str += hours + ":" + minutes + ":" + seconds + " " + amPm;
-  return str;
-}
-
 
 function getFullCard(cardName, callback) {
   var fullCard = allCards[cardName];

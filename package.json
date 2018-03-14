@@ -11,6 +11,6 @@
     "socket.io": "~0.9.14"
   },
   "scripts": {
-    "start": "NODE_PATH=lib node server.js"
+    "start": "NODE_PATH=lib node index.js"
   }
 }

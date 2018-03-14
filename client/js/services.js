@@ -24,7 +24,7 @@
       })
       .when("/splitBattlebox", {
         templateUrl: 'pages/splitBattlebox.html',
-        controller: LobbyController
+        controller: BattleboxSplitController
       })
       .otherwise({ redirectTo: '/' });
 

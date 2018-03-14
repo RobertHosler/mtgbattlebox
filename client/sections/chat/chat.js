@@ -7,9 +7,6 @@ function ChatController($scope, UserService) {
     $scope.text = '';
     $scope.autoScroll = true;
     
-    
-    socket.emit('chatJoin');
-
     socket.on('message', function(msg) {
         $scope.messages.push(msg);
         $scope.$apply();
@@ -46,7 +43,9 @@ function BattleboxSplitController($scope, UserService) {
     $scope.battleboxes = [];
     $scope.playerOne = 'Player One Half';
     $scope.playerTwo = 'Player Two Half';
-
+    
+    socket.emit('getBattleboxes');
+    
     socket.on('battleboxes', function(battleboxList) {
         $scope.battleboxes = battleboxList;
         // if (!$scope.selectedCube) {
