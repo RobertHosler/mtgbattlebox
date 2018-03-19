@@ -2,17 +2,18 @@
 angular
     .module('draft')
     .controller('CreateDraftController',
-        ['$scope', 'UserService', '$location', 'DraftService',
-        function($scope, UserService, $location, DraftService) {
+        ['$scope', 'UserService', '$location', 'DraftService', 'socket',
+        function($scope, UserService, $location, DraftService, socket) {
+            
+            function draftNotify() {
+                $scope.$apply();
+            }
+            DraftService.register(draftNotify);
+            
+            $scope.draftService = DraftService;
 
-            var socket = UserService.socket;
-            $scope.draftTypes = [];
-            $scope.selectedDraftType = $scope.draftTypes[0];
+            $scope.selectedDraftType = '';
             $scope.selectedCube = {};
-            $scope.cubes = DraftService.cubes;
-            $scope.secretDraft = {};
-            $scope.publicDrafts = {};
-            $scope.draftId = '';
 
             socket.on('draftTypes', function(draftTypeList) {
                 $scope.draftTypes = draftTypeList;
@@ -34,17 +35,21 @@ angular
                 console.log($scope.test);
             };
 
-            socket.on('draftUpdate', function(draftId, secretUpdate) {
-                $scope.draftId = draftId;
-                $scope.secretDraft = secretUpdate;
-                $scope.$apply();
-            });
+            // socket.on('draftUpdate', function(draftId, secretUpdate) {
+            //     $scope.draftId = draftId;
+            //     $scope.secretDraft = secretUpdate;
+                
+            //     DraftService.draftId = draftId;
+            //     DraftService.secretDraft = secretUpdate;
+                
+            //     $scope.$apply();
+            // });
 
-            socket.on('drafts', function(publicDrafts) {
-                $scope.publicDrafts = publicDrafts;
-                $scope.$apply();
+            // socket.on('drafts', function(publicDrafts) {
+            //     $scope.publicDrafts = publicDrafts;
+            //     $scope.$apply();
 
-            });
+            // });
 
         }
     ]);

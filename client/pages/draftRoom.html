@@ -1,7 +1,23 @@
 <div ng-controller="DraftCtrl">
 <div class="row">
     <div>DraftRoom</div>
-    <div ng-model="selectedDraftType"></div>
-    <div ng-model="draftId"></div>
+    <div>DraftType: {{draftService.publicDrafts[draftService.draftId].type.name}}</div>
+    <div ng-repeat="descriptionLine in draftService.publicDrafts[draftService.draftId].type.description">
+        {{descriptionLine}}
+    </div>
+    <div>DraftId: {{draftService.draftId}}</div>
+    <div>DraftType: {{draftService.publicDrafts[draftService.draftId].turn}}</div>
+    <br>
+    <div>Players</div>
+    <div ng-repeat="player in draftService.publicDrafts[draftService.draftId].players">
+        {{player}}
+    </div>
+    <br>
+    <div>All Cards in {{draftService.publicDrafts[draftService.draftId].cube.name}} Cube</div>
+    <div>
+        <span ng-repeat="card in draftService.publicDrafts[draftService.draftId].cube.cards">{{card}}, </span>
+    </div>
+    
+    <!--<div>{{draftService.publicDrafts[draftService.draftId]}}</div>-->
 </div>
 </div>

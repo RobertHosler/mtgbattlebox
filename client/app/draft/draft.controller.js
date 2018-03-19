@@ -2,11 +2,18 @@
 angular
     .module('draft')
     .controller('DraftCtrl',
-        ['$scope', 'UserService', 'DraftService',
-        function($scope, UserService, DraftService) {
-
-            var socket = UserService.socket;
-            $scope.draftId = DraftService.draftId
+        ['$scope', 'UserService', 'DraftService', 'socket',
+        function($scope, UserService, DraftService, socket) {
+            
+            function draftNotify() {
+                $scope.$apply();
+            }
+            DraftService.register(draftNotify);
+            
+            $scope.draftService = DraftService;
+            
+            $scope.draftId = DraftService.draftId;
+            $scope.cubes = DraftService.cubes;
             
         }
     ]);

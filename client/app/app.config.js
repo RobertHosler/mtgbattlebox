@@ -34,7 +34,7 @@ angular
                     controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })
-                .otherwise({ redirectTo: '/' });
+                .otherwise({ redirectTo: '/chat' });
 
             // use the HTML5 History API
             $locationProvider.html5Mode(true);

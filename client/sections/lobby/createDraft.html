@@ -9,16 +9,18 @@
                     <div class="col-xs-12 col-sm-6">
                         <label for="draftTypeSelection">Type of draft</label>
                         <div>
-                            <select id="draftTypeSelection" class="form-control" ng-model="selectedDraftType" ng-options="x.name for x in draftTypes">
-                  </select>
+                            <select id="draftTypeSelection" class="form-control" ng-model="selectedDraftType" ng-options="x.name for x in draftService.draftTypes">
+                            </select>
                         </div>
-                        <div>{{selectedDraftType.description}}</div>
+                        <div ng-repeat="descriptionLine in selectedDraftType.description">
+                            {{descriptionLine}}
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <br class="visible-xs">
                         <label for="cubeSelection">Cube</label>
                         <div>
-                            <select id="cubeSelection" class="form-control" ng-model="selectedCube" ng-options="x.name for x in cubes" onchange="">
+                            <select id="cubeSelection" class="form-control" ng-model="selectedCube" ng-options="x.name for x in draftService.cubes" onchange="">
                             </select>
                         </div>
                     </div>

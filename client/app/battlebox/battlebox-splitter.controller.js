@@ -2,10 +2,9 @@
 angular
     .module('battlebox')
     .controller('BattleboxSplitController',
-        ['$scope', 'UserService',
-        function($scope, UserService) {
+        ['$scope', 'UserService', 'socket',
+        function($scope, UserService, socket) {
 
-            var socket = UserService.socket;
             $scope.selectedBox;
             $scope.addLands = true;
             $scope.addOnes = true;
