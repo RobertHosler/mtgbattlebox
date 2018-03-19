@@ -1,14 +1,18 @@
 function CreateDraftController($scope, UserService) {
     
     var socket = UserService.socket;
-    $scope.draftTypes = [
-        { name: 'Winston', description: 'Take turns looking through 3 piles of cards refiled with the pool of extra cards.' },
-        { name: 'Grid', description: 'Take turns picking a row or column from a grid of 9 cards.' },
-        { name: 'Pancake', description: '9 Rounds of 3 turns\nPack size 11 cards\nTurn 1 Each player takes 1 card then passes the pack to the other player.\nTurn 2 Each player takes 2 cards then burns 2 and passes back to the other player.\nTurn 3 each player takes 2 cards then discards the remaining card.\nEach player will draft 45 cards total.' }
-    ];
+    $scope.draftTypes = [];
     $scope.selectedDraftType = $scope.draftTypes[0];
     $scope.selectedCube = {};
     $scope.cubes = [];
+    $scope.secretDraft = {};
+    $scope.publicDrafts = {};
+    $scope.draftId = '';
+
+    socket.on('draftTypes', function(draftTypeList) {
+        $scope.draftTypes = draftTypeList;
+        $scope.$apply();
+    });
 
     socket.on('cubes', function(cubeList) {
         $scope.cubes = cubeList;
@@ -21,6 +25,19 @@ function CreateDraftController($scope, UserService) {
     $scope.createDraft = function createDraft() {
         console.log('Creating draft:', $scope.selectedCube.name, $scope.selectedDraftType);
         socket.emit('createDraft', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
+        $location.path('/draftRoom');
     };
+    
+    socket.on('draftUpdate', function(draftId, secretUpdate) {
+        $scope.draftId = draftId;
+        $scope.secretDraft = secretUpdate;
+        $scope.$apply();
+    });
+
+    socket.on('drafts', function(publicDrafts) {
+        $scope.publicDrafts = publicDrafts;
+        $scope.$apply();
+        
+    });
 
 }

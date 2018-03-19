@@ -44,26 +44,6 @@ var sockets = [];
 var drafts = {};
 var publicDrafts = {};
 
-var battleboxLands = fs.readFileSync("files/battlebox_lands/lands_allied", 'utf8').split("\n");
-
-var battleboxes = [];
-fs.readdirSync("files/battleboxes").forEach(file => {
-  var battlebox = {};
-  battlebox.name = file;
-  battlebox.cards = fs.readFileSync("files/battleboxes/"+file, 'utf8').split("\n");
-  battleboxes.push(battlebox);
-  // console.log("Battlebox: " + battlebox.name, "First Card: " + battlebox.cards[0]);
-});
-
-var cubes = [];
-fs.readdirSync("files/cubes").forEach(file => {
-  var cube = {};
-  cube.name = file;
-  cube.cards = fs.readFileSync("files/cubes/"+file, 'utf8').split("\n");
-  cubes.push(cube);
-  // console.log("Cube: " + cube.name, "First Card: " + cube.cards[0]);
-});
-
 //TEST GRID
 // var gridDraft = Grid.createDraft('12345', cubes[0].cards, 18, 3);
 // console.log(gridDraft);

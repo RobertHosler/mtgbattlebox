@@ -1,0 +1,37 @@
+ <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>--> 
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="one">Restoration Angel</p>-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="two">Restoration Angel-->
+    <!--  <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--  </p>-->
+    <!--</div>-->
+    
+    
+    
+    This is the one i was using below
+    
+    <!--<div id="cardModal" class="modal modal-img" role="dialog" onclick="$('#cardModal').modal('hide');">-->
+    <!--  <div class="modal-dialog">-->
+    <!--    <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--  </div>-->
+    <!--</div>-->
+
+    <!--<div class="cardhover">-->
+    <!--  <p class="two">-->
+    <!--    <href href="#cardModal" data-toggle="modal" class="btn btn-link">Restoration Angel</href>-->
+    <!--    <img src="https://img.scryfall.com/cards/normal/en/ima/28.jpg?1517813031"></img>-->
+    <!--  </p>-->
+    <!--</div>-->
