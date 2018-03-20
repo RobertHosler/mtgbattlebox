@@ -66,10 +66,15 @@ io.sockets.on('connection', function(socket) {
     });
 
     // console.log("Emitting cubes:", app.cube.cubes);
-    socket.emit('drafts', app.publicDrafts);
-    socket.emit('cubes', app.cube.cubes);
-    socket.emit('battleboxes', app.battlebox.battleboxes);
-    socket.emit('draftTypes', app.draftTypes);
+    socket.on('getDraftStuff', function() {
+        socket.emit('drafts', app.publicDrafts);
+        socket.emit('cubes', app.cube.cubes);
+        socket.emit('draftTypes', app.draftTypes);
+    });
+    
+    socket.on('getBattleboxStuff', function() {
+        socket.emit('battleboxes', app.battlebox.battleboxes);
+    });
 
 });
 

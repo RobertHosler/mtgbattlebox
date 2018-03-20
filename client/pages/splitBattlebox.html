@@ -4,7 +4,7 @@
             <form ng-submit="split()">
                 <label for="boxSelection">Battlebox</label>
                 <div>
-                    <select id="boxSelection" class="form-control" ng-model="selectedBox" ng-options="x.name for x in battleboxes" onchange="">
+                    <select id="boxSelection" class="form-control" ng-model="selectedBox" ng-options="x.name for x in battleboxService.battleboxes" onchange="">
         </select>
                 </div>
                 <br>

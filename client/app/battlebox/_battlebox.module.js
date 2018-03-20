@@ -1,2 +1,3 @@
 /*global angular*/
-angular.module('battlebox', []);
+angular.module('battlebox', [
+]);

@@ -5,7 +5,9 @@
         </div>
         <div class="panel-body draft-viewer">
             <div class="row-draft" ng-repeat="x in draftService.publicDrafts">
-                <button class="btn btn-default form-control">{{x.players[1]}} {{x.type.name}} {{x.cube.name}} {{x.creationTime}}</button>
+                <button class="btn btn-default form-control" ng-click="joinDraft(x.id)">
+                    {{x.id}} {{x.players[1]}} {{x.type.name}} {{x.cube.name}} {{x.creationTime}}
+                </button>
             </div>
         </div>
     </div>

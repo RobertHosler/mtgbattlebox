@@ -28,28 +28,12 @@ angular
                 $scope.$apply();
             });
 
-            $scope.createDraft = function createDraft() {
+            $scope.createDraft = function() {
                 console.log('Creating draft:', $scope.selectedCube.name, $scope.selectedDraftType);
                 socket.emit('createDraft', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
                 $location.path('/draftRoom');
                 console.log($scope.test);
             };
-
-            // socket.on('draftUpdate', function(draftId, secretUpdate) {
-            //     $scope.draftId = draftId;
-            //     $scope.secretDraft = secretUpdate;
-                
-            //     DraftService.draftId = draftId;
-            //     DraftService.secretDraft = secretUpdate;
-                
-            //     $scope.$apply();
-            // });
-
-            // socket.on('drafts', function(publicDrafts) {
-            //     $scope.publicDrafts = publicDrafts;
-            //     $scope.$apply();
-
-            // });
 
         }
     ]);

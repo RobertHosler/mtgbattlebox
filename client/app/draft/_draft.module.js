@@ -1,2 +1,3 @@
 /*global angular*/
-angular.module('draft', []);
+angular.module('draft', [
+]);

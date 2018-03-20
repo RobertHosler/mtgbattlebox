@@ -2,23 +2,20 @@
 angular
     .module('battlebox')
     .controller('BattleboxSplitController',
-        ['$scope', 'UserService', 'socket',
-        function($scope, UserService, socket) {
+        ['$scope', 'socket', 'BattleboxService',
+        function($scope, socket, BattleboxService) {
+            
+            function callback() {
+                $scope.$apply();
+            }
+            BattleboxService.register(callback);
 
             $scope.selectedBox;
             $scope.addLands = true;
             $scope.addOnes = true;
-            $scope.battleboxes = [];
+            $scope.battleboxService = BattleboxService;
             $scope.playerOne = 'Player One Half';
             $scope.playerTwo = 'Player Two Half';
-
-            socket.on('battleboxes', function(battleboxList) {
-                $scope.battleboxes = battleboxList;
-                // if (!$scope.selectedCube) {
-                // $scope.selectedCube = cubeList[0];
-                // }
-                $scope.$apply();
-            });
 
             $scope.split = function split() {
                 // console.log('Sending message:', $scope.text);
