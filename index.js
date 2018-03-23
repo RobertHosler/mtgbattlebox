@@ -17,6 +17,7 @@ var BattleboxSplitter = require('battlebox/Splitter');
 var Grid = require('draft/Grid');
 var DraftCreator = require('draft/DraftCreator');
 var MtgFile = require('mtg/FileReader');
+var Cards = require('mtg/Cards');
 
 var app = {
     allSockets: [],
@@ -46,7 +47,8 @@ io.sockets.on('connection', function(socket) {
     var eventHandlers = {
         splitter: new BattleboxSplitter(app, socket),
         grid: new Grid(app, socket),
-        draftCreator: new DraftCreator(app, socket)
+        draftCreator: new DraftCreator(app, socket),
+        cards: new Cards(app, socket)
     };
 
     for (var category in eventHandlers) {

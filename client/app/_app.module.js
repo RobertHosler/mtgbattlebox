@@ -2,7 +2,8 @@
 angular.module('myApp', [
   'draft',
   'chat',
-  'battlebox'
+  'battlebox',
+  'mtg'
 //   'ngRoute'
 ]);
 

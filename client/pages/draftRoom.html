@@ -15,6 +15,15 @@
                 {{player}}
             </div>
             <br>
+            <div>
+                <span ng-repeat="col in grid">
+                    <span ng-repeat="card in col">
+                        <img src="{{cardService.cards[card].image_uris['small']}}"></img>
+                    </span>
+                    <br>
+                </span>
+            </div>
+            <br>
             <div>All Cards in {{draftService.publicDrafts[draftService.draftId].cube.name}} Cube</div>
             <div>
                 <span ng-repeat="card in draftService.publicDrafts[draftService.draftId].cube.cards">{{card}}, </span>

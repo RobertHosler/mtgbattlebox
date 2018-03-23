@@ -9,6 +9,8 @@ angular.module('draft')
                 self.cubes = [];
                 self.draftId = '';
                 self.observers = [];
+                self.publicDrafts = [];
+                self.secretDraft = {};
                 
                 socket.on('drafts', function(publicDrafts) {
                     self.publicDrafts = publicDrafts;

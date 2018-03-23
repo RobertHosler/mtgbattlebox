@@ -5,6 +5,6 @@ angular
   .factory('UserService',
     function() {
       return {
-        name: 'Anonymous'
+        name: prompt("Who are you?", 'Anonymous-'+(Math.random() + 1).toString(36).slice(2, 18))
       };
     });

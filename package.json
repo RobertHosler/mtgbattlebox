@@ -8,6 +8,7 @@
   "dependencies": {
     "async": "~0.2.8",
     "express": "~3.2.4",
+    "scryfall-sdk": "^1.1.0",
     "socket.io": "~0.9.14"
   },
   "scripts": {
