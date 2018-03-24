@@ -16,12 +16,43 @@
             </div>
             <br>
             <div>
-                <span ng-repeat="col in grid">
-                    <span ng-repeat="card in col">
-                        <img src="{{cardService.cards[card].image_uris['small']}}"></img>
-                    </span>
-                    <br>
-                </span>
+                <div ng-repeat="row in grid" class="row gridRow">
+                    <div class="col-xs-3">
+                        Btn here
+                    </div>
+                    <div ng-repeat="card in row" class="col-xs-3 gridCol">
+                        
+                        <div id="{{$parent.$index}}{{$index}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('#cardModal').modal('hide');">
+                          <div class="modal-dialog">
+                            <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"></img>
+                            <div ng-repeat="cardPart in cardService.cards[card].card_faces">
+                                <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+                            </div>
+                            <div ng-repeat="cardPart in cardService.cards[card].all_parts">
+                                <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+                            </div>
+                          </div>
+                        </div>
+                    
+                        <!--<div class="cardhover">-->
+                        <!--  <p class="two">-->
+                        <!--    <href href="#cardModal" data-toggle="modal" class="btn btn-link">{{card}}</href>-->
+                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"></img>-->
+                        <!--  </p>-->
+                        <!--</div>-->
+                        <href href="#{{$parent.$index}}{{$index}}Modal" data-toggle="modal">
+                            <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"
+                                width="146" height="204" class="card one"></img>
+                        </href>
+                        
+                        <!--<div class="card-hover">-->
+                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"-->
+                        <!--        width="146" height="204" class="card one"></img>-->
+                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"-->
+                        <!--        class="card-hover two"></img>-->
+                        <!--</div>-->
+                    </div>
+                </div>
             </div>
             <br>
             <div>All Cards in {{draftService.publicDrafts[draftService.draftId].cube.name}} Cube</div>
