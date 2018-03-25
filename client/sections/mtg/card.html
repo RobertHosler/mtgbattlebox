@@ -1,0 +1,18 @@
+<a href="javascript:void(0); #{{id}}" data-toggle="modal" >
+    <img ng-show="card!==undefined" src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}" class="card one"></img>
+    <img ng-show="card===undefined" src="https://img.scryfall.com/cards/normal/en/e01/63.jpg?1517813031" alt="" class="card one"></img>
+</a>
+
+<div id="{{id}}" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
+    <div class="modal-dialog">
+        <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"></img>
+        
+        <div ng-repeat="cardPart in cardService.cards[card].card_faces">
+            <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+        </div>
+        
+        <div ng-repeat="cardPart in cardService.cards[card].all_parts">
+            <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+        </div>
+    </div>
+</div>

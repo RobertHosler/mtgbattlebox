@@ -34,5 +34,23 @@ angular
                 }
             }
             
+            $scope.getDraftInclude = function() {
+                if (!$scope.publicDraft) {
+                    return '';
+                } else if ($scope.publicDraft.type.name === 'Grid') {
+                    return '/sections/draft/grid.html';
+                } else {
+                    return '';
+                }
+            };
+            
+            $scope.draftCol = function(index) {
+                socket.emit('draftCol', index);
+            };
+            
+            $scope.draftRow = function(index) {
+                socket.emit('draftRow', index);
+            };
+            
         }
     ]);

@@ -3,61 +3,48 @@
         <div class="col-xs-12">
 
             <div>DraftRoom</div>
-            <div>DraftType: {{draftService.publicDrafts[draftService.draftId].type.name}}</div>
-            <div ng-repeat="descriptionLine in draftService.publicDrafts[draftService.draftId].type.description">
+            <div>DraftType: {{publicDraft.type.name}}</div>
+            <div ng-repeat="descriptionLine in publicDraft.type.description">
                 {{descriptionLine}}
             </div>
             <div>DraftId: {{draftService.draftId}}</div>
-            <div>DraftType: {{draftService.publicDrafts[draftService.draftId].turn}}</div>
+            <div>Turn: {{publicDraft.turn}}</div>
+            <div>Active Player: {{publicDraft.activePlayer}}</div>
+            <div>Draft Complete: {{publicDraft.complete}}</div>
             <br>
             <div>Players</div>
-            <div ng-repeat="player in draftService.publicDrafts[draftService.draftId].players">
+            <div ng-repeat="player in publicDraft.players">
                 {{player}}
             </div>
             <br>
+            
+            <div ng-include="getDraftInclude()"></div>
+            
+            <br>
+            
             <div>
-                <div ng-repeat="row in grid" class="row gridRow">
-                    <div class="col-xs-3">
-                        Btn here
-                    </div>
-                    <div ng-repeat="card in row" class="col-xs-3 gridCol">
-                        
-                        <div id="{{$parent.$index}}{{$index}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('#cardModal').modal('hide');">
-                          <div class="modal-dialog">
-                            <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"></img>
-                            <div ng-repeat="cardPart in cardService.cards[card].card_faces">
-                                <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
-                            </div>
-                            <div ng-repeat="cardPart in cardService.cards[card].all_parts">
-                                <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
-                            </div>
-                          </div>
-                        </div>
-                    
-                        <!--<div class="cardhover">-->
-                        <!--  <p class="two">-->
-                        <!--    <href href="#cardModal" data-toggle="modal" class="btn btn-link">{{card}}</href>-->
-                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"></img>-->
-                        <!--  </p>-->
-                        <!--</div>-->
-                        <href href="#{{$parent.$index}}{{$index}}Modal" data-toggle="modal">
-                            <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"
-                                width="146" height="204" class="card one"></img>
-                        </href>
-                        
-                        <!--<div class="card-hover">-->
-                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"-->
-                        <!--        width="146" height="204" class="card one"></img>-->
-                        <!--    <img src="{{cardService.cards[card].image_uris['normal']}}" alt="{{card}}"-->
-                        <!--        class="card-hover two"></img>-->
-                        <!--</div>-->
-                    </div>
+                <div><h3>Deck</h3></div>
+                <div ng-repeat="card in secretDraft.deck" class="deckRow">
+                    <card-image id="$index + 'deckModal'" card="card" cardservice="cardService"></card-image>
                 </div>
             </div>
+            
             <br>
-            <div>All Cards in {{draftService.publicDrafts[draftService.draftId].cube.name}} Cube</div>
+            
             <div>
-                <span ng-repeat="card in draftService.publicDrafts[draftService.draftId].cube.cards">{{card}}, </span>
+                <div><h3>Sideboard</h3></div>
+                <div ng-repeat="card in secretDraft.sideboard" class="sideRow">
+                    <card-image id="$index + 'sideModal'" card="card" cardservice="cardService"></card-image>
+                </div>
+            </div>
+            
+            <br>
+            
+            <div><h3>All Cards in {{publicDraft.cube.name}} Cube</h3></div>
+            <div>
+                <span ng-repeat="card in publicDraft.cube.cards">
+                    <card-image id="$index + 'allCardModal'" card="card" cardservice="cardService"></card-image>
+                </span>
             </div>
 
             <!--<div>{{draftService.publicDrafts[draftService.draftId]}}</div>-->

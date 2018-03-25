@@ -72,15 +72,28 @@ body {
 }
 
 .card {
-    width: 146px;
-    height: 204px;
+    max-width: 200px;
+    /* height: 204px; */
+    width: 100%;
 }
-
+@media only screen and (min-width: 992px) {
+    .gridRow .gridCol {
+        width: inherit;
+        min-width: 200px;
+    }
+}
 .gridRow .gridCol {
     padding: 0px;
-    width: inherit;
-    min-width: 146px;
-    min-height: 204px;
+}
+@media only screen and (min-width: 700px) {
+    .gridRow .gridCol {
+        /* min-width: 146px; */
+        /* min-height: 204px; */
+        /* min-width: 200px; */
+    }
+}
+.center {
+    text-align: center;
 }
 
 /*.card-hover .one + .two {*/
