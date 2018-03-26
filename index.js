@@ -37,7 +37,10 @@ var app = {
 // console.log(app.allCards);
 
 function broadcast(event, data) {
+    var i = 0;
     app.allSockets.forEach(function(socket) {
+        console.log("Socket", i, "Event", event, "Data", data);
+        i++;
         socket.emit(event, data);
     });
 }

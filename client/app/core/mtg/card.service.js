@@ -46,6 +46,15 @@ angular.module('mtg')
                     });
                 };
                 
+                self.getCardImage = function(cardName) {
+                    var card = self.cards[cardName];
+                    if (card && card.image_uris) {
+                        return card.image_uris['normal'];
+                    } else {
+                        return "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
+                    }
+                }
+                
                 socket.emit('getAllCards');
                 
             }

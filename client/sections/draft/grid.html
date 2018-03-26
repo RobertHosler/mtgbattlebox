@@ -1,6 +1,6 @@
 <div>
     <div class="row gridRow">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
         </div>
         <div class="col-xs-3 gridCol center">
             <div class="btn btn-default" ng-click="draftCol(0);">Column One</div>
@@ -11,15 +11,17 @@
         <div class="col-xs-3 gridCol center">
             <div class="btn btn-default" ng-click="draftCol(2);">Column Three</div>
         </div>
+        <div class="col-xs-1">
+        </div>
     </div>
     <div ng-repeat="row in grid" class="row gridRow">
-        <div class="col-xs-3 center">
+        <div class="col-xs-2 center">
             <div class="btn btn-default" ng-click="draftRow($index);">Row {{$index + 1}}</div>
         </div>
         <div ng-repeat="card in row" class="col-xs-3 gridCol">
-            
             <card-image id="$parent.$index + '' + $index + 'gridModal'" card="card" cardservice="cardService"></card-image>
-
+        </div>
+        <div class="col-xs-1">
         </div>
     </div>
 </div>
