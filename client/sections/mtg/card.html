@@ -6,7 +6,7 @@
     <div class="modal-dialog">
         <img ng-show="cardService.cards[card].image_uris" src="{{cardService.getCardImage(card)}}" alt="{{card}}"></img>
         <span ng-repeat="cardPart in cardService.cards[card].card_faces">
-            <img src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+            <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
         </span>
     </div>
 </div>
