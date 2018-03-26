@@ -46,12 +46,14 @@ angular.module('mtg')
                     });
                 };
                 
-                self.getCardImage = function(cardName) {
+                self.getCardImage = function(cardName, placeholder) {
                     var card = self.cards[cardName];
                     if (card && card.image_uris) {
                         return card.image_uris['normal'];
+                    } else if (card && card.card_faces && !placeholder) {
+                        return card.card_faces[0].image_uris['normal'];
                     } else {
-                        return "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
+                        return placeholder ? placeholder : "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
                     }
                 }
                 
