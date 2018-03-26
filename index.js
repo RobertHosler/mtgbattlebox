@@ -39,7 +39,7 @@ var app = {
 function broadcast(event, data) {
     var i = 0;
     app.allSockets.forEach(function(socket) {
-        console.log("Socket", i, "Event", event, "Data", data);
+        // console.log("Socket", i, "Event", event, "Data", data);
         i++;
         socket.emit(event, data);
     });
@@ -79,6 +79,10 @@ io.sockets.on('connection', function(socket) {
     
     socket.on('getBattleboxStuff', function() {
         socket.emit('battleboxes', app.battlebox.battleboxes);
+    });
+    
+    socket.on('setName', function(name) {
+        socket.name = name;
     });
 
 });

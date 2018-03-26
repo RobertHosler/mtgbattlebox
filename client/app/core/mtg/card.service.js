@@ -34,7 +34,7 @@ angular.module('mtg')
                 
                 self.getCard = function(cardName) {
                     var card = self.cards[cardName];
-                    if (!card) {
+                    if (!card || !card.id) {
                         self.cards[cardName] = {};//placeholder object
                         socket.emit('getFullCard', cardName);
                     }

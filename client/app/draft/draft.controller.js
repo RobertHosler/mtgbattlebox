@@ -16,7 +16,6 @@ angular
             
             $scope.draftId = DraftService.draftId;
             $scope.cubes = DraftService.cubes;
-            $scope.secretDraft = DraftService.secretDraft;
             
             init();
             
@@ -26,6 +25,7 @@ angular
              */
             function init() {
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
+                $scope.secretDraft = DraftService.secretDraft;
                 if ($scope.publicDraft && $scope.publicDraft.type.name === "Grid") {
                     $scope.grid = $scope.publicDraft.currentGrid;
                     CardService.getCards($scope.grid[0]);
