@@ -58,8 +58,9 @@ body {
     max-width: 250px;
 }
 
-.modal-img .modal-dialog {
+.modal-img .modal-dialog > * {
     max-width: 300px;
+    display: inline-block;
 }
 
 .modal-img img {

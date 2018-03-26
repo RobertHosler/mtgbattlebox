@@ -43,9 +43,12 @@
             <div><h3>All Cards in {{publicDraft.cube.name}} Cube</h3></div>
             <div>
                 <span ng-repeat="card in publicDraft.cube.cards">
-                    <card-image id="$index + 'allCardModal'" card="card" cardservice="cardService"></card-image>
+                    <div><card-text id="$index + 'allCardModal'" card="card" cardservice="cardService"></card-image></div>
                 </span>
             </div>
+            
+            <br>
+            <br>
 
             <!--<div>{{draftService.publicDrafts[draftService.draftId]}}</div>-->
 

@@ -1,6 +1,6 @@
 /*global angular*/
 angular.module('mtg')
-    .directive('cardImage', function() {
+    .directive('cardText', function() {
         return {
             restrict: 'E',
             scope: {
@@ -8,6 +8,6 @@ angular.module('mtg')
               card: '=card',
               cardService: '=cardservice'
             },
-            templateUrl: 'sections/mtg/card-image.html'
+            templateUrl: 'sections/mtg/card-text.html'
           };
     });

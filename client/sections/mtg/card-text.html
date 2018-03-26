@@ -1,0 +1,10 @@
+<a href="javascript:void(0); #{{id}}" data-toggle="modal">{{card}}</a>
+
+<div id="{{id}}" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
+    <div class="modal-dialog">
+        <img ng-show="cardService.cards[card].image_uris" src="{{cardService.getCardImage(card)}}" alt="{{card}}"></img>
+        <span ng-repeat="cardPart in cardService.cards[card].card_faces">
+            <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+        </span>
+    </div>
+</div>
