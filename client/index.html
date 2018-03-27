@@ -13,11 +13,11 @@
 
 </head>
 
-<body ng-controller="AppController">
+<body>
 
   <div class="container">
     
-    <div ng-include="'/sections/header.tpl.html'"></div>
+    <div ng-include="'/app/header.tpl.html'"></div>
 
     <div ng-view></div>
 
@@ -28,27 +28,26 @@
   <script src="/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="/libs/angular/angular.min.js"></script>
   
-  <script src="app/_app.module.js"></script>
+  <script src="app/_app.js"></script>
   <script src="app/app.config.js"></script>
-  <script src="app/app.controller.js"></script>
   <script src="app/app.run.js"></script>
   <script src="app/app.socket-service.js"></script>
   <script src="app/app.some-service.js"></script>
   <script src="app/app.user-service.js"></script>
-  <script src="app/battlebox/_battlebox.module.js"></script>
-  <script src="app/battlebox/battlebox-splitter.controller.js"></script>
-  <script src="app/battlebox/battlebox.service.js"></script>
-  <script src="app/core/chat/_chat.module.js"></script>
-  <script src="app/core/chat/chat.controller.js"></script>
-  <script src="app/core/mtg/_mtg.module.js"></script>
-  <script src="app/core/mtg/card-image.directive.js"></script>
-  <script src="app/core/mtg/card-text.directive.js"></script>
-  <script src="app/core/mtg/card.service.js"></script>
-  <script src="app/draft/_draft.module.js"></script>
-  <script src="app/draft/create-draft.controller.js"></script>
-  <script src="app/draft/draft.controller.js"></script>
-  <script src="app/draft/draft.service.js"></script>
-  <script src="app/draft/join-draft.controller.js"></script>
+  <script src="app/chat/_chat.module.js"></script>
+  <script src="app/chat/chat.ctrl.js"></script>
+  <script src="app/mtg/_mtg.module.js"></script>
+  <script src="app/mtg/battlebox/_battlebox.module.js"></script>
+  <script src="app/mtg/battlebox/battlebox.service.js"></script>
+  <script src="app/mtg/battlebox/splitter/battlebox-splitter.ctrl.js"></script>
+  <script src="app/mtg/card/card-image.dir.js"></script>
+  <script src="app/mtg/card/card-text.dir.js"></script>
+  <script src="app/mtg/card/card.service.js"></script>
+  <script src="app/mtg/draft/_draft.module.js"></script>
+  <script src="app/mtg/draft/createDraft/create-draft.ctrl.js"></script>
+  <script src="app/mtg/draft/draft.service.js"></script>
+  <script src="app/mtg/draft/draftRoom/draft-room.controller.js"></script>
+  <script src="app/mtg/draft/joinDraft/join-draft.ctrl.js"></script>
 
 </body>
 

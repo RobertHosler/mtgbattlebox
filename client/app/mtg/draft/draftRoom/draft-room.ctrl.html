@@ -22,21 +22,7 @@
             
             <br>
             
-            <div>
-                <div><h3>Deck</h3></div>
-                <div ng-repeat="card in secretDraft.deck" class="deckRow">
-                    <card-text id="$index + 'deckModal'" card="card" cardservice="cardService"></card-text>
-                </div>
-            </div>
-            
-            <br>
-            
-            <div>
-                <div><h3>Sideboard</h3></div>
-                <div ng-repeat="card in secretDraft.sideboard" class="sideRow">
-                    <card-text id="$index + 'sideModal'" card="card" cardservice="cardService"></card-text>
-                </div>
-            </div>
+            <div ng-include="'/sections/draft/deck.html'"></div>
             
             <br>
             

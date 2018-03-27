@@ -12,7 +12,7 @@
     "socket.io": "~0.9.14"
   },
   "scripts": {
-    "start": "NODE_PATH=lib node --trace-warnings index.js"
+    "start": "NODE_PATH=server node --trace-warnings index.js"
   },
   "devDependencies": {
     "grunt-include-source": "^1.1.0"

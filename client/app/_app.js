@@ -1,8 +1,6 @@
 /* global angular */
 angular.module('myApp', [
-  'draft',
   'chat',
-  'battlebox',
   'mtg'
 //   'ngRoute'
 ]);

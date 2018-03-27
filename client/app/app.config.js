@@ -10,31 +10,31 @@ angular
                 //   controller : LobbyController
                 // })
                 .when("/chat", {
-                    templateUrl: 'pages/justChat.html',
+                    templateUrl: 'app/chat/chat.pg.html',
                     controller: 'ChatController',
                     pageName: "Chat"
                 })
                 .when("/createDraft", {
-                    templateUrl: 'pages/createDraft.html',
+                    templateUrl: 'app/draft/createDraft/createDraft.html',
                     controller: 'CreateDraftController',
                     pageName: "Create Draft"
                 })
                 .when("/draftRoom", {
-                    templateUrl: 'pages/draftRoom.html',
+                    templateUrl: 'app/draft/draftRoom/draftRoom.html',
                     controller: 'DraftCtrl',
                     pageName: "Draft Room"
                 })
                 .when("/joinDraft", {
-                    templateUrl: 'pages/joinDraft.html',
+                    templateUrl: 'app/draft/joinDraft/joinDraft.pg.html',
                     controller: 'LobbyController',
                     pageName: "Join Draft"
                 })
                 .when("/splitBattlebox", {
-                    templateUrl: 'pages/splitBattlebox.html',
+                    templateUrl: 'app/battlebox/splitter/splitBattlebox.html',
                     controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })
-                .otherwise({ redirectTo: '/chat' });
+                .otherwise({ redirectTo: '/createDraft' });
 
             // use the HTML5 History API
             $locationProvider.html5Mode(true);
