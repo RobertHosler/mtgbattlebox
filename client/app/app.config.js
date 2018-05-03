@@ -15,17 +15,17 @@ angular
                     pageName: "Chat"
                 })
                 .when("/createDraft", {
-                    templateUrl: 'app/draft/createDraft/createDraft.html',
+                    templateUrl: 'app/mtg/draft/create/create-draft.pg.html',
                     controller: 'CreateDraftController',
                     pageName: "Create Draft"
                 })
                 .when("/draftRoom", {
-                    templateUrl: 'app/draft/draftRoom/draftRoom.html',
+                    templateUrl: 'app/mtg/draft/room/draft-room.pg.html',
                     controller: 'DraftCtrl',
                     pageName: "Draft Room"
                 })
                 .when("/joinDraft", {
-                    templateUrl: 'app/draft/joinDraft/joinDraft.pg.html',
+                    templateUrl: 'app/draft/join/join-draft.pg.html',
                     controller: 'LobbyController',
                     pageName: "Join Draft"
                 })

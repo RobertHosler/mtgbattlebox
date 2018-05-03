@@ -38,7 +38,7 @@ angular
                 if (!$scope.publicDraft) {
                     return '';
                 } else if ($scope.publicDraft.type.name === 'Grid') {
-                    return '/sections/draft/grid.html';
+                    return '/app/mtg/draft/room/grid.html';
                 } else {
                     return '';
                 }
