@@ -8,6 +8,6 @@ angular.module('mtg')
               card: '=card',
               cardService: '=cardservice'
             },
-            templateUrl: 'app/core/mtg/card-image.dir.html'
+            templateUrl: 'app/mtg/card/card-image.dir.html'
           };
     });

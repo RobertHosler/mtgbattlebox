@@ -25,12 +25,12 @@ angular
                     pageName: "Draft Room"
                 })
                 .when("/joinDraft", {
-                    templateUrl: 'app/draft/join/join-draft.pg.html',
+                    templateUrl: 'app/mtg/draft/join/join-draft.pg.html',
                     controller: 'LobbyController',
                     pageName: "Join Draft"
                 })
                 .when("/splitBattlebox", {
-                    templateUrl: 'app/battlebox/splitter/splitBattlebox.html',
+                    templateUrl: 'app/mtg/battlebox/splitter/splitBattlebox.html',
                     controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })
