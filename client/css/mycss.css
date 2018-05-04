@@ -30,6 +30,7 @@ tbody tr {
     display: block;
     height: 250px;
     overflow: auto;
+    padding: 0px;
 }
 
 .row.controls {
@@ -114,4 +115,11 @@ body {
     width: 250px;
     left: -47px;
     top: -65px;
+}
+
+.btn-join-draft {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0px;
 }

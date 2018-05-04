@@ -3,10 +3,25 @@
         <div class="panel-heading">
             Join a Draft
         </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-3">Host</div>
+                <div class="col-xs-3">Type</div>
+                <div class="col-xs-3">Cube</div>
+                <div class="col-xs-3">Created</div>
+            </div>
+        </div>
         <div class="panel-body draft-viewer">
             <div class="row-draft" ng-repeat="x in draftService.publicDrafts">
-                <button class="btn btn-default form-control" ng-click="joinDraft(x.id)">
-                    {{x.id}} {{x.players[1]}} {{x.type.name}} {{x.cube.name}} {{x.creationTime}}
+                <!--class="btn btn-default form-control" -->
+                <button class="btn-join-draft" ng-click="joinDraft(x.id)">
+                    <!--{{x.id}}-->
+                    <div class="">
+                        <div class="col-xs-3">{{x.players[0]}}</div>
+                        <div class="col-xs-3">{{x.type.name}}</div>
+                        <div class="col-xs-3">{{x.cube.name}}</div>
+                        <div class="col-xs-3">{{x.creationTime}}</div>
+                    </div>
                 </button>
             </div>
         </div>

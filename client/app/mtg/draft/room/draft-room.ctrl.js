@@ -2,13 +2,19 @@
 angular
     .module('draft')
     .controller('DraftCtrl',
-        ['$scope', 'UserService', 'DraftService', 'socket', 'CardService',
-        function($scope, UserService, DraftService, socket, CardService) {
+        ['$scope', 'UserService', 'DraftService', 'socket', 'CardService', '$location',
+        function($scope, UserService, DraftService, socket, CardService, $location) {
+            
+            if (!DraftService.draftId) {
+                console.log("No Draft Id");
+                $location.path('/createDraft');
+            }
             
             function serviceUpdate() {
                 init();
                 $scope.$apply();
             }
+            
             DraftService.register(serviceUpdate);
             CardService.register(serviceUpdate);
             $scope.draftService = DraftService;

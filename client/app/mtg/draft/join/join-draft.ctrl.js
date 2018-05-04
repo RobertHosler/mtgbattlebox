@@ -4,6 +4,10 @@ angular
     .controller('JoinDraftController', 
         ['$scope', 'UserService', '$location', 'DraftService', 'socket',
         function($scope, UserService, $location, DraftService, socket) {
+            
+            if (!UserService.name) {
+                $location.path('/login');
+            }
 
             function draftNotify() {
                 $scope.$apply();

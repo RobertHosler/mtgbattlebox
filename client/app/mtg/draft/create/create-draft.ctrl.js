@@ -34,6 +34,7 @@ angular
 
             $scope.createDraft = function() {
                 console.log('Creating draft:', $scope.selectedCube.name, $scope.selectedDraftType);
+                $scope.draftService.draftId = 'placeholder';
                 socket.emit('createDraft', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
                 $location.path('/draftRoom');
                 console.log($scope.test);

@@ -26,7 +26,7 @@ angular
                 })
                 .when("/joinDraft", {
                     templateUrl: 'app/mtg/draft/join/join-draft.pg.html',
-                    controller: 'LobbyController',
+                    controller: 'JoinDraftController',
                     pageName: "Join Draft"
                 })
                 .when("/splitBattlebox", {
