@@ -56,7 +56,7 @@ function isNew(draft, socket) {
     for (var i = 0; i < draft.sockets.length; i++) {
         if (draft.sockets[i] && draft.sockets[i].name === socket.name) {
             //Already in the sockets list, replace
-            draft.sockets[i] = this.socket;
+            draft.sockets[i] = socket;
             isNewSocket = false;
             break;
         }
