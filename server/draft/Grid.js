@@ -13,18 +13,23 @@ var Grid = function(app, socket) {
 function draftRow(index) {
     console.log("Draft Row", this.socket.draftId);
     var draft = this.app.drafts[this.socket.draftId];
-    if (isActivePlayer(draft, this.socket)) {
+    var activePlayer = draft.public.activePlayer;
+    var socketIndex = activePlayer-1;
+    if (isActivePlayer(draft, socketIndex, this.socket.name)) {
         console.log("Good socket", this.socket.name);
         var draftedCards = [];
         for (var i = 0; i < 3; i++) {
-            draftedCards.push(draft.public.currentGrid[index][i]);
+            var card = draft.public.currentGrid[index][i];
+            if (card) {
+                draftedCards.push(card);
+            }
             draft.public.currentGrid[index][i] = '';
         }
-        incrementTurn(draft);
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
+        incrementTurn(draft);
         this.app.broadcast('drafts', this.app.publicDrafts);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[index]);
+        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -34,18 +39,23 @@ function draftRow(index) {
 function draftCol(index) {
     console.log("Draft Col", this.socket.draftId);
     var draft = this.app.drafts[this.socket.draftId];
-    if (isActivePlayer(draft, this.socket)) {
+    var activePlayer = draft.public.activePlayer;
+    var socketIndex = activePlayer-1;
+    if (isActivePlayer(draft, socketIndex, this.socket.name)) {
         console.log("Good socket", this.socket.name);
         var draftedCards = [];
         for (var i = 0; i < 3; i++) {
-            draftedCards.push(draft.public.currentGrid[i][index]);
-            draft.public.currentGrid[i][index] = '';
+            var card = draft.public.currentGrid[i][index];
+            if (card) {
+                draftedCards.push(card);
+                draft.public.currentGrid[i][index] = '';
+            }
         }
-        incrementTurn(draft);
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
+        incrementTurn(draft);
         this.app.broadcast('drafts', this.app.publicDrafts);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[index]);
+        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -55,13 +65,11 @@ function draftCol(index) {
 /**
  * Check if the socket is the active player
  */
-function isActivePlayer(draft, socket) {
+function isActivePlayer(draft, socketIndex, socketName) {
     var result = false;
-    var activePlayer = draft.public.activePlayer;
-    var socketIndex = activePlayer-1;
     if (draft.sockets.length > socketIndex
             && draft.sockets[socketIndex]
-            && draft.sockets[socketIndex].name === socket.name) {
+            && draft.sockets[socketIndex].name === socketName) {
         result = true;
     }
     return result;
@@ -75,6 +83,7 @@ function draftCards(draft, draftedCards) {
     var index = activePlayer-1;
     draft.public.playerPools[index] = draft.public.playerPools[index].concat(draftedCards);
     draft.secret[index].deck = draft.secret[index].deck.concat(draftedCards);
+    console.log("Deck", draft.secret[index].deck);
 }
 
 function incrementTurn(draft) {

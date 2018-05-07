@@ -7,6 +7,8 @@ angular.module('mtg')
                 var self = this;
                 self.cards = {};
                 self.observers = [];
+                self.cardsLoaded = [];
+                self.cardBack = "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
                 
                 socket.on('cardsUpdate', function(card) {
                     self.cards[card.name] = card;
@@ -49,12 +51,45 @@ angular.module('mtg')
                 self.getCardImage = function(cardName, placeholder) {
                     var card = self.cards[cardName];
                     if (card && card.image_uris) {
-                        return card.image_uris['normal'];
+                        return self.loadCardImage(card);
                     } else if (card && card.card_faces && !placeholder) {
-                        return card.card_faces[0].image_uris['normal'];
+                        return self.loadCardFace(card);
                     } else {
-                        return placeholder ? placeholder : "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
+                        return placeholder ? placeholder : self.cardBack;
                     }
+                }
+                
+                self.loadCardImage = function(card) {
+                    var source = card.image_uris['normal'];
+                    return self.loadCardSrc(card, source);
+                }
+                
+                self.loadCardFace = function(card) {
+                    var source = card.card_faces[0].image_uris['normal'];
+                    return self.loadCardSrc(card, source);
+                }
+                
+                self.loadCardSrc = function(card, source) {
+                    var downloadingImage = new Image();
+                    var cached = false;
+                    if (!self.cardsLoaded[card.name]) {
+                        self.cardsLoaded[card.name] = card.name;
+                        downloadingImage.onload = function() {
+                            notifyObservers();
+                        };
+                    }
+                    downloadingImage.src = source;
+                    cached = downloadingImage.complete;
+                    var imageSrc = downloadingImage.src;
+                    if (cached) {
+                        // downloadingImage.onload = function() {};
+                        //cached in browser
+                        // return downloadingImage.src;
+                    } else {
+                        //return placeholder image and load asynchronously
+                        imageSrc = self.cardBack;
+                    }
+                    return imageSrc;
                 }
                 
                 socket.emit('getAllCards');
