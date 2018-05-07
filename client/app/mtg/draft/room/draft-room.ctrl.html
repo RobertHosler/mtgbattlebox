@@ -11,6 +11,10 @@
             <div>Turn: {{publicDraft.turn}}</div>
             <div>Active Player: {{publicDraft.activePlayer}}</div>
             <div>Draft Complete: {{publicDraft.complete}}</div>
+            <div ng-hide="publicDraft.type.name != 'Grid'">
+                <div ng-hide="publicDraft.complete">Current Grid: {{publicDraft.gridNumber}}</div>
+                <div>Number of Grids: {{publicDraft.numGrids}}</div>
+            </div>
             <br>
             <div>Players</div>
             <div ng-repeat="player in publicDraft.players">
