@@ -1,9 +1,57 @@
 <div>
     <div>
-        <h3>Deck</h3>
+        <h3>Deck: {{secretDraft.deck.length}} Cards</h3>
     </div>
-    <div ng-repeat="card in secretDraft.deck" class="deckRow">
-        <card-text id="$index + 'deckModal'" card="card" cardservice="cardService"></card-text>
+    <!--<div ng-repeat="card in secretDraft.deck" class="deckRow">-->
+    <!--    <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana>-->
+    <!--</div>-->
+    <div class="color-column">
+        <div><strong>White</strong></div>
+        <div ng-repeat="card in sortedDeck.white" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Blue</strong></div>
+        <div ng-repeat="card in sortedDeck.blue" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Black</strong></div>
+        <div ng-repeat="card in sortedDeck.black" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Red</strong></div>
+        <div ng-repeat="card in sortedDeck.red" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Green</strong></div>
+        <div ng-repeat="card in sortedDeck.green" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Multi</strong></div>
+        <div ng-repeat="card in sortedDeck.multi" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Colorless</strong></div>
+        <div ng-repeat="card in sortedDeck.colorless" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Land</strong></div>
+        <div ng-repeat="card in sortedDeck.land" class="deckRow">
+            <card-mana id="$index + 'deckModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToSideboard(card);">SB</div>
+        </div>
     </div>
 </div>
 
@@ -11,9 +59,57 @@
 
 <div>
     <div>
-        <h3>Sideboard</h3>
+        <h3>Sideboard: {{secretDraft.sideboard.length}} Cards</h3>
     </div>
-    <div ng-repeat="card in secretDraft.sideboard" class="sideRow">
-        <card-text id="$index + 'sideModal'" card="card" cardservice="cardService"></card-text>
+    <!--<div ng-repeat="card in secretDraft.sideboard" class="sideRow">-->
+    <!--    <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana>-->
+    <!--</div>-->
+    <div class="color-column">
+        <div><strong>White</strong></div>
+        <div ng-repeat="card in sortedSideboard.white" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Blue</strong></div>
+        <div ng-repeat="card in sortedSideboard.blue" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Black</strong></div>
+        <div ng-repeat="card in sortedSideboard.black" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Red</strong></div>
+        <div ng-repeat="card in sortedSideboard.red" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Green</strong></div>
+        <div ng-repeat="card in sortedSideboard.green" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Multi</strong></div>
+        <div ng-repeat="card in sortedSideboard.multi" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Colorless</strong></div>
+        <div ng-repeat="card in sortedSideboard.colorless" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
+    </div>
+    <div class="color-column">
+        <div><strong>Land</strong></div>
+        <div ng-repeat="card in sortedSideboard.land" class="deckRow">
+            <card-mana id="$index + 'sideModal'" card="card" cardservice="cardService"></card-mana> <span ng-click="moveToDeck(card);">DECK</div>
+        </div>
     </div>
 </div>

@@ -25,6 +25,10 @@ function draftRow(index) {
             }
             draft.public.currentGrid[index][i] = '';
         }
+        if (draftedCards.length === 0) {
+            console.log("Can't draft zero cards");
+            return;//don't let someone draft zero cards
+        }
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
         incrementTurn(draft);
@@ -50,6 +54,9 @@ function draftCol(index) {
                 draftedCards.push(card);
                 draft.public.currentGrid[i][index] = '';
             }
+        }
+        if (draftedCards.length === 0) {
+            return;//don't let someone draft zero cards
         }
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);

@@ -38,30 +38,30 @@ DraftCreator.draftTypes = [
 function joinDraft(playerName, draftId) {
     var draft = this.app.drafts[draftId];
     //Add the player to the list and emit their secret part of the draft
-    var isNewSocket = isNew(draft, this.socket);
-    if (isNewSocket) {
+    var socketIndex = isNew(draft, this.socket);
+    if (socketIndex >= 0) {
+        console.log("RejoinDraft", playerName, draftId);
+        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]); //notify individual player of secret draft update
+    } else {
         console.log("JoinDraft", playerName, draftId);
         draft.public.players.push(this.socket.name);
         draft.sockets.push(this.socket);
-    } else {
-        console.log("RejoinDraft", playerName, draftId);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[1]); //notify individual player of secret draft update
     }
     this.socket.draftId = draftId;
     this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
 
 function isNew(draft, socket) {
-    var isNewSocket = true;
+    var socketIndex = -1;
     for (var i = 0; i < draft.sockets.length; i++) {
         if (draft.sockets[i] && draft.sockets[i].name === socket.name) {
             //Already in the sockets list, replace
             draft.sockets[i] = socket;
-            isNewSocket = false;
+            socketIndex = i;
             break;
         }
     }
-    return isNewSocket;
+    return socketIndex;
 }
 
 function createDraft(playerName, draftType, cube) {

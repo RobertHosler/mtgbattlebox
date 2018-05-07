@@ -16,6 +16,7 @@ router.use(function(req, res) {
 var BattleboxSplitter = require('battlebox/Splitter');
 var Grid = require('draft/Grid');
 var DraftCreator = require('draft/DraftCreator');
+var Draft = require('draft/Draft');
 var MtgFile = require('mtg/FileReader');
 var Cards = require('mtg/Cards');
 
@@ -51,7 +52,8 @@ io.sockets.on('connection', function(socket) {
         splitter: new BattleboxSplitter(app, socket),
         grid: new Grid(app, socket),
         draftCreator: new DraftCreator(app, socket),
-        cards: new Cards(app, socket)
+        cards: new Cards(app, socket),
+        draft: new Draft(app, socket)
     };
 
     for (var category in eventHandlers) {

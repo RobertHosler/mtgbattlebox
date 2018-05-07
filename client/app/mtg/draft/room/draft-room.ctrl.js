@@ -32,6 +32,8 @@ angular
             function init() {
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
                 $scope.secretDraft = DraftService.secretDraft;
+                $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
+                $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
                 if ($scope.publicDraft && $scope.publicDraft.type.name === "Grid") {
                     $scope.grid = $scope.publicDraft.currentGrid;
                     CardService.getCards($scope.grid[0]);
@@ -56,6 +58,14 @@ angular
             
             $scope.draftRow = function(index) {
                 socket.emit('draftRow', index);
+            };
+            
+            $scope.moveToSideboard = function(cardName) {
+                socket.emit('moveToSideboard', cardName);
+            };
+            
+            $scope.moveToDeck = function(cardName) {
+                socket.emit('moveToDeck', cardName);
             };
             
         }

@@ -128,3 +128,15 @@ body {
     /*Margin to account for the fixed bottom nav*/
     margin-bottom: 50px;
 }
+
+.manaSymbol {
+	height: 10px;
+	/*margin-left: 2px;*/
+}
+
+.color-column {
+    width: 19%;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 20px;
+}

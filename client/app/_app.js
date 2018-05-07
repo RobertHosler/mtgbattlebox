@@ -15,3 +15,11 @@ angular
         }
     ]
 );
+
+
+angular
+.module('myApp')
+.filter('trustedhtml',
+    function($sce) {
+        return $sce.trustAsHtml; 
+});
