@@ -77,6 +77,8 @@ body {
     max-width: 200px;
     /* height: 204px; */
     width: 100%;
+    /* height: 100px; */
+    /* position: relative; */
 }
 @media only screen and (min-width: 992px) {
     .gridRow .gridCol {
@@ -84,8 +86,11 @@ body {
         min-width: 200px;
     }
 }
+.gridRow {min-height: 50px;}
 .gridRow .gridCol {
     padding: 0px;
+    max-height: 175px;
+    overflow: hidden;
 }
 @media only screen and (min-width: 700px) {
     .gridRow .gridCol {
@@ -96,6 +101,13 @@ body {
 }
 .center {
     text-align: center;
+}
+@media only screen and (max-width: 700px) {
+    .gridRow .row-button {
+        transform: rotate(-90deg);
+        margin-left: -15px;
+        margin-top: 20px;
+    }
 }
 
 /*.card-hover .one + .two {*/
@@ -130,8 +142,8 @@ body {
 }
 
 .manaSymbol {
-	height: 10px;
-	/*margin-left: 2px;*/
+	height: 12px;
+	margin-right: 5px;
 }
 
 .color-column {
@@ -139,4 +151,49 @@ body {
     display: inline-block;
     vertical-align: top;
     margin-bottom: 20px;
+    overflow: hidden;
+}
+@media only screen and (max-width: 1200px) {
+    .color-column {
+        width: 24%;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .color-column {
+        width: 49%;
+    }
+}
+
+.card-mana-link {
+    padding: 5px;
+    display: inline-block;
+    position: inherit;
+}   
+.card-mana-link:focus,
+.card-mana-link:hover {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+    text-decoration: none;
+    position: absolute;
+    z-index: 100;
+}
+
+.draft-card-list {
+    min-height: 150px;
+    background: #fff5bb;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+}
+.draft-card-list h3 {
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+
+.deckRow {
+    height: 30px;
+    overflow: visible;
 }

@@ -6,7 +6,9 @@ angular.module('mtg')
             scope: {
               id: '=id',
               card: '=card',
-              cardService: '=cardservice'
+              cardService: '=cardservice',
+              action: '=action',
+              actionLabel: '=actionlabel'
             },
             templateUrl: 'app/mtg/card/card-mana.dir.html'
           };

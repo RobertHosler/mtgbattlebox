@@ -167,16 +167,20 @@ angular.module('mtg')
         			};
             	    cardList.forEach(function(cardName) {
                         var card = self.cards[cardName];
-            	        if (card.colors.length > 1) {
-            	            //multicolor
-    	                    result.multi.push(card);
-            	        } else if (card.colors.length === 0) {
+                        if (!card) {
+                            console.log("No card found:", cardName);
+                            return;
+                        }
+                        if (!card.colors || card.colors.length === 0) {
             	            //colorless or land
             	            if (card.type_line.includes("Land")) {
         	                    result.land.push(card);
             	            } else {
         	                    result.colorless.push(card);
             	            }
+                        } else if (card.colors.length > 1) {
+            	            //multicolor
+    	                    result.multi.push(card);
             	        } else {
             	            //determine color
             	            switch(card.colors[0]) {

@@ -13,6 +13,9 @@ var Grid = function(app, socket) {
 function draftRow(index) {
     console.log("Draft Row", this.socket.draftId);
     var draft = this.app.drafts[this.socket.draftId];
+    if (!draft) {
+        return;
+    }
     var activePlayer = draft.public.activePlayer;
     var socketIndex = activePlayer-1;
     if (isActivePlayer(draft, socketIndex, this.socket.name)) {
@@ -43,6 +46,9 @@ function draftRow(index) {
 function draftCol(index) {
     console.log("Draft Col", this.socket.draftId);
     var draft = this.app.drafts[this.socket.draftId];
+    if (!draft) {
+        return;
+    }
     var activePlayer = draft.public.activePlayer;
     var socketIndex = activePlayer-1;
     if (isActivePlayer(draft, socketIndex, this.socket.name)) {

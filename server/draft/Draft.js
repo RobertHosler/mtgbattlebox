@@ -13,6 +13,9 @@ var Draft = function(app, socket) {
 function moveToDeck(cardName) {
     console.log("Moving card to deck", cardName);
     var draft = this.app.drafts[this.socket.draftId];
+    if (!draft) {
+        return;
+    }
     var activePlayer = draft.public.activePlayer;
     var socketIndex = -1;
     //find index of socket
@@ -39,6 +42,9 @@ function moveToDeck(cardName) {
 function moveToSideboard(cardName) {
     console.log("Moving card to sideboard", cardName);
     var draft = this.app.drafts[this.socket.draftId];
+    if (!draft) {
+        return;
+    }
     var activePlayer = draft.public.activePlayer;
     var socketIndex = -1;
     //find index of socket

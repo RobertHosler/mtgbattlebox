@@ -9,6 +9,11 @@ angular
                 //   templateUrl : 'partials/home.html',
                 //   controller : LobbyController
                 // })
+                .when("/login", {
+                    templateUrl: 'app/login/login.ctrl.html',
+                    controller: 'LoginController',
+                    pageName: "Login"
+                })
                 .when("/chat", {
                     templateUrl: 'app/chat/chat.pg.html',
                     controller: 'ChatController',
@@ -30,7 +35,7 @@ angular
                     pageName: "Join Draft"
                 })
                 .when("/splitBattlebox", {
-                    templateUrl: 'app/mtg/battlebox/splitter/splitBattlebox.html',
+                    templateUrl: 'app/mtg/battlebox/splitter/battlebox-splitter.ctrl.html',
                     controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })

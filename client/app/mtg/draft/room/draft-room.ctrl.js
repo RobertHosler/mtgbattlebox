@@ -2,8 +2,8 @@
 angular
     .module('draft')
     .controller('DraftCtrl',
-        ['$scope', 'UserService', 'DraftService', 'socket', 'CardService', '$location',
-        function($scope, UserService, DraftService, socket, CardService, $location) {
+        ['$scope', 'UserService', 'DraftService', 'socket', 'CardService', '$location', '$window',
+        function($scope, UserService, DraftService, socket, CardService, $location, $window) {
             
             if (!DraftService.draftId) {
                 console.log("No Draft Id");
@@ -66,6 +66,32 @@ angular
             
             $scope.moveToDeck = function(cardName) {
                 socket.emit('moveToDeck', cardName);
+            };
+            
+            $window.allowDrop = function(ev) {
+                ev.preventDefault();
+            };
+            
+            $window.drag = function(ev) {
+                // var cardName = ev.target.alt;
+                var cardName = ev.target.text;
+                if (cardName) {
+                    ev.dataTransfer.setData("text", cardName);
+                } else {
+                    ev.dataTransfer.setData("text", "");
+                }
+            };
+            
+            $window.dropInSideboard = function(ev) {
+                ev.preventDefault();
+                var cardName = ev.dataTransfer.getData("text");
+                $scope.moveToSideboard(cardName);
+            };
+            
+            $window.dropInDeck = function(ev) {
+                ev.preventDefault();
+                var cardName = ev.dataTransfer.getData("text");
+                $scope.moveToDeck(cardName);
             };
             
         }
