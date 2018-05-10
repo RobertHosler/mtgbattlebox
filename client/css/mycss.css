@@ -187,6 +187,7 @@ body {
     border-style: solid;
     border-width: 1px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 .draft-card-list h3 {
     margin-top: 0px;

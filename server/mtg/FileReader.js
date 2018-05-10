@@ -50,12 +50,27 @@ var saveAllCards = function(allCards) {
   fs.writeFileSync(allCardsPath, allCardsFile);
 }
 
+var saveDeck = function(deckPath, draftSecret) {
+  var deckList = "";
+  if (draftSecret) {
+    return;//TODO: handle failure
+  }
+  draftSecret.deck.forEach(function(element) {
+    deckList += "1 " + element + "\n";
+  });
+  draftSecret.sideboard.forEach(function(element) {
+    deckList += "SB: 1 " + element + "\n";
+  });
+  fs.writeFileSync("client" + deckPath, deckList);
+}
+
 var MtgFile = {
   battleboxLands: battleboxLands,
   battleboxes: getAllBattleboxes(),
   cubes: getAllCubes(),
   allCards: getAllCards(),
-  saveAllCards: saveAllCards
+  saveAllCards: saveAllCards,
+  saveDeck: saveDeck
 }
 
 module.exports = MtgFile;

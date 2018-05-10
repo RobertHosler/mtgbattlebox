@@ -1,4 +1,5 @@
 /*global angular*/
+/*global $*/
 angular
     .module('draft')
     .controller('DraftCtrl',
@@ -8,6 +9,7 @@ angular
             if (!DraftService.draftId) {
                 console.log("No Draft Id");
                 $location.path('/createDraft');
+                return;
             }
             
             function serviceUpdate() {
@@ -22,6 +24,10 @@ angular
             
             $scope.draftId = DraftService.draftId;
             $scope.cubes = DraftService.cubes;
+            
+    		var dt = new Date();
+    		var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+	        var fileName = "/decks/" + date + "_" + DraftService.draftId + "_" + UserService.name + ".txt";
             
             init();
             
@@ -93,6 +99,21 @@ angular
                 var cardName = ev.dataTransfer.getData("text");
                 $scope.moveToDeck(cardName);
             };
+            
+            $scope.saveDeck = function() {
+                socket.emit('saveDeck', fileName);
+            };
+
+            socket.on('deckSaved', function() {
+				var a = document.createElement('A');
+				a.href = fileName; //full path
+				a.download = fileName.substr(fileName.lastIndexOf('/') + 1); //file name
+				a.target = "_blank"
+				// a.download = fileName.substr(fileName.lastIndexOf('/') + 1); //file name
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+            });
             
         }
     ]);

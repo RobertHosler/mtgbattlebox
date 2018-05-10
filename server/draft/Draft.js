@@ -8,75 +8,72 @@ var Draft = function(app, socket) {
         moveToDeck: moveToDeck.bind(this),
         moveToSideboard: moveToSideboard.bind(this)
     };
+    
+    this.getDraftSecret = function() {
+        var draft = this.app.drafts[this.socket.draftId];
+        if (!draft) {
+            return;
+        }
+        var activePlayer = draft.public.activePlayer;
+        var socketIndex = -1;
+        //find index of socket
+        for (var i = 0; i !== draft.sockets.length; i++) {
+            if (draft.sockets[i].name === this.socket.name) {
+                socketIndex = i;
+                break;
+            }
+        }
+        if (socketIndex < 0) {
+            return;//didn't find this socket
+        }
+        var secret = draft.secret[socketIndex];
+        return secret;
+    };
+    
 };
+
+
 
 function moveToDeck(cardName) {
     console.log("Moving card to deck", cardName);
     var draft = this.app.drafts[this.socket.draftId];
-    if (!draft) {
+    var secret = this.getDraftSecret();
+    if (!cardName || !secret) {
         return;
     }
-    var activePlayer = draft.public.activePlayer;
-    var socketIndex = -1;
-    //find index of socket
-    for (var i = 0; i !== draft.sockets.length; i++) {
-        if (draft.sockets[i].name === this.socket.name) {
-            socketIndex = i;
-            break;
-        }
-    }
-    if (socketIndex < 0) {
-        return;//didn't find this socket
-    }
-    var secret = draft.secret[socketIndex];
+    var foundInSideboard = false;
     for (var i = 0; i !== secret.sideboard.length; i++) {
         if (secret.sideboard[i] === cardName) {
             secret.sideboard.splice(i, 1);//remove from sideboard
+            foundInSideboard = true;
             break;
         }
     }
-    secret.deck.push(cardName);
-    this.socket.emit('draftUpdate', draft.public.id, secret);
+    if (foundInSideboard) {
+        secret.deck.push(cardName);
+        this.socket.emit('draftUpdate', draft.public.id, secret);
+    }
 }
 
 function moveToSideboard(cardName) {
     console.log("Moving card to sideboard", cardName);
     var draft = this.app.drafts[this.socket.draftId];
-    if (!draft) {
+    var secret = this.getDraftSecret();
+    if (!cardName || !secret) {
         return;
     }
-    var activePlayer = draft.public.activePlayer;
-    var socketIndex = -1;
-    //find index of socket
-    for (var i = 0; i !== draft.sockets.length; i++) {
-        if (draft.sockets[i].name === this.socket.name) {
-            socketIndex = i;
-            break;
-        }
-    }
-    if (socketIndex < 0) {
-        return;//didn't find this socket
-    }
-    var secret = draft.secret[socketIndex];
+    var foundInDeck = false;
     for (var i = 0; i !== secret.deck.length; i++) {
         if (secret.deck[i] === cardName) {
             secret.deck.splice(i, 1);//remove from deck
+            foundInDeck = true;
             break;
         }
     }
-    secret.sideboard.push(cardName);
-    this.socket.emit('draftUpdate', draft.public.id, secret);
-    
-    // for (var i = 0; i !== secret.deck.length; i++) {
-    //     if (secret.deck[i] === cardName) {
-    //         //remove from deck
-    //         foundInDeck = true;
-    //         break;
-    //     }
-    // }
-    // if (foundInDeck) {
-        // secret.sideboard.push(cardName);
-    // }
+    if (foundInDeck) {
+        secret.sideboard.push(cardName);
+        this.socket.emit('draftUpdate', draft.public.id, secret);
+    }
 }
 
 module.exports = Draft;

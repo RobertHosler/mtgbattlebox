@@ -83,6 +83,13 @@ io.sockets.on('connection', function(socket) {
         socket.emit('battleboxes', app.battlebox.battleboxes);
     });
     
+    socket.on('saveDeck', function(filePath) {
+        var secretDraft = eventHandlers.draft.getDraftSecret();
+        // console.log("Saving deck", secretDraft);
+        MtgFile.saveDeck(filePath, secretDraft);
+        socket.emit('deckSaved');
+    });
+    
     socket.on('setName', function(name) {
         socket.name = name;
     });

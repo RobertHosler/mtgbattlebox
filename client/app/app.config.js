@@ -39,6 +39,13 @@ angular
                     controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })
+                .when("/decks/:name", {
+                    
+                    templateUrl: '',
+                    redirectTo: function(obj,path,search) {
+                        window.location.href=path;
+                    }
+                })
                 .otherwise({ redirectTo: '/createDraft' });
 
             // use the HTML5 History API

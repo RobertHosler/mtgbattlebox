@@ -94,6 +94,9 @@ angular.module('mtg')
                 
                 self.getCardMana = function(cardName) {
                     var card = self.cards[cardName];
+                    if (card.card_faces) {
+                        card = card.card_faces[0];
+                    }
                     if (card && card.mana_cost) {
                         return self.symbolImageList(card.mana_cost);
                     } else if (card && card.type_line.includes("Land")) {
@@ -170,10 +173,12 @@ angular.module('mtg')
                         if (!card) {
                             console.log("No card found:", cardName);
                             return;
+                        } else if (card.card_faces) {
+                            card = card.card_faces[0];
                         }
                         if (!card.colors || card.colors.length === 0) {
             	            //colorless or land
-            	            if (card.type_line.includes("Land")) {
+            	            if (card.type_line && card.type_line.includes("Land")) {
         	                    result.land.push(card);
             	            } else {
         	                    result.colorless.push(card);
