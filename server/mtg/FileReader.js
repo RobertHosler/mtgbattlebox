@@ -52,16 +52,18 @@ var saveAllCards = function(allCards) {
 
 var saveDeck = function(deckPath, draftSecret) {
   var deckList = "";
-  if (draftSecret) {
+  if (!draftSecret) {
     return;//TODO: handle failure
   }
   draftSecret.deck.forEach(function(element) {
-    deckList += "1 " + element + "\n";
+    deckList += "1 " + element + "\r\n";
   });
   draftSecret.sideboard.forEach(function(element) {
-    deckList += "SB: 1 " + element + "\n";
+    deckList += "SB: 1 " + element + "\r\n";
   });
-  fs.writeFileSync("client" + deckPath, deckList);
+  var savePath = "client" + deckPath;
+  console.log("Save deck to path", savePath, deckList);
+  fs.writeFileSync(savePath, deckList);
 }
 
 var MtgFile = {

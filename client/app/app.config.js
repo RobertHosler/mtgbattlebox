@@ -11,40 +11,33 @@ angular
                 // })
                 .when("/login", {
                     templateUrl: 'app/login/login.ctrl.html',
-                    controller: 'LoginController',
+                    // controller: 'LoginController',
                     pageName: "Login"
                 })
                 .when("/chat", {
                     templateUrl: 'app/chat/chat.pg.html',
-                    controller: 'ChatController',
+                    // controller: 'ChatController',
                     pageName: "Chat"
                 })
                 .when("/createDraft", {
                     templateUrl: 'app/mtg/draft/create/create-draft.pg.html',
-                    controller: 'CreateDraftController',
+                    // controller: 'CreateDraftController',
                     pageName: "Create Draft"
                 })
                 .when("/draftRoom", {
                     templateUrl: 'app/mtg/draft/room/draft-room.pg.html',
-                    controller: 'DraftCtrl',
+                    // controller: 'DraftCtrl',
                     pageName: "Draft Room"
                 })
                 .when("/joinDraft", {
                     templateUrl: 'app/mtg/draft/join/join-draft.pg.html',
-                    controller: 'JoinDraftController',
+                    // controller: 'JoinDraftController',
                     pageName: "Join Draft"
                 })
                 .when("/splitBattlebox", {
                     templateUrl: 'app/mtg/battlebox/splitter/battlebox-splitter.ctrl.html',
-                    controller: 'BattleboxSplitController',
+                    // controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
-                })
-                .when("/decks/:name", {
-                    
-                    templateUrl: '',
-                    redirectTo: function(obj,path,search) {
-                        window.location.href=path;
-                    }
                 })
                 .otherwise({ redirectTo: '/createDraft' });
 
