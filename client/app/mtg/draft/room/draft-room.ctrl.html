@@ -1,36 +1,51 @@
 <div ng-controller="DraftCtrl">
     <div class="row">
-        <div class="col-xs-12">
-
-            <div>DraftRoom</div>
-            <div>DraftType: {{publicDraft.type.name}}</div>
+        <div class="col-xs-12 col-sm-3">
+            <!--<div>DraftId: {{draftService.draftId}}</div>-->
+            <!--<div>Turn: {{publicDraft.turn}}</div>-->
+            <!--<div>Draft Complete: {{publicDraft.complete}}</div>-->
+            <div ng-hide="publicDraft.type.name != 'Grid'">
+                <div ng-hide="publicDraft.complete"><strong>Current Grid:</strong> <span class="label label-primary">{{publicDraft.gridNumber}}</span> of <span class="label label-primary">{{publicDraft.numGrids}}</span></div>
+            </div>
+            <div><strong>Active Player:</strong> <span class="label label-success">{{publicDraft.players[publicDraft.activePlayer-1]}}</span></div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div><strong>Players</strong></div>
+            <div ng-repeat="player in publicDraft.players">
+                - {{player}}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div><strong>Draft Type:</strong> {{publicDraft.type.name}}</div>
             <div ng-repeat="descriptionLine in publicDraft.type.description">
                 {{descriptionLine}}
             </div>
-            <div>DraftId: {{draftService.draftId}}</div>
-            <div>Turn: {{publicDraft.turn}}</div>
-            <div>Active Player: {{publicDraft.activePlayer}}</div>
-            <div>Draft Complete: {{publicDraft.complete}}</div>
-            <div ng-hide="publicDraft.type.name != 'Grid'">
-                <div ng-hide="publicDraft.complete">Current Grid: {{publicDraft.gridNumber}}</div>
-                <div>Number of Grids: {{publicDraft.numGrids}}</div>
-            </div>
-            <br>
-            <div>Players</div>
-            <div ng-repeat="player in publicDraft.players">
-                {{player}}
-            </div>
-            <br>
-            
+        </div>
+    </div>
+    
+    <br>
+    
+    <div class="row">
+        <div class="col-xs-12">
             <div ng-hide="!publicDraft.complete">
                 <div class="btn btn-primary" ng-click="saveDeck();">Save Deck</div>
             </div>
+        </div>
+    </div>
             
+    <div class="row">
+        <div class="col-xs-12">
             <div ng-include="getDraftInclude()"></div>
+        </div>
+    </div>
             
             <br>
             
+    <div class="row">
+        <div class="col-xs-12">
             <div ng-include="'/app/mtg/draft/room/deck.html'"></div>
+        </div>
+    </div>
             
             <br>
             

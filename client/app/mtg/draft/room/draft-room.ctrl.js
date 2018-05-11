@@ -38,8 +38,11 @@ angular
             function init() {
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
                 $scope.secretDraft = DraftService.secretDraft;
+                var opponentIndex = $scope.secretDraft.index === 0 ? 1 : 0;
+                $scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
                 $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
                 $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
+                $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
                 if ($scope.publicDraft && $scope.publicDraft.type.name === "Grid") {
                     $scope.grid = $scope.publicDraft.currentGrid;
                     CardService.getCards($scope.grid[0]);
@@ -47,6 +50,12 @@ angular
                     CardService.getCards($scope.grid[2]);
                 }
             }
+
+			// Unregister
+			$scope.$on('$destroy', function () {
+				DraftService.disconnect(serviceUpdate);
+				CardService.disconnect(serviceUpdate);
+			});
             
             $scope.getDraftInclude = function() {
                 if (!$scope.publicDraft) {

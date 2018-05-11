@@ -155,12 +155,12 @@ body {
 }
 @media only screen and (max-width: 1200px) {
     .color-column {
-        width: 24%;
+        width: 32%;
     }
 }
 @media only screen and (max-width: 700px) {
     .color-column {
-        width: 49%;
+        width: 100%;
     }
 }
 
@@ -174,8 +174,8 @@ body {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
     text-decoration: none;
-    position: absolute;
-    z-index: 100;
+    /* position: absolute; */
+    /* z-index: 100; */
 }
 
 .draft-card-list {
@@ -195,6 +195,49 @@ body {
 }
 
 .deckRow {
-    height: 30px;
+    min-height: 30px;
     overflow: visible;
+}
+
+.card-modal .modal-dialog {
+    text-align: center;
+}
+
+.curve-wrapper {
+    /* width: 100%; */
+    display: inline-block;
+    height: 50px;
+}
+
+.curve-section {
+    height: 100%;
+    margin-right: 5px;
+    float: left;
+    width: 15px;
+    text-align: center;
+}
+
+.curve-bar {
+    position: relative;
+    height: 30px;
+}
+
+.curve-color {
+    background: #5cb85c;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 0%;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    color: black;
+    display: flex;
+    font-weight: bold;
+    text-align: center;
+}
+
+.curve-cmc {
+    align-self: flex-end;
+    width: 100%;
 }

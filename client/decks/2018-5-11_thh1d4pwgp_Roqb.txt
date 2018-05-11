@@ -1,0 +1,53 @@
+1 Izzet Guildgate
+1 Leonin Bola
+1 Elgaud Shieldmate
+1 Compulsive Research
+1 Borderland Marauder
+1 Nyxborn Shieldmate
+1 Rancor
+1 Skinbrand Goblin
+1 Driver of the Dead
+1 Ghitu Slinger
+1 Pacifism
+1 Gush
+1 Inner-Flame Acolyte
+1 Sparksmith
+1 Pestermite
+1 Exclude
+1 Vines of Vastwood
+1 Nessian Asp
+1 Rakdos Guildgate
+1 Foresee
+1 Hunger of the Howlpack
+1 Phyrexian Rager
+1 Faith's Fetters
+1 Loyal Cathar
+1 Avacyn's Pilgrim
+1 Mind Stone
+1 Adventuring Gear
+1 Lightning Blast
+1 Splatter Thug
+1 Master of Diversion
+1 Evolving Wilds
+1 Forbidden Alchemy
+1 Qasali Pridemage
+1 Kor Hookmaster
+1 Slaughterhorn
+1 Vapor Snag
+1 Centaur Healer
+1 Vampire Interloper
+1 Crystallization
+1 Harsh Sustenance
+1 Porcelain Legionnaire
+1 Temporal Spring
+1 Temporal Isolation
+1 Liliana's Specter
+1 Spined Thopter
+1 Garruk's Companion
+1 Stampeding Elk Herd
+1 Hungry Spriggan
+1 Izzet Boilerworks
+SB: 1 Rakdos Guildgate
+SB: 1 Golgari Signet
+SB: 1 Goblin Electromancer
+SB: 1 Haunted Fengraf

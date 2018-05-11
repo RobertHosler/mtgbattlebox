@@ -6,6 +6,7 @@ var Cards = function(app, socket) {
     this.handler = {
         // use the bind function to access this.app and this.socket in events
         getFullCard: getFullCard.bind(this),
+        getFullCard: getFullCards.bind(this),
         getAllCards: getAllCards.bind(this)
     };
 };
@@ -19,11 +20,28 @@ function getAllCards() {
     // this.app.broadcast('drafts', this.app.publicDrafts);
 }
 
+function getFullCards(cardList) {
+    var returnList = [];
+    cardList.forEach(function(cardName) {
+        pullFullCard(cardName);
+    });
+    this.socket.emit('allCards', this.app.allCards);
+}
+
 function getFullCard(cardName) {
+    var fullCard = pullFullCard(cardName, this.app);
+    if (!fullCard) {
+        return;//couldn't pull full card
+    } else {
+        this.socket.emit('cardsUpdate', fullCard);
+    }
+}
+
+function pullFullCard(cardName, app, socket) {
     if (!cardName) {
         return;
     }
-    var fullCard = this.app.allCards[cardName];
+    var fullCard = app.allCards[cardName];
     if (!fullCard) {
         if (!cardsRetrieved[cardName]) {
             cardsRetrieved[cardName] = cardName;
@@ -37,18 +55,16 @@ function getFullCard(cardName) {
                 console.log("Retrieved", result.name, formattedResultTime);
                 // console.log(result);
                 // console.log("Full card retrieved", fullCard);
-                this.app.allCards[cardName] = fullCard; //save the card to allCards
-                this.socket.emit('cardsUpdate', fullCard);
+                app.allCards[cardName] = fullCard; //save the card to allCards
             }, reason => {
               console.log(reason); // Error!
             } );
         } else {
             //full card isn't available, but has already been requested by another socket keep checking for it and then return
-            waitForCard(cardName, this.socket, this.app);
+            fullCard = waitForCard(cardName, socket, app);
         }
-    } else {
-        this.socket.emit('cardsUpdate', fullCard);
     }
+    return fullCard;
 }
 
 //Keep checking every second to see if the card is now populated
@@ -58,7 +74,7 @@ function waitForCard(cardName, socket, app) {
         if (!fullCard) {
             waitForCard(cardName, socket, app);
         } else {
-            socket.emit('cardsUpdate', fullCard);
+            return fullCard;
         }
     }, 500);
 }

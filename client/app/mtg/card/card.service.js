@@ -43,9 +43,10 @@ angular.module('mtg')
                 };
                 
                 self.getCards = function(cardList) {
-                    cardList.forEach(function(cardName) {
-                        self.getCard(cardName);
-                    });
+                    socket.emit('getFullCards', cardList);
+                    // cardList.forEach(function(cardName) {
+                        // self.getCard(cardName);
+                    // });
                 };
                 
                 self.getCardImage = function(cardName, placeholder) {
@@ -166,7 +167,10 @@ angular.module('mtg')
         				green: [],
         				multi: [],
         				land: [],
-        				colorless: []
+        				colorless: [],
+        				curve: [],
+        				mostOnCurve: 0,
+        				noncreatureCount: 0
         			};
             	    cardList.forEach(function(cardName) {
                         var card = self.cards[cardName];
@@ -182,10 +186,12 @@ angular.module('mtg')
         	                    result.land.push(card);
             	            } else {
         	                    result.colorless.push(card);
+				                result.curve[card.cmc] = result.curve[card.cmc] ? result.curve[card.cmc] + 1 : 1;
             	            }
                         } else if (card.colors.length > 1) {
             	            //multicolor
     	                    result.multi.push(card);
+			                result.curve[card.cmc] = result.curve[card.cmc] ? result.curve[card.cmc] + 1 : 1;
             	        } else {
             	            //determine color
             	            switch(card.colors[0]) {
@@ -205,7 +211,15 @@ angular.module('mtg')
             	                    result.green.push(card);
             	                    break;
             	            }
-            	            
+			                result.curve[card.cmc] = result.curve[card.cmc] ? result.curve[card.cmc] + 1 : 1;
+            	        }
+            	        if (card.type_line && !card.type_line.includes("Creature") && !card.type_line.includes("Land")) {
+            	            result.noncreatureCount++;
+            	        }
+            	    });
+            	    result.curve.forEach(function(element) {
+            	        if (element > result.mostOnCurve) {
+            	            result.mostOnCurve = element;
             	        }
             	    });
         			result.white.sort(self.compareCmc);

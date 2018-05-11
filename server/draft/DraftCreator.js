@@ -101,14 +101,16 @@ function createDraft(playerName, draftType, cube) {
 function createBaseDraft(cube, poolSize) {
     var draft = {};
     draft.public = createDraftPublic(cube, poolSize);
-    draft.secret = [createDraftSecret(), createDraftSecret()];
+    draft.secret = [createDraftSecret(0), createDraftSecret(1)];
     return draft;
 }
 
-function createDraftSecret() {
+function createDraftSecret(index) {
     var secret = {};
+    secret.index = index;
     secret.deck = [];
     secret.sideboard = [];
+    secret.opponentPool = [];
     return secret;
 }
 
