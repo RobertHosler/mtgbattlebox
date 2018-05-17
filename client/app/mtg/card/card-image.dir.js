@@ -8,6 +8,7 @@ angular.module('mtg')
               card: '=card',
               cardService: '=cardservice'
             },
+            require: '^hires',
             templateUrl: 'app/mtg/card/card-image.dir.html'
           };
     });

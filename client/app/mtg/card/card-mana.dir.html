@@ -9,7 +9,8 @@
 
 <div id="{{id}}" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
     <div class="modal-dialog">
-        <img ng-show="cardService.cards[card].image_uris" src="{{cardService.getCardImage(card)}}" alt="{{card}}"></img>
+        <img class="card-border" hires="{{cardService.getCardImage(card)}}" alt="{{card}}"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
         <span ng-repeat="cardPart in cardService.cards[card].card_faces">
             <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
         </span>

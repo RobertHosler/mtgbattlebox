@@ -7,15 +7,18 @@ angular.module('mtg')
                 var self = this;
                 self.cards = {};
                 self.observers = [];
-                self.cardsLoaded = [];
+                self.cardImagesLoaded = [];
+                self.cardsRequested = [];
                 self.cardBack = "https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg";
                 
                 socket.on('cardsUpdate', function(card) {
+                    console.log("Card Update", card.name);
                     self.cards[card.name] = card;
                     notifyObservers();
                 });
                 
                 socket.on('allCards', function(allCards) {
+                    console.log("All Cards Update");
                     self.cards = allCards;
                     notifyObservers();
                 });
@@ -36,17 +39,27 @@ angular.module('mtg')
                 
                 self.getCard = function(cardName) {
                     var card = self.cards[cardName];
-                    if (!card || !card.id) {
+                    var cardRequested = self.cardsRequested[cardName];
+                    if (!cardRequested && (!card || !card.id)) {
+                        self.cardsRequested.push(cardName);
                         self.cards[cardName] = {};//placeholder object
                         socket.emit('getFullCard', cardName);
                     }
                 };
                 
                 self.getCards = function(cardList) {
-                    socket.emit('getFullCards', cardList);
-                    // cardList.forEach(function(cardName) {
-                        // self.getCard(cardName);
-                    // });
+                    var cardsToRequest = [];
+                    cardList.forEach(function(cardName) {
+                        var card = self.cards[cardName];
+                        var cardRequested = self.cardsRequested[cardName];
+                        if (!cardRequested && (!card || !card.id)) {
+                            self.cardsRequested.push(cardName);
+                            cardsToRequest.push(cardName);
+                        }
+                    });
+                    if (cardsToRequest.length > 0) {
+                        socket.emit('getFullCards', cardsToRequest);
+                    }
                 };
                 
                 self.getCardImage = function(cardName, placeholder) {
@@ -60,35 +73,42 @@ angular.module('mtg')
                     }
                 }
                 
+                self.getCardBack = function() {
+                    return self.cardBack;
+                }
+                
                 self.loadCardImage = function(card) {
                     var source = card.image_uris['normal'];
-                    return self.loadCardSrc(card, source);
+                    return source;
+                    // return self.loadCardSrc(id, card, source);
                 }
                 
                 self.loadCardFace = function(card) {
                     var source = card.card_faces[0].image_uris['normal'];
-                    return self.loadCardSrc(card, source);
+                    return source;
+                    // return self.loadCardSrc(id, card, source);
                 }
                 
                 self.loadCardSrc = function(card, source) {
                     var downloadingImage = new Image();
                     var cached = false;
-                    if (!self.cardsLoaded[card.name]) {
-                        self.cardsLoaded[card.name] = card.name;
+                    if (!self.cardImagesLoaded[card.name]) {
+                        self.cardImagesLoaded[card.name] = card.name;
                         downloadingImage.onload = function() {
-                            notifyObservers();
+                            // notifyObservers();
+                            downloadingImage.src = source;
                         };
                     }
                     downloadingImage.src = source;
                     cached = downloadingImage.complete;
                     var imageSrc = downloadingImage.src;
-                    if (cached) {
+                    if (!cached) {
+                        //return placeholder image and load asynchronously
+                        imageSrc = self.cardBack;
+                    } else {
                         // downloadingImage.onload = function() {};
                         //cached in browser
                         // return downloadingImage.src;
-                    } else {
-                        //return placeholder image and load asynchronously
-                        imageSrc = self.cardBack;
                     }
                     return imageSrc;
                 }

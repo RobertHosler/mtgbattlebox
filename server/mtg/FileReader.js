@@ -62,7 +62,7 @@ var saveDeck = function(deckPath, draftSecret) {
     deckList += "SB: 1 " + element + "\r\n";
   });
   var savePath = "client" + deckPath;
-  console.log("Save deck to path", savePath, deckList);
+  console.log("Save deck to path", savePath);
   fs.writeFileSync(savePath, deckList);
 }
 

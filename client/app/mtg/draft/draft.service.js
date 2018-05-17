@@ -47,6 +47,16 @@ angular.module('draft')
                     });
                 }
                 
+                socket.on('deckSaved', function(fileName) {
+    				var a = document.createElement('A');
+    				a.href = fileName; //full path
+    				a.download = fileName.substr(fileName.lastIndexOf('/') + 1); //file name
+    				a.target = "_blank"; //target parameter ignores angular redirects
+    				document.body.appendChild(a);
+    				a.click();
+    				document.body.removeChild(a);
+                });
+                
                 socket.emit('getDraftStuff');
                 
             }

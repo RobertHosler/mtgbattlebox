@@ -85,9 +85,9 @@ io.sockets.on('connection', function(socket) {
     
     socket.on('saveDeck', function(filePath) {
         var secretDraft = eventHandlers.draft.getDraftSecret();
-        console.log("Saving deck", secretDraft);
+        console.log("Saving deck", filePath);
         MtgFile.saveDeck(filePath, secretDraft);
-        socket.emit('deckSaved');
+        socket.emit('deckSaved', filePath);
     });
     
     socket.on('setName', function(name) {

@@ -6,28 +6,34 @@ angular
         ['$scope', 'UserService', 'DraftService', 'socket', 'CardService', '$location', '$window',
         function($scope, UserService, DraftService, socket, CardService, $location, $window) {
             
-            if (!DraftService.draftId) {
-                console.log("No Draft Id");
-                $location.path('/createDraft');
-                return;
+            // if (!DraftService.draftId) {
+            //     console.log("No Draft Id");
+            //     $location.path('/createDraft');
+            //     return;
+            // }
+            
+            if (!UserService.name) {
+                $location.path('/login');
             }
             
-            function serviceUpdate() {
+            function draftServiceUpdate() {
                 init();
                 $scope.$apply();
             }
             
-            DraftService.register(serviceUpdate);
-            CardService.register(serviceUpdate);
+            function cardServiceUpdate() {
+                init();
+                $scope.$apply();
+            }
+            
+            DraftService.register(draftServiceUpdate);
+            CardService.register(cardServiceUpdate);
             $scope.draftService = DraftService;
             $scope.cardService = CardService;
             
-            $scope.draftId = DraftService.draftId;
-            $scope.cubes = DraftService.cubes;
-            
     		var dt = new Date();
     		var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-	        var fileName = "/decks/" + date + "_" + DraftService.draftId + "_" + UserService.name + ".txt";
+	        var fileName;
             
             init();
             
@@ -36,25 +42,34 @@ angular
              * to make sure that scope variables are properly set
              */
             function init() {
+                initDraft();
+            }
+            
+            function initDraft() {
+                fileName = "/decks/" + date + "_" + DraftService.draftId + "_" + UserService.name + ".txt";
+                $scope.cubes = DraftService.cubes;
+            	$scope.draftId = DraftService.draftId;
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
                 $scope.secretDraft = DraftService.secretDraft;
-                var opponentIndex = $scope.secretDraft.index === 0 ? 1 : 0;
-                $scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
                 $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
                 $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
-                $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
-                if ($scope.publicDraft && $scope.publicDraft.type.name === "Grid") {
-                    $scope.grid = $scope.publicDraft.currentGrid;
-                    CardService.getCards($scope.grid[0]);
-                    CardService.getCards($scope.grid[1]);
-                    CardService.getCards($scope.grid[2]);
+                if ($scope.publicDraft) {
+                	var opponentIndex = $scope.secretDraft.index === 0 ? 1 : 0;
+                	$scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
+                    $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
+					if ($scope.publicDraft.type.name === "Grid") {
+						$scope.grid = $scope.publicDraft.currentGrid;
+						CardService.getCards($scope.grid[0]);
+						CardService.getCards($scope.grid[1]);
+						CardService.getCards($scope.grid[2]);
+					}
                 }
             }
-
+            
 			// Unregister
 			$scope.$on('$destroy', function () {
-				DraftService.disconnect(serviceUpdate);
-				CardService.disconnect(serviceUpdate);
+				DraftService.disconnect(draftServiceUpdate);
+				CardService.disconnect(cardServiceUpdate);
 			});
             
             $scope.getDraftInclude = function() {
@@ -87,6 +102,10 @@ angular
                 ev.preventDefault();
             };
             
+            $window.drop = function(ev) {
+                ev.preventDefault();
+            };
+            
             $window.drag = function(ev) {
                 // var cardName = ev.target.alt;
                 var cardName = ev.target.text;
@@ -112,16 +131,6 @@ angular
             $scope.saveDeck = function() {
                 socket.emit('saveDeck', fileName);
             };
-
-            socket.on('deckSaved', function() {
-				var a = document.createElement('A');
-				a.href = fileName; //full path
-				a.download = fileName.substr(fileName.lastIndexOf('/') + 1); //file name
-				a.target = "_blank"; //target parameter ignores angular redirects
-				document.body.appendChild(a);
-				a.click();
-				document.body.removeChild(a);
-            });
             
         }
     ]);
