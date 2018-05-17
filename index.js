@@ -106,6 +106,7 @@ process.stdin.resume();//so the program will not close instantly
 function exitHandler(options, err) {
     if (options.cleanup) {
       console.log('clean');
+      broadcast('shutdown');
     }
     if (err) console.log(err.stack);
     if (options.exit) {
