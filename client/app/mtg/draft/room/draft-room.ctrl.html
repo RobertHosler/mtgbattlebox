@@ -8,7 +8,7 @@
                 <div ng-hide="publicDraft.type.name != 'Grid'">
                     <div ng-hide="publicDraft.complete"><strong>Current Grid:</strong> <span class="label label-primary">{{publicDraft.gridNumber}}</span> of <span class="label label-primary">{{publicDraft.numGrids}}</span></div>
                 </div>
-                <div><strong>Active Player:</strong> <span class="label label-success">{{publicDraft.players[publicDraft.activePlayer-1]}}</span></div>
+                <div ng-hide="!publicDraft.activePlayer"><strong>Active Player:</strong> <span class="label label-success">{{publicDraft.players[publicDraft.activePlayer-1]}}</span></div>
             </div>
             <div class="col-xs-12 col-sm-3">
                 <div><strong>Players</strong></div>

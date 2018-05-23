@@ -28,14 +28,19 @@ angular
             
             DraftService.register(draftServiceUpdate);
             CardService.register(cardServiceUpdate);
+            
+			// Unregister
+			$scope.$on('$destroy', function () {
+				DraftService.disconnect(draftServiceUpdate);
+				CardService.disconnect(cardServiceUpdate);
+			});
+            
             $scope.draftService = DraftService;
             $scope.cardService = CardService;
             
     		var dt = new Date();
     		var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
 	        var fileName;
-            
-            init();
             
             /**
              * Function to be run on page load and whenever there is a service update
@@ -51,9 +56,11 @@ angular
             	$scope.draftId = DraftService.draftId;
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
                 $scope.secretDraft = DraftService.secretDraft;
-                $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
-                $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
-                if ($scope.publicDraft) {
+                if ($scope.secretDraft) {
+                    $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
+                    $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
+                }
+                if ($scope.publicDraft && $scope.secretDraft) {
                 	var opponentIndex = $scope.secretDraft.index === 0 ? 1 : 0;
                 	$scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
                     $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
@@ -62,21 +69,38 @@ angular
 						CardService.getCards($scope.grid[0]);
 						CardService.getCards($scope.grid[1]);
 						CardService.getCards($scope.grid[2]);
+					} else if ($scope.publicDraft.type.name === "Pancake") {
+					    $scope.pack = $scope.secretDraft.pack;
+						CardService.getCards($scope.pack);
+						$scope.cardAction = ($scope.secretDraft.picking ? $scope.pickCardName : $scope.burnCardName);
+						$scope.cardActionLabel = ($scope.secretDraft.picking ? 'Pick' : 'Burn');
+					} else if ($scope.publicDraft.type.name === "BurnFour") {
+					    $scope.pack = $scope.secretDraft.pack;
+						CardService.getCards($scope.pack);
+					} else if ($scope.publicDraft.type.name === "Glimpse") {
+					    $scope.pack = $scope.secretDraft.pack;
+						CardService.getCards($scope.pack);
+					} else if ($scope.publicDraft.type.name === "Winston") {
+					    
+					} else if ($scope.publicDraft.type.name === "Winchester") {
+					    
 					}
                 }
             }
-            
-			// Unregister
-			$scope.$on('$destroy', function () {
-				DraftService.disconnect(draftServiceUpdate);
-				CardService.disconnect(cardServiceUpdate);
-			});
             
             $scope.getDraftInclude = function() {
                 if (!$scope.publicDraft) {
                     return '';
                 } else if ($scope.publicDraft.type.name === 'Grid') {
                     return '/app/mtg/draft/room/grid.html';
+                } else if ($scope.publicDraft.type.name === 'Pancake' ||
+                            $scope.publicDraft.type.name === 'BurnFour' ||
+                            $scope.publicDraft.type.name === 'Glimpse') {
+                    return '/app/mtg/draft/room/pickBurn.html';
+                } else if ($scope.publicDraft.type.name === 'Winston') {
+                    return '/app/mtg/draft/room/winston.html';
+                } else if ($scope.publicDraft.type.name === 'Winchester') {
+                    return '/app/mtg/draft/room/winchester.html';
                 } else {
                     return '';
                 }
@@ -88,6 +112,22 @@ angular
             
             $scope.draftRow = function(index) {
                 socket.emit('draftRow', index);
+            };
+            
+            $scope.pickCard = function(index) {
+                socket.emit('pickCard', index);
+            };
+            
+            $scope.burnCard = function(index) {
+                socket.emit('burnCard', index);
+            };
+            
+            $scope.pickCardName = function(cardName) {
+                socket.emit('pickCardName', cardName);
+            };
+            
+            $scope.burnCardName = function(cardName) {
+                socket.emit('burnCardName', cardName);
             };
             
             $scope.moveToSideboard = function(cardName) {
@@ -131,6 +171,8 @@ angular
             $scope.saveDeck = function() {
                 socket.emit('saveDeck', fileName);
             };
+            
+            init();
             
         }
     ]);

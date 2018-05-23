@@ -15,6 +15,7 @@ router.use(function(req, res) {
 
 var BattleboxSplitter = require('battlebox/Splitter');
 var Grid = require('draft/Grid');
+var PickBurn = require('draft/PickBurn');
 var DraftCreator = require('draft/DraftCreator');
 var Draft = require('draft/Draft');
 var MtgFile = require('mtg/FileReader');
@@ -33,7 +34,8 @@ var app = {
     },
     draftTypes: DraftCreator.draftTypes,
     allCards: MtgFile.allCards,
-    broadcast: broadcast
+    broadcast: broadcast,
+    draftBroadcast: draftBroadcast
 };
 // console.log(app.allCards);
 
@@ -46,11 +48,23 @@ function broadcast(event, data) {
     });
 }
 
+function draftBroadcast(draftId) {
+    var draft = app.drafts[draftId];
+    var playerNumber = 0;
+    draft.sockets.forEach(function(socket) {
+        var draftSecret = draft.secret[playerNumber];
+        console.log("Notifying PlayerNumber", playerNumber);
+        socket.emit('draftUpdate', draft.public, draftSecret, app.publicDrafts);
+        playerNumber++;
+    });
+}
+
 io.sockets.on('connection', function(socket) {
 
     var eventHandlers = {
         splitter: new BattleboxSplitter(app, socket),
         grid: new Grid(app, socket),
+        pickBurn: new PickBurn(app, socket),
         draftCreator: new DraftCreator(app, socket),
         cards: new Cards(app, socket),
         draft: new Draft(app, socket)

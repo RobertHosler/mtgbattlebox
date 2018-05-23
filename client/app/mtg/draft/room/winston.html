@@ -1,0 +1,27 @@
+<div ng-hide="publicDraft.complete">
+    <div class="row gridRow">
+        <div class="col-xs-2">
+        </div>
+        <div class="col-xs-3 gridCol center">
+            <div class="btn btn-default" ng-click="draftCol(0);">Pick</div>
+        </div>
+        <div class="col-xs-3 gridCol center">
+            <div class="btn btn-default" ng-click="draftCol(1);">Pick</div>
+        </div>
+        <div class="col-xs-3 gridCol center">
+            <div class="btn btn-default" ng-click="draftCol(2);">Pick</div>
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
+    <div ng-repeat="row in grid" class="row gridRow">
+        <div class="col-xs-2 center">
+            <div class="btn btn-default row-button" ng-click="draftRow($index);">Pick</div>
+        </div>
+        <div ng-repeat="card in row" class="col-xs-3 gridCol">
+            <card-image id="$parent.$index + '' + $index + 'gridCard'" card="card" cardservice="cardService"></card-image>
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
+</div>

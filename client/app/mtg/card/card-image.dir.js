@@ -6,7 +6,9 @@ angular.module('mtg')
             scope: {
               id: '=id',
               card: '=card',
-              cardService: '=cardservice'
+              cardService: '=cardservice',
+              action: '=action',
+              actionLabel: '=actionlabel'
             },
             require: '^hires',
             templateUrl: 'app/mtg/card/card-image.dir.html'

@@ -51,7 +51,7 @@ function moveToDeck(cardName) {
     }
     if (foundInSideboard) {
         secret.deck.push(cardName);
-        this.socket.emit('draftUpdate', draft.public.id, secret);
+        this.app.draftBroadcast(draft.public.id);
     }
 }
 
@@ -72,7 +72,7 @@ function moveToSideboard(cardName) {
     }
     if (foundInDeck) {
         secret.sideboard.push(cardName);
-        this.socket.emit('draftUpdate', draft.public.id, secret);
+        this.app.draftBroadcast(draft.public.id);
     }
 }
 

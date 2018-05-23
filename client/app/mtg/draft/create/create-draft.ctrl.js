@@ -12,7 +12,14 @@ angular
             function draftNotify() {
                 $scope.$apply();
             }
+            
             DraftService.register(draftNotify);
+            socket.emit('getDraftStuff');
+            
+			// Unregister
+			$scope.$on('$destroy', function () {
+				DraftService.disconnect(draftNotify);
+			});
             
             $scope.draftService = DraftService;
 

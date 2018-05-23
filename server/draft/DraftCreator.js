@@ -41,14 +41,15 @@ function joinDraft(playerName, draftId) {
     var socketIndex = isNew(draft, this.socket);
     if (socketIndex >= 0) {
         console.log("RejoinDraft", playerName, draftId);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]); //notify individual player of secret draft update
+        // this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]); //notify individual player of secret draft update
     } else {
         console.log("JoinDraft", playerName, draftId);
         draft.public.players.push(this.socket.name);
         draft.sockets.push(this.socket);
     }
     this.socket.draftId = draftId;
-    this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
+    this.app.draftBroadcast(draft.public.id); 
+    // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
 
 function isNew(draft, socket) {
@@ -81,8 +82,13 @@ function createDraft(playerName, draftType, cube) {
     var draft = {};
     if (draftType.name === "Grid") {
         draft = createGridDraft(cube);
-    }
-    else {
+    } else if (draftType.name === "Winston") {
+        draft = createWinstonDraft(cube);
+    } else if (draftType.name === "Pancake") {
+        draft = createPancakeDraft(cube);
+    } else if (draftType.name === "Winchester") {
+        draft = createWinchesterDraft(cube);
+    } else {
         draft = createBaseDraft(cube, 90);
         //Error - type not supported
     }
@@ -94,8 +100,8 @@ function createDraft(playerName, draftType, cube) {
     this.socket.draftId = draftId;
     this.app.drafts[draftId] = draft; //map draft to draft id
     this.app.publicDrafts[draftId] = draft.public; //map draft to draft id
-    this.socket.emit('draftUpdate', draft.public.id, draft.secret[0]); //notify individual player of secret draft update
-    this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
+    this.app.draftBroadcast(draft.public.id); //notify individual player of secret draft update
+    // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
 
 function createBaseDraft(cube, poolSize) {
@@ -119,8 +125,6 @@ function createDraftPublic(cube, poolSize) {
     MtgUtil.shuffle(shuffledCube); //shuffle it
     var public = {};
     public.poolSize = poolSize;
-    //The maximum is exclusive and the minimum is inclusive
-    public.activePlayer = Math.floor((Math.random() * 2) + 1);
     //TODO: check if poolSize is larger than cube
     public.pool = shuffledCube.slice(0, poolSize);
     public.playerPools = [ [] , [] ];
@@ -136,6 +140,8 @@ function createGridDraft(cube, numGrids = 18, colSize = 3) {
     var gridSize = colSize * colSize; //default is 9
     var poolSize = gridSize * numGrids //default is 162
     var draft = createBaseDraft(cube, poolSize);
+    //The maximum is exclusive and the minimum is inclusive
+    draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
     draft.public.colSize = colSize;
     draft.public.gridSize = gridSize;
     draft.public.numGrids = numGrids;
@@ -164,6 +170,90 @@ var createGrids = function(pool, numGrids, colSize) {
         grids.push(grid);
     }
     return grids;
+}
+
+function createWinchesterDraft() {
+    //The maximum is exclusive and the minimum is inclusive
+    // draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
+    
+}
+
+function createWinstonDraft() {
+    //The maximum is exclusive and the minimum is inclusive
+    // draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
+    
+}
+
+function createPancakeDraft(cube) {
+    var numPacks = 18;
+    var packSize = 11;
+    var picks = [0, 1, 2, 2];
+    var burns = [0, 0, 2, 0];
+    var turns = 3;
+    var draft = createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns);
+    return draft;
+}
+
+function createBurnFourDraft(cube) {
+    var numPacks = 24;
+    var packSize = 15;
+    var picks = [0, 1, 1, 1];
+    var burns = [0, 4, 4, 0];
+    var turns = 3;
+    var draft = createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns);
+    return draft;
+}
+
+function createGlimpseDraft(cube) {
+    var numPacks = 18;
+    var packSize = 11;
+    var picks = [0, 1, 1, 1, 1, 1];
+    var burns = [0, 2, 2, 2, 2, 0];
+    var turns = 5;
+    var draft = createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns);
+    return draft;
+}
+
+function createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns) {
+    var poolSize = numPacks * packSize;
+    var draft = createBaseDraft(cube, poolSize);
+    var packs = buildPacks(draft.public.pool, packSize, numPacks);
+    draft.packs = packs;
+    draft.public.turn = 1;
+    draft.public.turns = turns;
+    draft.public.round = 1;
+    draft.public.rounds = numPacks/2;
+    draft.secret[0].packIndex = 1;//first player gets pack 1
+    draft.secret[1].packIndex = 2;//second player gets pack 2
+    draft.secret[0].pack = draft.packs[draft.secret[0].packIndex];
+    draft.secret[1].pack = draft.packs[draft.secret[1].packIndex];
+    draft.secret[0].picksThisTurn = 0;
+    draft.secret[1].picksThisTurn = 0;
+	draft.secret[0].picking = true;
+	draft.secret[1].picking = true;
+    draft.secret[0].burnsThisTurn = 0;
+    draft.secret[1].burnsThisTurn = 0;
+	draft.secret[0].burning = false;
+	draft.secret[1].burning = false;
+    draft.public.currentPicks = picks[draft.public.turn];//number of picks in the turn
+    draft.public.currentBurns = burns[draft.public.turn];//number of burns in the turn
+    draft.picks = picks;//number of picks on each turn in a round
+    draft.burns = burns;//number of burns on each turn in a round
+    draft.packSize = packSize;
+    draft.numPacks = numPacks;
+    return draft;
+}
+
+function buildPacks(pool, packSize, numPacks) {
+     var packs = [""];//blank value to offset array
+     for (var i = 0; i < numPacks; i++) {
+        var pack = [];//create a pack
+         for (var j = 0; j < packSize; j++) {
+            pack.push(pool.pop());//add cards to pack
+         }
+         packs.push(pack);//add pack to packs list
+     }
+     return packs;
 }
 
 function displayTime(time) {

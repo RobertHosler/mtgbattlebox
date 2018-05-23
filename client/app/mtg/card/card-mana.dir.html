@@ -1,21 +1,22 @@
-
-<a href="javascript:void(0); #{{id}}" data-toggle="modal" class="card-mana-link" 
-    draggable="true" ondragstart="drag(event)"><span ng-repeat="symbol in cardService.getCardMana(card)"><img 
-    class="manaSymbol" src="{{symbol}}" /></span>{{card}}</a>
+<div id="{{id}}">
+    <a href="javascript:void(0); #{{id}}Modal" data-toggle="modal" class="card-mana-link" 
+        draggable="true" ondragstart="drag(event)"><span ng-repeat="symbol in cardService.getCardMana(card)"><img 
+        class="manaSymbol" src="{{symbol}}" /></span>{{card}}</a>
 <!--<a href="javascript:void(0); #{{id}}" data-toggle="modal" class="card-mana-link" -->
 <!--    draggable="true" ondragstart="drag(event)"><img -->
 <!--    src="{{cardService.getCardImage(card)}}" alt="{{card}}" class="card one"></img></a>-->
 
 
-<div id="{{id}}" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
-    <div class="modal-dialog">
-        <img class="card-border" hires="{{cardService.getCardImage(card)}}" alt="{{card}}"
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
-        <span ng-repeat="cardPart in cardService.cards[card].card_faces">
-            <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
-        </span>
-        <div style="display: block; text-align: center; margin: 10px; max-width: 100%;">
-            <span ng-click="action(card);" class="btn btn-default btn-lg">Move to {{actionLabel}}</span>
+    <div id="{{id}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
+        <div class="modal-dialog">
+            <img class="card-border" hires="{{cardService.getCardImage(card)}}" alt="{{card}}"
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
+            <span ng-repeat="cardPart in cardService.cards[card].card_faces">
+                <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}}"></img>
+            </span>
+            <div style="display: block; text-align: center; margin: 10px; max-width: 100%;">
+                <span ng-click="action(card);" class="btn btn-default btn-lg">Move to {{actionLabel}}</span>
+            </div>
         </div>
     </div>
 </div>

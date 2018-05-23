@@ -35,8 +35,7 @@ function draftRow(index) {
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
         incrementTurn(draft);
-        this.app.broadcast('drafts', this.app.publicDrafts);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]);
+        this.app.draftBroadcast(draft.public.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -67,8 +66,7 @@ function draftCol(index) {
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
         incrementTurn(draft);
-        this.app.broadcast('drafts', this.app.publicDrafts);
-        this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]);
+        this.app.draftBroadcast(draft.public.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);

@@ -48,6 +48,9 @@ angular.module('mtg')
                 };
                 
                 self.getCards = function(cardList) {
+                    if (!cardList) {
+                        return;
+                    }
                     var cardsToRequest = [];
                     cardList.forEach(function(cardName) {
                         var card = self.cards[cardName];

@@ -10,6 +10,7 @@ angular.module('draft')
                 self.draftId = '';
                 self.observers = [];
                 self.publicDrafts = [];
+                self.publicDraft = {};
                 self.secretDraft = {};
                 
                 socket.on('drafts', function(publicDrafts) {
@@ -27,9 +28,11 @@ angular.module('draft')
                     notifyObservers();
                 });
     
-                socket.on('draftUpdate', function(draftId, secretUpdate) {
-                    self.draftId = draftId;
-                    self.secretDraft = secretUpdate;
+                socket.on('draftUpdate', function(draftPublic, draftSecret, publicDrafts) {
+                    self.draftId = draftPublic.id;
+                    self.publicDraft = draftPublic;
+                    self.secretDraft = draftSecret;
+                    self.publicDrafts = publicDrafts;
                     notifyObservers();
                 });
                 

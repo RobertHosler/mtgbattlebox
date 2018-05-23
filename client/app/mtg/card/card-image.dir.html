@@ -11,6 +11,9 @@
             <span ng-repeat="cardPart in cardService.cards[card].card_faces">
                 <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}} Part $index" class="card-border"></img>
             </span>
+            <div style="display: block; text-align: center; margin: 10px; max-width: 100%;">
+                <span ng-click="action(card);" class="btn btn-default btn-lg">{{actionLabel}}</span>
+            </div>
         </div>
     </div>
 </div>
