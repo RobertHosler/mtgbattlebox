@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="myApp" ng-controller="MainCtrl">
 
 <head>
-  <title>Chat Example</title>
+  <title>{{ Page.title() }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css">
@@ -19,11 +19,15 @@
     
     <div ng-include="'/app/header.tpl.html'"></div>
 
-    <div ng-view></div>
-    
-    <div ng-include="'/app/footer.tpl.html'"></div>
+    <div class="page-header">
+        <h1>{{ Page.title() }}</h1>
+    </div>
+
+    <div ng-view class="page-main"></div>
 
   </div>
+    
+  <div ng-include="'/app/footer.tpl.html'"></div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/libs/jquery/jquery.min.js"></script>

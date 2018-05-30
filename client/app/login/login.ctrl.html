@@ -1,34 +1,32 @@
 <div class="row">
-  <div class="col-xs-12 col-md-6">
+  <div class="col-xs-12 col-md-8">
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3>Login</h3>
-        </div>
-        <div class="panel-body">
-            <div ng-controller="LoginController">
-                <div class="row">
-                    <div class="col-xs-12 col-md-8">
-                        
-                        <form ng-submit="login()">
-                            <label for="username">Username</label>
-                            <div>
-                                <input id="username" class="form-control" ng-model="user" type="text" autofocus> </input>
-                            </div>
-                            <br>
-                            <label for="password">Password</label>
-                            <div>
-                                <input id="password" class="form-control" ng-model="password" type="password">
-                            </div>
-                            <br>
-                            <div>
-                                <input type="submit" class="btn btn-primary" value="Login">
-                            </div>
-                        </form>
-                        
+        <form ng-submit="login()">
+            <div class="panel-body">
+                <div ng-controller="LoginController">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            
+                                <label for="username">Username</label>
+                                <div>
+                                    <input id="username" class="form-control" ng-model="user" type="text" autofocus> </input>
+                                </div>
+                                <br>
+                                <label for="password">Password</label>
+                                <div>
+                                    <input id="password" class="form-control" ng-model="password" type="password">
+                                </div>
+                            </form>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="panel-footer">
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Login">
+                </div>
+            </div>
     </div> 
   </div>
 </div>

@@ -2,8 +2,8 @@
 angular
     .module('draft')
     .controller('CreateDraftController',
-        ['$scope', 'UserService', '$location', 'DraftService', 'socket',
-        function($scope, UserService, $location, DraftService, socket) {
+        ['$scope', 'UserService', '$location', 'DraftService', 'socket', '$route', 'Page',
+        function($scope, UserService, $location, DraftService, socket, $route, Page) {
             
             if (!UserService.name) {
                 $location.path('/login');

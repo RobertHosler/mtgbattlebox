@@ -1,10 +1,46 @@
 <div class="navbar navbar-fixed-top navbar-inverse" ng-controller="HeaderCtrl">
-    <div class="navbar-inner">
-        <a href="chat" class="btn btn-link">Just Chat</a>
-        <a href="createDraft" class="btn btn-link">Create Draft</a>
-        <a href="joinDraft" class="btn btn-link">Join Draft</a>
-        <a href="splitBattlebox" class="btn btn-link">Split Battlebox</a>
-        <a href="addList" class="btn btn-link">Add a List</a>
-        <a href="editList" class="btn btn-link">Edit a List</a>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-section" 
+                aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="home" class="btn btn-link navbar-brand">Roqb.me</a>
+        </div>
+        <div id="navbar-collapse-section" class="navbar-collapse collapse">
+            <div class="navbar-inner">
+                <ul class="nav navbar-nav">
+                    <li><a href="chat" >Chat</a></li>
+                    <li><a href="https://blog.roqb.me" target="_blank">Blog <span class="glyphicon glyphicon-new-window"></span></a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
+                            aria-expanded="false">MTG <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="createDraft">Create Draft</a></li>
+                            <li><a href="joinDraft" >Join Draft</a></li>
+                            <li><a href="splitBattlebox" >Split Battlebox</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Manage</li>
+                            <li><a href="addList" >Add a List</a></li>
+                            <li><a href="editList" >Edit a List</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
+                            aria-expanded="false">About <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><li><a href="about" >About Me</a></li></li>
+                            <li><li><a href="art" >Art</a></li></li>
+                            <li><li><a href="dev" >Development</a></li></li>
+                            <li><li><a href="resume" >Résumé</a></li></li>
+                            <li><li><a href="contact" >Contact</a></li></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>

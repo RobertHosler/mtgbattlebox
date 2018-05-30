@@ -5,10 +5,32 @@ angular
         function config($routeProvider, $locationProvider) {
             //Configure the application based on the path
             $routeProvider
-                // .when("/", {
-                //   templateUrl : 'partials/home.html',
-                //   controller : LobbyController
-                // })
+                .when("/home", {
+                    templateUrl: 'app/pages/home.html',
+                    pageName: "Home"
+                })
+                //About Pages
+                .when("/about", {
+                    templateUrl: 'app/pages/about.html',
+                    pageName: "About"
+                })
+                .when("/art", {
+                    templateUrl: 'app/pages/art.html',
+                    pageName: "Art Portfolio"
+                })
+                .when("/resume", {
+                    templateUrl: 'app/pages/resume.html',
+                    pageName: "Résumé"
+                })
+                .when("/dev", {
+                    templateUrl: 'app/pages/dev.html',
+                    pageName: "Development Portfolio"
+                })
+                .when("/contact", {
+                    templateUrl: 'app/pages/contact.html',
+                    pageName: "Contact"
+                })
+                //App pages
                 .when("/login", {
                     templateUrl: 'app/login/login.ctrl.html',
                     // controller: 'LoginController',
@@ -39,7 +61,7 @@ angular
                     // controller: 'BattleboxSplitController',
                     pageName: 'Split Battlebox'
                 })
-                .otherwise({ redirectTo: '/createDraft' });
+                .otherwise({ redirectTo: '/home' });
 
             // use the HTML5 History API
             $locationProvider.html5Mode(true);

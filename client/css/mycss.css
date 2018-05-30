@@ -1,3 +1,7 @@
+.page-main {
+    margin-bottom: 20px;
+}
+
 .scrollable-chat tbody {
     display: block;
     height: 250px;
@@ -275,4 +279,23 @@ body {
 
 .pack-card .card:hover {
     opacity: 1;
+}
+
+.navbar-bottom {
+    border-radius: 0px;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    margin-bottom: 0px;
+}
+
+.navbar-header {
+    font-size: 32px;
+    padding-left: 0px;
+}
+
+.navbar-inner .btn-link {
+    line-height: 56px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
