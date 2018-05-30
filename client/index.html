@@ -14,10 +14,10 @@
 </head>
 
 <body>
+  
+  <div ng-include="'/app/header.tpl.html'"></div>
 
   <div class="container">
-    
-    <div ng-include="'/app/header.tpl.html'"></div>
 
     <div class="page-header">
         <h1>{{ Page.title() }}</h1>
@@ -60,6 +60,7 @@
   <script src="app/mtg/draft/draft.service.js"></script>
   <script src="app/mtg/draft/join/join-draft.ctrl.js"></script>
   <script src="app/mtg/draft/room/draft-room.ctrl.js"></script>
+  <script src="app/portfolio/_portfolio.module.js"></script>
   
   <script src="scripts/myscripts.js"></script>
 

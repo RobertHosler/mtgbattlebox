@@ -12,10 +12,6 @@ angular
             //     return;
             // }
             
-            if (!UserService.name) {
-                $location.path('/login');
-            }
-            
             function draftServiceUpdate() {
                 init();
                 $scope.$apply();

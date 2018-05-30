@@ -12,7 +12,7 @@ angular
                 if ($scope.user) {
                     UserService.name = $scope.user;
                     socket.emit('setName', $scope.user);
-                    $location.path('/createDraft');
+                    $location.path('/mtg/draft');
                 } else {
                     alert("Username is required!");
                 }

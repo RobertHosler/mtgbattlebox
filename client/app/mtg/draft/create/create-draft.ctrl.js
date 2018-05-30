@@ -5,10 +5,6 @@ angular
         ['$scope', 'UserService', '$location', 'DraftService', 'socket', '$route', 'Page',
         function($scope, UserService, $location, DraftService, socket, $route, Page) {
             
-            if (!UserService.name) {
-                $location.path('/login');
-            }
-            
             function draftNotify() {
                 $scope.$apply();
             }
@@ -43,7 +39,7 @@ angular
                 console.log('Creating draft:', $scope.selectedCube.name, $scope.selectedDraftType);
                 $scope.draftService.draftId;
                 socket.emit('createDraft', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
-                $location.path('/draftRoom');
+                $location.path('/mtg/draft/room');
                 console.log($scope.test);
             };
 

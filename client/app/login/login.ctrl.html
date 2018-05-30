@@ -1,12 +1,12 @@
-<div class="row">
-  <div class="col-xs-12 col-md-8">
-    <div class="panel panel-default">
-        <form ng-submit="login()">
-            <div class="panel-body">
-                <div ng-controller="LoginController">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6">
-                            
+
+<div ng-controller="LoginController">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <div class="panel panel-default">
+                <form ng-submit="login()">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
                                 <label for="username">Username</label>
                                 <div>
                                     <input id="username" class="form-control" ng-model="user" type="text" autofocus> </input>
@@ -16,17 +16,16 @@
                                 <div>
                                     <input id="password" class="form-control" ng-model="password" type="password">
                                 </div>
-                            </form>
-                            
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="panel-footer">
+                        <div>
+                            <input type="submit" class="btn btn-primary" value="Login">
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="panel-footer">
-                <div>
-                    <input type="submit" class="btn btn-primary" value="Login">
-                </div>
-            </div>
-    </div> 
-  </div>
+        </div> 
+    </div>
 </div>
