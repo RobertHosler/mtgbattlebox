@@ -1,5 +1,6 @@
 .page-main {
     margin-bottom: 20px;
+    min-height: 350px;
 }
 
 .scrollable-chat tbody {
