@@ -6,7 +6,7 @@ var Cards = function(app, socket) {
     this.handler = {
         // use the bind function to access this.app and this.socket in events
         getFullCard: getFullCard.bind(this),
-        getFullCard: getFullCards.bind(this),
+        getFullCards: getFullCards.bind(this),
         getAllCards: getAllCards.bind(this)
     };
 };
@@ -20,24 +20,37 @@ function getAllCards() {
     // this.app.broadcast('drafts', this.app.publicDrafts);
 }
 
+/**
+ * Load a list of cards and emit an update to the full card list once complete.
+ */
 function getFullCards(cardList) {
-    var returnList = [];
+    console.log("Loading cardList", cardList);
+    var app = this.app;
+    //Load each card
     cardList.forEach(function(cardName) {
-        pullFullCard(cardName);
+        pullFullCard(cardName, app);
     });
-    this.socket.emit('allCards', this.app.allCards);
+    //Wait for each to be loaded
+    var socket = this.socket;
+    waitForCards(cardList, app, function() {
+        socket.emit('allCards', app.allCards);
+    });
 }
 
+/**
+ * Load a single card
+ */
 function getFullCard(cardName) {
     var fullCard = pullFullCard(cardName, this.app);
     if (!fullCard) {
+        console.log("couldn't pull full card", cardName);
         return;//couldn't pull full card
     } else {
         this.socket.emit('cardsUpdate', fullCard);
     }
 }
 
-function pullFullCard(cardName, app, socket) {
+function pullFullCard(cardName, app) {
     if (!cardName) {
         return;
     }
@@ -61,22 +74,41 @@ function pullFullCard(cardName, app, socket) {
             } );
         } else {
             //full card isn't available, but has already been requested by another socket keep checking for it and then return
-            fullCard = waitForCard(cardName, socket, app);
+            fullCard = waitForCard(cardName, app);
         }
     }
     return fullCard;
 }
 
-//Keep checking every second to see if the card is now populated
-function waitForCard(cardName, socket, app) {
+//Keep checking every half-second to see if the card is now populated in the all cards list
+function waitForCard(cardName, app) {
+    console.log("waiting for card", cardName);
     setTimeout(function() {
         var fullCard = app.allCards[cardName];
         if (!fullCard) {
-            waitForCard(cardName, socket, app);
+            waitForCard(cardName, app);
         } else {
             return fullCard;
         }
     }, 500);
+}
+
+function waitForCards(cardList, app, doneFunction) {
+    var done = true;
+    cardList.forEach(function(cardName) {
+        var fullCard = app.allCards[cardName];
+        if (!fullCard) {
+            done = false;
+        }
+    })
+    if (done) {
+        doneFunction();
+    } else {
+        console.log("waiting for cards", cardList);
+        setTimeout(function() {
+            waitForCards(cardList, app, doneFunction);
+        }, 500);
+    }
 }
 
 module.exports = Cards;

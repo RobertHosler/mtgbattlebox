@@ -18,9 +18,13 @@ angular.module('mtg')
                 });
                 
                 socket.on('allCards', function(allCards) {
-                    console.log("All Cards Update");
+                    var cardsBefore = Object.keys(self.cards).length;
+                    var cardsAfter = Object.keys(allCards).length;
+                    console.log("All Cards Update. Before:", cardsBefore, "After:", cardsAfter);
                     self.cards = allCards;
-                    notifyObservers();
+                    if (cardsBefore != cardsAfter) {
+                        notifyObservers();
+                    }
                 });
     
                 self.register = function(observer) {
@@ -61,6 +65,7 @@ angular.module('mtg')
                         }
                     });
                     if (cardsToRequest.length > 0) {
+                        console.log("Requesting card data", cardsToRequest);
                         socket.emit('getFullCards', cardsToRequest);
                     }
                 };

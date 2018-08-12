@@ -61,10 +61,33 @@ angular
                 	$scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
                     $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
 					if ($scope.publicDraft.type.name === "Grid") {
-						$scope.grid = $scope.publicDraft.currentGrid;
-						CardService.getCards($scope.grid[0]);
-						CardService.getCards($scope.grid[1]);
-						CardService.getCards($scope.grid[2]);
+						$scope.grid = [];
+						$scope.grid[0] = $scope.publicDraft.currentGrid[0].slice();
+						$scope.grid[1] = $scope.publicDraft.currentGrid[1].slice();
+						$scope.grid[2] = $scope.publicDraft.currentGrid[2].slice();
+						var cardsToRequest = [];
+                        $scope.grid[0].forEach(function(cardName, index) {
+                            var card = CardService.cards[cardName];
+                            if (!card || !card.id) {
+                                cardsToRequest.push(cardName);
+                                $scope.grid[0][index] = "";
+                            }
+                        });
+                        $scope.grid[1].forEach(function(cardName, index) {
+                            var card = CardService.cards[cardName];
+                            if (!card || !card.id) {
+                                cardsToRequest.push(cardName);
+                                $scope.grid[1][index] = "";
+                            }
+                        });
+                        $scope.grid[2].forEach(function(cardName, index) {
+                            var card = CardService.cards[cardName];
+                            if (!card || !card.id) {
+                                cardsToRequest.push(cardName);
+                                $scope.grid[2][index] = "";
+                            }
+                        });
+						CardService.getCards(cardsToRequest);
 					} else if ($scope.publicDraft.type.name === "Pancake") {
 					    $scope.pack = $scope.secretDraft.pack;
 						CardService.getCards($scope.pack);
