@@ -62,13 +62,17 @@ function pullFullCard(cardName, app) {
             var formattedRequestTime = requestTime.format('YYYY-MM-DD HH:mm:ss Z');
             console.log("Retrieving", cardName, formattedRequestTime);
             Scry.Cards.byName(cardName).then(result => {
-                fullCard = result;
-                var requestTime = moment();
-                var formattedResultTime = requestTime.format('YYYY-MM-DD HH:mm:ss Z');
-                console.log("Retrieved", result.name, formattedResultTime);
-                // console.log(result);
-                // console.log("Full card retrieved", fullCard);
-                app.allCards[cardName] = fullCard; //save the card to allCards
+                if (result) {
+                    fullCard = result;
+                    var requestTime = moment();
+                    var formattedResultTime = requestTime.format('YYYY-MM-DD HH:mm:ss Z');
+                    console.log("Retrieved", result.name, formattedResultTime);
+                    // console.log(result);
+                    // console.log("Full card retrieved", fullCard);
+                    app.allCards[cardName] = fullCard; //save the card to allCards
+                } else {
+                    fullCard = 'not found';
+                }
             }, reason => {
               console.log(reason); // Error!
             } );
@@ -96,11 +100,13 @@ function waitForCard(cardName, app) {
 function waitForCards(cardList, app, doneFunction) {
     var done = true;
     cardList.forEach(function(cardName) {
-        var fullCard = app.allCards[cardName];
-        if (!fullCard) {
-            done = false;
+        if (cardName) {
+            var fullCard = app.allCards[cardName];
+            if (!fullCard) {
+                done = false;
+            }
         }
-    })
+    });
     if (done) {
         doneFunction();
     } else {

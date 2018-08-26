@@ -112,7 +112,8 @@ io.sockets.on('connection', function(socket) {
 
 server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function() {
     var addr = server.address();
-    console.log("Chat server listening at", addr.address + ":" + addr.port);
+    console.log("Server running at", addr.address + ":" + addr.port);
+    // console.log("Server running at uri", server.info.uri);
 });
 
 process.stdin.resume();//so the program will not close instantly
