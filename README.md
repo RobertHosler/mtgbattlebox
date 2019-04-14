@@ -1,17 +1,17 @@
-1) install node
+1) install node<br/>
     apt install nodejs
-2) install npm
+2) install npm<br/>
     apt install npm
-3) install npm dependencies
-    npm install socket.io
-    npm install express
-    npm install scryfall-sdk
+3) install npm dependencies<br/>
+    npm install socket.io<br/>
+    npm install express<br/>
+    npm install scryfall-sdk<br/>
     npm install moment
 
-Run server using
+Run server using<br/>
     npm start
 
-Local server at
+Local server at<br/>
     http://localhost:3000/
 
 ctrl+c to terminate server
