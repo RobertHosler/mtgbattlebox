@@ -6,15 +6,18 @@
   "repository": "",
   "author": "Mostafa Eweda <mo.eweda@gmail.com>",
   "dependencies": {
-    "async": "~0.2.8",
-    "express": "~3.2.4",
-    "moment": "^2.22.1",
-    "scryfall-sdk": "^1.1.0",
-    "socket.io": "~0.9.14"
+    "async": "^0.2.10",
+    "cross-env": "^5.2.0",
+    "express": "^3.2.6",
+    "grunt": "^1.0.4",
+    "http": "0.0.0",
+    "moment": "^2.24.0",
+    "scryfall-sdk": "^1.5.0",
+    "socket.io": "^0.9.19"
   },
   "scripts": {
-    "start": "NODE_PATH=server node --trace-warnings index.js",
-    "debug": "NODE_PATH=server node $NODE_DEBUG_OPTION --trace-warnings --inspect-brk index.js"
+    "start": "cross-env NODE_PATH=server node --trace-warnings index.js",
+    "debug": "cross-env NODE_PATH=server node $NODE_DEBUG_OPTION --trace-warnings --inspect-brk index.js"
   },
   "devDependencies": {
     "grunt-include-source": "^1.1.0"
