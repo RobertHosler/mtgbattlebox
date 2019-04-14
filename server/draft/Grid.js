@@ -94,7 +94,7 @@ function draftCards(draft, draftedCards) {
     var index = activePlayer-1;
     draft.public.playerPools[index] = draft.public.playerPools[index].concat(draftedCards);
     draft.secret[index].deck = draft.secret[index].deck.concat(draftedCards);
-    console.log("Deck", draft.secret[index].deck);
+    // console.log("Deck", draft.secret[index].deck);
 }
 
 function incrementTurn(draft) {
