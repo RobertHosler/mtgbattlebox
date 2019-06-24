@@ -19,7 +19,7 @@ var getAllCubes = function() {
   fs.readdirSync("files/cubes").forEach(file => {
     var cube = {};
     cube.name = file;
-    cube.cards = fs.readFileSync("files/cubes/" + file, 'utf8').split("\n");
+    cube.cards = fs.readFileSync("files/cubes/" + file, 'utf8').split(/\r?\n/g);
     cubes.push(cube);
     // console.log("Cube: " + cube.name, "First Card: " + cube.cards[0]);
   });

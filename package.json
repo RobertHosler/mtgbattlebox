@@ -11,6 +11,8 @@
     "express": "^3.2.6",
     "grunt": "^1.0.4",
     "http": "0.0.0",
+    "jshint": "^2.10.2",
+    "jslint": "^0.12.1",
     "moment": "^2.24.0",
     "scryfall-sdk": "^1.5.0",
     "socket.io": "^0.9.19"
