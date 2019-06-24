@@ -3,10 +3,7 @@
 2) install npm<br/>
     apt install npm
 3) install npm dependencies<br/>
-    npm install socket.io<br/>
-    npm install express<br/>
-    npm install scryfall-sdk<br/>
-    npm install moment
+    install all dependencies listed in package.json
 
 Run server using<br/>
     npm start
