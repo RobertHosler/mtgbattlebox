@@ -3,6 +3,14 @@
     min-height: 350px;
 }
 
+.modal-open {
+    overflow: auto;
+}
+
+.card-modal {
+  padding-right: 0px !important;
+}
+
 .scrollable-chat tbody {
     display: block;
     height: 250px;
@@ -16,11 +24,12 @@ tbody tr {
     table-layout: fixed;
     /* even columns width , fix width of table too*/
 }
-
+/* 
 .scrollable-chat thead {
-    /* width: calc( 100% - 1em); */
-    /* scrollbar is average 1em/16px width, remove it from thead width */
+    width: calc( 100% - 1em);
+    scrollbar is average 1em/16px width, remove it from thead width
 }
+*/
 
 .scrollable-chat th:first-child,
 .scrollable-chat td:first-child {
@@ -44,6 +53,7 @@ tbody tr {
 
 body {
     padding-top: 60px;
+    padding-right: 0px !important;
 }
 
 .cardhover p.one + img,
@@ -66,7 +76,7 @@ body {
 
 .modal-img .modal-dialog > * {
     max-width: 300px;
-    display: -webkit-box;
+    display: inline-block;
 }
 
 .modal-img img {

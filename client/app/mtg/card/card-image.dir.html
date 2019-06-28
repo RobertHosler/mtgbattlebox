@@ -4,7 +4,8 @@
             src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg" ></img>
     </a>
     
-    <div id="{{id}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
+    <div id="{{id}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');"
+        data-backdrop="false">
         <div class="modal-dialog">
             <img hires="{{cardService.getCardImage(card)}}" alt="{{card}}" class="card-border"
                 src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg" ></img>
