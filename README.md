@@ -1,14 +1,1 @@
-1) install node<br/>
-    apt install nodejs
-2) install npm<br/>
-    apt install npm
-3) install npm dependencies<br/>
-    install all dependencies listed in package.json
-
-Run server using<br/>
-    npm start
-
-Local server at<br/>
-    http://localhost:3000/
-
-ctrl+c to terminate server
+Originally a small experiment web app to host a battlebox splitter application for Magic the Gathering, this app is currently the main domain of roqb.me, containing pages about me, Robert Hosler as well as two apps.  One for drafting a cube with another user and another for splitting a battlebox, the original intention of this app.
