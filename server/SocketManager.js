@@ -115,21 +115,20 @@ module.exports = (function() {
      * Converts array of cards to string of cards separated by newline characters with 1 prefixes
      */
     var generateDecklistString = function(deck, sideboard, addOnes) {
+        var result;
         if (addOnes) {
             console.log("adding ones to decklist");
-            var result = '//Deck - ' + deck.length + ' Cards\n' + deck.map(function(element) { return "1 " + element; }).join('\n');
+            result = '//Deck - ' + deck.length + ' Cards\n' + deck.map(function(element) { return "1 " + element; }).join('\n');
             if (sideboard) {
                 result += '\n\n//Sideboard\n' + sideboard.map(function(element) { return "SB: 1 " + element; }).join('\n');
             }
-            return result;
-        }
-        else {
-            var result = '//Deck - ' + deck.length + ' Cards\n' + deck.join('\n');
+        } else {
+            result = '//Deck - ' + deck.length + ' Cards\n' + deck.join('\n');
             if (sideboard) {
                 result += '\n\n//Sideboard\n' + sideboard.map(function(element) { return "SB: " + element; }).join('\n');
             }
-            return result;
         }
+        return result;
     }
 
     var updateRoster = function() {

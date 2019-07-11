@@ -22,6 +22,7 @@
     "debug": "cross-env NODE_PATH=server node $NODE_DEBUG_OPTION --trace-warnings --inspect-brk index.js"
   },
   "devDependencies": {
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-include-source": "^1.1.0"
   }
 }

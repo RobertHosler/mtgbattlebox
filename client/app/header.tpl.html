@@ -13,10 +13,18 @@
         <div id="navbar-collapse-section" class="navbar-collapse collapse">
             <div class="navbar-inner">
                 <ul class="nav navbar-nav">
-                    <li><a href="chat" >Chat</a></li>
-                    <li><a href="https://blog.roqb.me" target="_blank">Blog <span class="glyphicon glyphicon-new-window"></span></a></li>
+                    <!-- <li class="navbar-mtg-hidden"><a href="chat">Chat</a></li> -->
+
+                    <div ng-include="getLinksToInclude()"></div>
+
+                    <li ng-repeat="link in links">
+                        <a ng-href="{{link.href}}">{{link.label}}</a>
+                    </li>
+
+                    <!--
+                    <li class="navbar-mtg-hidden"><a href="https://blog.roqb.me">Blog</a></li>
+                    <li class="navbar-mtg-hidden"><a href="mtg/draft/create">MTG</a></li>
                     
-                    <!-- MTG Links -->
                     <li class="dropdown navbar-mtg-hidden">
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
                             aria-expanded="false">MTG <span class="caret"></span></a>
@@ -38,7 +46,7 @@
                     <li class="navbar-mtg-only"><a href="mtg/cube/edit" >Edit a Cube</a></li>
                     <li class="navbar-mtg-only"><a href="mtg/cube/view" >View a Cube</a></li>
                     
-                    <li class="dropdown">
+                    <li class="dropdown navbar-mtg-hidden">
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" 
                             aria-expanded="false">About <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -50,6 +58,7 @@
                         </ul>
                     </li>
                 </ul>
+            -->
             </div>
         </div>
     </div>
