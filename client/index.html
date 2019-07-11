@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="en" ng-app="myApp" ng-controller="MainCtrl">
 
-<head>
+<head ng-cloak>
   <title>{{ Page.title() }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css">
   
-  <link href="/css/mycss.css" rel="stylesheet" type="text/css">
+  <link href="css/mycss.css" rel="stylesheet" type="text/css">
 
   <base href="/">
 
 </head>
 
-<body>
+<body ng-cloak>
   
   <div ng-include="'/app/header.tpl.html'"></div>
 

@@ -1,3 +1,22 @@
+.float-left {
+    float: left !important;
+}
+.float-right {
+    float: right !important;
+}
+.float-none {
+    float: none !important;
+}
+.align-right,
+.right-align {
+    text-align: right;
+}
+
+.margin-me {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .page-main {
     margin-bottom: 20px;
     min-height: 350px;
@@ -333,4 +352,19 @@ body {
 }
 .navbar-mtg .nav > .navbar-mtg-hidden {
     display: none;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+#homeCarousel {
+    max-width: 500px;
+}
+#homeCarousel .carousel-inner .item img {
+    display: inline-block;
+}
+#homeCarousel .carousel-inner .item {
+    text-align: center;
+    max-height: 350px;
 }

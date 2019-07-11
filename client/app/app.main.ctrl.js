@@ -9,7 +9,7 @@ angular
             $scope.Page = Page;
             
             $scope.$on('$locationChangeSuccess', function(event, next, current) {
-                if ($route.current.$$route) {
+                if ($route.current && $route.current.$$route) {
                     if ($route.current.$$route.templateUrl) {
                         if ($route.current.$$route.templateUrl.startsWith('app/mtg')) {
                             if (!$("#header").hasClass("navbar-mtg")) {

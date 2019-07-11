@@ -1,3 +1,59 @@
 <div>
 This is the home page.
+
+
+<div id="homeCarousel" class="carousel" data-ride="carousel">
+
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    <div class="carousel-inner">
+    
+        <div class="item active">
+            <a href="about/resume">
+                <img src="https://i.imgur.com/rozTYpD.jpg" alt="Developer Image">
+                <div class="carousel-caption">
+                    <h3>Developer</h3>
+                    <p>View my projects</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="item">
+            <a href="mtg">
+                <img src="https://i.imgur.com/BAtx7I7.jpg" alt="Gamer Image">
+                <div class="carousel-caption">
+                    <h3>Gamer</h3>
+                    <p>See what I'm playing</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="item">
+            <a href="about/art">
+                <img src="https://i.imgur.com/XO45l8b.jpg" alt="Artist Image">
+                <div class="carousel-caption">
+                <h3>Artist</h3>
+                <p>See my portfolio</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" onclick="$('#homeCarousel').carousel('prev');" role="button">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" onclick="$('#homeCarousel').carousel('next');" role="button">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+
+</div>
 </div>
