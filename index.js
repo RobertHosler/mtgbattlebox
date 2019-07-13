@@ -59,8 +59,11 @@ function draftBroadcast(draftId) {
     });
 }
 
-io.sockets.on('connection', function(socket) {
+io.sockets.on('connection', (socket) => {
 
+    /**
+     * Create a list of event handlers, the handler functions will be bound to socket io.
+     */
     var eventHandlers = {
         splitter: new BattleboxSplitter(app, socket),
         grid: new Grid(app, socket),
@@ -70,14 +73,17 @@ io.sockets.on('connection', function(socket) {
         draft: new Draft(app, socket)
     };
 
+    /**
+     * Bind the exported function from the event handler list to socket events.
+     */
     for (var category in eventHandlers) {
-        var handler = eventHandlers[category].handler;
+        var handler = eventHandlers[category].handler;//get the exported handler functions
         for (var event in handler) {
             socket.on(event, handler[event]);
         }
     }
 
-    console.log("New Socket");
+    console.log("New Socket Connected");
     // Keep track of the socket
     app.allSockets.push(socket);
 

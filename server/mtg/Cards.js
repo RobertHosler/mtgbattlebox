@@ -11,9 +11,9 @@ var Cards = function(app, socket) {
     };
 };
 
-var Scry = require("scryfall-sdk");
-var cardsRetrieved = {};
-var moment = require('moment');
+const Scry = require("scryfall-sdk");
+let cardsRetrieved = {};
+const moment = require('moment');
 const time = () => moment().format('hh:mm:ss:SSS');
 const log = (socket, msg) => console.log(socket.name, msg, "@ " + time());
 
@@ -36,15 +36,6 @@ function getFullCards(cardList) {
     pullCardList(cardList, app, socket, function() {
         socket.emit('allCards', app.allCards);
     });
-    // cardList.forEach(function(cardName) {
-    //     setTimeout(function() {
-    //         pullFullCard(cardName, app, socket);
-    //     }, 200);
-    // });
-    //Wait for each to be loaded
-    // waitForCards(cardList, app, socket, function() {
-    //     socket.emit('allCards', app.allCards);
-    // });
 }
 
 /**
@@ -54,39 +45,50 @@ function getFullCard(cardName) {
     var app = this.app;
     var socket = this.socket;
     log (socket, "Loading card " + cardName);
-    var fullCard = pullFullCard(cardName, app, socket);
-    if (!fullCard) {
-        //card needs to be retrieved, wait for card
-        // log (socket, "Couldn't pull full card " + cardName);
-        // return;//couldn't pull full card
-        fullCard = waitForCard(cardName, app, socket);
-        this.socket.emit('cardsUpdate', fullCard);
-    } else {
-        this.socket.emit('cardsUpdate', fullCard);
-    }
+    
+    let cardList = [cardName];
+    pullCardList(cardList, app, socket, function() {
+        socket.emit('cardsUpdate', app.allCards[cardName]);
+    });
     log (socket, "End Loading card " + cardName);
 }
 
+/**
+ * Create a query for the scryfall api looking for the exact card names.
+ * 
+ * Query should look like [!"Doom Blade" or !"Explore" or]
+ * 
+ */
 function pullCardList(cardList, app, socket, doneFunction) {
     let query = "";
     cardList.forEach(function(cardName) {
-        query += ("!\"" + cardName + "\" or ");
-    });
-    console.log("Query", query);
-    Scry.Cards.search(query).on("data", card => {
-        console.log("Loaded " + card.name); 
-        if (card.name.indexOf("//") > 0 && card.layout === "transform") {
-            let cardNameSplit = card.name.substring(0, card.name.indexOf(" // "));
-            app.allCards[cardNameSplit] = card; //save the card to allCards
-        } else {
-            app.allCards[card.name] = card; //save the card to allCards
+        let fullCard = app.allCards[cardName];//only query cards that need loaded
+        if (!fullCard) {
+            query += ("!\"" + cardName + "\" or ");
         }
-    }).on("end", () => {
-        console.log("done");
-        doneFunction();
     });
+    log(socket, ("Query: [" + query + "]"));
+    try {
+        Scry.Cards.search(query).on("data", (card) => {
+            console.log("Loaded " + card.name);
+            let cardIndex = card.name;
+            if (card.name.indexOf("//") > 0 && card.layout === "transform") {
+                //Transform cards are indexed by the front card name only
+                cardIndex = card.name.substring(0, card.name.indexOf(" // "));
+            }
+            app.allCards[cardIndex] = card; //save the card to allCards
+        }).on("end", () => {
+            log(socket, "done");
+            doneFunction();
+        });
+    } catch (e) {
+        log(socket, e);
+    }
 }
 
+/**
+ * Deprecated, just call cardlist with one card
+ */
 function pullFullCard(cardName, app, socket) {
     if (!cardName) {
         return;

@@ -2,7 +2,7 @@
   "name": "chat-example",
   "version": "0.0.0",
   "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
-  "main": "server.js",
+  "main": "index.js",
   "repository": "",
   "author": "Mostafa Eweda <mo.eweda@gmail.com>",
   "dependencies": {
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_PATH=server node --trace-warnings index.js",
-    "debug": "cross-env NODE_PATH=server node $NODE_DEBUG_OPTION --trace-warnings --inspect-brk index.js"
+    "debug": "cross-env NODE_PATH=server node --nolazy --inspect-brk=9229 index.js"
   },
   "devDependencies": {
     "grunt-contrib-concat": "^1.0.1",

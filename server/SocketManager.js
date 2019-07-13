@@ -1,22 +1,22 @@
-console.log('I am a SocketManager!');
-var socketio = require('socket.io');
+const socketio = require('socket.io');
 module.exports = (function() {
 
     var sockets = [];
 
-    var init = function(server, callback) {
+    var init = (server, callback) => {
+        console.log('I am a SocketManager!');
         var io = socketio.listen(server);
         io.on('connection', this.onConnect);
         return io;
-    }
+    };
     
-    var broadcast = function(event, data) {
+    var broadcast = (event, data) => {
         sockets.forEach(function(socket) {
             socket.emit(event, data);
         });
-    }
+    };
 
-    var onConnect = function(socket) {
+    var onConnect = (socket) => {
         sockets.push(socket);
         console.log("Socket added, sockets length: " + this.sockets.length);
 
