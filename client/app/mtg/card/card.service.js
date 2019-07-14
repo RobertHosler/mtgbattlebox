@@ -51,10 +51,15 @@ angular.module('mtg')
                     }
                 };
                 
+                /**
+                 * Get a list of cards, but only request cards that
+                 * are not already stored locally.
+                 */
                 self.getCards = function(cardList) {
                     if (!cardList) {
                         return;
                     }
+                    //Build a list of cards not stored locally.
                     var cardsToRequest = [];
                     cardList.forEach(function(cardName) {
                         var card = self.cards[cardName];
@@ -64,6 +69,7 @@ angular.module('mtg')
                             cardsToRequest.push(cardName);
                         }
                     });
+                    //Emit a get of the list, note: won't request if all cards are stored locally.
                     if (cardsToRequest.length > 0) {
                         console.log("Requesting card data", cardsToRequest);
                         socket.emit('getFullCards', cardsToRequest);

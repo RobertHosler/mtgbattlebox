@@ -10,7 +10,7 @@ angular.module('mtg')
               action: '=action',
               actionLabel: '=actionlabel'
             },
-            require: '^hires',
+            require: ['^hires','^alt'],
             templateUrl: 'app/mtg/card/card-image.dir.html'
           };
     });

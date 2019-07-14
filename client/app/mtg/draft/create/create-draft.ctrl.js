@@ -35,12 +35,15 @@ angular
                 $scope.$apply();
             });
 
+            /**
+             * Send the username, draft type, and selected cube to the server.
+             * Change the page to the draft room.
+             */
             $scope.createDraft = function() {
-                console.log('Creating draft:', $scope.selectedCube.name, $scope.selectedDraftType);
-                $scope.draftService.draftId;
+                console.log('Creating draft:', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
                 socket.emit('createDraft', UserService.name, $scope.selectedDraftType, $scope.selectedCube);
-                $location.path('/mtg/draft/room');
-                console.log($scope.test);
+                delete DraftService.draftId;
+                $location.path('/mtg/draft/room');//change the location
             };
 
         }

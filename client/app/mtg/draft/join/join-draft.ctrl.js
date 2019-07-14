@@ -13,7 +13,8 @@ angular
             $scope.draftService = DraftService;
             
             $scope.joinDraft = function(draftId) {
-                $scope.draftService.draftId = draftId;
+                // $scope.draftService.draftId = draftId;
+                delete DraftService.draftId;
                 $location.path('/mtg/draft/room');
                 socket.emit('joinDraft', UserService.name, draftId);
             };

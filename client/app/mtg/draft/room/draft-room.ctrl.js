@@ -6,11 +6,10 @@ angular
         ['$scope', 'UserService', 'DraftService', 'socket', 'CardService', '$location', '$window',
         function($scope, UserService, DraftService, socket, CardService, $location, $window) {
             
-            // if (!DraftService.draftId) {
-            //     console.log("No Draft Id");
-            //     $location.path('/createDraft');
-            //     return;
-            // }
+            $scope.draftService = DraftService;
+            $scope.cardService = CardService;
+            $scope.draftInclude = '';//once a new draft is detected, this will be set
+            $scope.stacked = true;
             
             function draftServiceUpdate() {
                 init();
@@ -31,12 +30,9 @@ angular
 				CardService.disconnect(cardServiceUpdate);
 			});
             
-            $scope.draftService = DraftService;
-            $scope.cardService = CardService;
-            
-    		var dt = new Date();
-    		var date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
-	        var fileName;
+    		const dt = new Date();
+    		const date = dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate();
+	        let fileName;
             
             /**
              * Function to be run on page load and whenever there is a service update
@@ -49,81 +45,93 @@ angular
             function initDraft() {
                 fileName = "/decks/" + date + "_" + DraftService.draftId + "_" + UserService.name + ".txt";
                 $scope.cubes = DraftService.cubes;
-            	$scope.draftId = DraftService.draftId;
+                let newDraft = DraftService.draftId !== $scope.draftId;
+                $scope.draftId = DraftService.draftId;
                 $scope.publicDraft = DraftService.publicDrafts[DraftService.draftId];
                 $scope.secretDraft = DraftService.secretDraft;
-                if ($scope.secretDraft) {
-                    $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
-                    $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
-                }
                 if ($scope.publicDraft && $scope.secretDraft) {
                 	var opponentIndex = $scope.secretDraft.index === 0 ? 1 : 0;
                 	$scope.opponentPool = $scope.publicDraft.playerPools[opponentIndex];
                     $scope.sortedOpponentPool = CardService.sortCardList($scope.opponentPool);
+                    $scope.sortedDeck = CardService.sortCardList($scope.secretDraft.deck);
+                    $scope.sortedSideboard = CardService.sortCardList($scope.secretDraft.sideboard);
 					if ($scope.publicDraft.type.name === "Grid") {
-						$scope.grid = [];
-						$scope.grid[0] = $scope.publicDraft.currentGrid[0].slice();
-						$scope.grid[1] = $scope.publicDraft.currentGrid[1].slice();
-						$scope.grid[2] = $scope.publicDraft.currentGrid[2].slice();
-						var cardsToRequest = [];
-                        $scope.grid[0].forEach(function(cardName, index) {
-                            var card = CardService.cards[cardName];
-                            if (!card || !card.id) {
-                                cardsToRequest.push(cardName);
-                                $scope.grid[0][index] = "";
-                            }
-                        });
-                        $scope.grid[1].forEach(function(cardName, index) {
-                            var card = CardService.cards[cardName];
-                            if (!card || !card.id) {
-                                cardsToRequest.push(cardName);
-                                $scope.grid[1][index] = "";
-                            }
-                        });
-                        $scope.grid[2].forEach(function(cardName, index) {
-                            var card = CardService.cards[cardName];
-                            if (!card || !card.id) {
-                                cardsToRequest.push(cardName);
-                                $scope.grid[2][index] = "";
-                            }
-                        });
-						CardService.getCards(cardsToRequest);
+						initGridDraft();
 					} else if ($scope.publicDraft.type.name === "Pancake") {
-					    $scope.pack = $scope.secretDraft.pack;
-						CardService.getCards($scope.pack);
-						$scope.cardAction = ($scope.secretDraft.picking ? $scope.pickCardName : $scope.burnCardName);
-						$scope.cardActionLabel = ($scope.secretDraft.picking ? 'Pick' : 'Burn');
+                        initPickBurnDraft();
 					} else if ($scope.publicDraft.type.name === "BurnFour") {
-					    $scope.pack = $scope.secretDraft.pack;
-						CardService.getCards($scope.pack);
+                        initPickBurnDraft();
 					} else if ($scope.publicDraft.type.name === "Glimpse") {
-					    $scope.pack = $scope.secretDraft.pack;
-						CardService.getCards($scope.pack);
+                        initPickBurnDraft();
 					} else if ($scope.publicDraft.type.name === "Winston") {
 					    
 					} else if ($scope.publicDraft.type.name === "Winchester") {
 					    
-					}
+                    }
+                    if (newDraft) {
+                        initDraftInclude();
+                    } 
                 }
             }
-            
-            $scope.getDraftInclude = function() {
-                if (!$scope.publicDraft) {
-                    return '';
-                } else if ($scope.publicDraft.type.name === 'Grid') {
-                    return '/app/mtg/draft/room/grid.html';
+
+            /**
+             * Configure the controller scope for a grid draft by setting the cards in each grid.
+             */
+            function initGridDraft() {
+                $scope.grid = [];
+                //copy the grid arrays since we don't to modify the public draft's version
+                $scope.grid[0] = $scope.publicDraft.currentGrid[0].slice();
+                $scope.grid[1] = $scope.publicDraft.currentGrid[1].slice();
+                $scope.grid[2] = $scope.publicDraft.currentGrid[2].slice();
+                setLoadingStatus($scope.grid);
+            }
+
+            /**
+             * Configure the pick burn controller state by setting the pack on the scope object and retrieving
+             * any cards not currently stored locally.
+             */
+            function initPickBurnDraft() {
+                $scope.pack = $scope.secretDraft.pack.slice();//make a copy
+                setLoadingStatus([$scope.pack]);
+                //Configure picking vs burning on the state
+                $scope.cardAction = ($scope.secretDraft.picking ? $scope.pickCardName : $scope.burnCardName);
+                $scope.cardActionLabel = ($scope.secretDraft.picking ? 'Pick' : 'Burn');
+            }
+
+            /**
+             * Determine which cards need loaded and modify the names in each
+             * list so that once they are loaded, angular knows to update the
+             * card objects.
+             */
+            function setLoadingStatus(list) {
+                let cardsToRequest = [];
+                list.forEach(function(cardList, index) {
+                    cardList.forEach(function(cardName, index) {
+                        let card = CardService.cards[cardName];
+                        if (!card || !card.id) {
+                            cardsToRequest.push(cardName);
+                            cardList[index] += " - Loading";//add loading until loaded
+                        }
+                    });
+                });
+                CardService.getCards(cardsToRequest);
+            }
+
+			function initDraftInclude() {
+				if ($scope.publicDraft.type.name === 'Grid') {
+                    $scope.draftInclude = '/app/mtg/draft/room/grid.html';
                 } else if ($scope.publicDraft.type.name === 'Pancake' ||
                             $scope.publicDraft.type.name === 'BurnFour' ||
                             $scope.publicDraft.type.name === 'Glimpse') {
-                    return '/app/mtg/draft/room/pickBurn.html';
+                    $scope.draftInclude = '/app/mtg/draft/room/pickBurn.html';
                 } else if ($scope.publicDraft.type.name === 'Winston') {
-                    return '/app/mtg/draft/room/winston.html';
+                    $scope.draftInclude = '/app/mtg/draft/room/winston.html';
                 } else if ($scope.publicDraft.type.name === 'Winchester') {
-                    return '/app/mtg/draft/room/winchester.html';
+                    $scope.draftInclude = '/app/mtg/draft/room/winchester.html';
                 } else {
-                    return '';
+                    $scope.draftInclude = '';
                 }
-            };
+			}
             
             $scope.draftCol = function(index) {
                 socket.emit('draftCol', index);
@@ -190,7 +198,7 @@ angular
             $scope.saveDeck = function() {
                 socket.emit('saveDeck', fileName);
             };
-            
+
             init();
             
         }

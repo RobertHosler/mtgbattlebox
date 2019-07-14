@@ -298,6 +298,24 @@ body {
     max-height: 95px;
 }
 
+@media only screen and (max-width: 991px) {
+    .pack-row > .pack-card {
+        margin:2px;
+        width:31%;
+    }
+}
+
+@media only screen and (max-width: 520px) {
+    .pack-row > .pack-card {
+        margin:1px;
+        width:31%;
+    }
+}
+
+.unstacked.pack-row > .pack-card {
+    max-height: none;
+}
+
 .pack-row > .pack-card:not(:first-child) {
 /*     margin-left: -5%; */
 /*     margin-bottom: -5px; */
@@ -368,6 +386,3 @@ body {
     text-align: center;
     max-height: 350px;
 }
-
-display: block;
-width: 100%;

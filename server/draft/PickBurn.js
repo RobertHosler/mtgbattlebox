@@ -151,7 +151,7 @@ function burnCard(draft, playerNumber, index, cardName) {
  */
 function startNewRound(draft) {
     draft = startNewTurn(draft);
-    draft['currentTurn'] = 1;
+    draft.currentTurn = 1;
 	var nextRound = draft.public.round + 1;
 	draft.public.round = nextRound;
 	draft.secret[0].packIndex = (nextRound * 2) - 1;//1,3,5,7,etc

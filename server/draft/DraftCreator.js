@@ -65,21 +65,14 @@ function isNew(draft, socket) {
     return socketIndex;
 }
 
+/**
+ * Create a draft object and add it to the draft map using its unique id.
+ * 
+ * TODO: prevent players from creating multiple drafts
+ */
 function createDraft(playerName, draftType, cube) {
     console.log("CreateDraft", playerName, draftType.name, cube.name);
-    //TODO: prevent players from creating multiple drafts
-    //generate unique draft id
-    var draftId;
-    while (true) {
-        draftId = (Math.random() + 1).toString(36).slice(2, 18); //TODO: prevent same id from appearing
-        if (this.app.drafts[draftId]) {
-            continue; //id not unique, keep generating
-        }
-        else {
-            break; //id is unique
-        }
-    }
-    var draft = {};
+    let draft = {};
     if (draftType.name === "Grid") {
         draft = createGridDraft(cube);
     } else if (draftType.name === "Winston") {
@@ -92,16 +85,33 @@ function createDraft(playerName, draftType, cube) {
         draft = createBaseDraft(cube, 90);
         //Error - type not supported
     }
+    let draftId = generateUniqueId(this.app);
     draft.public.id = draftId;
     draft.public.players.push(playerName);
     draft.public.type = draftType;
     draft.sockets = [this.socket]; //add socket as player one
-    console.log("Draft Created", draftId);
+    console.log("Draft Created", draftId, playerName, draftType.name, cube.name);
     this.socket.draftId = draftId;
     this.app.drafts[draftId] = draft; //map draft to draft id
     this.app.publicDrafts[draftId] = draft.public; //map draft to draft id
-    this.app.draftBroadcast(draft.public.id); //notify individual player of secret draft update
+    this.app.draftBroadcast(draftId); //notify individual player of secret draft update
     // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
+}
+
+/**
+ * Generate a unique id, by cross checking the random id with existing ids.
+ * 
+ * TODO: clear the ids at some point.
+ */
+function generateUniqueId(app) {
+    let draftId;
+    while (true) {
+        draftId = (Math.random() + 1).toString(36).slice(2, 18);
+        if (!app.drafts[draftId]) {
+            break;
+        }
+    }
+    return draftId;
 }
 
 function createBaseDraft(cube, poolSize) {

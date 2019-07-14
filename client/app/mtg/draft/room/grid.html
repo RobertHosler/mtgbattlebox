@@ -19,7 +19,8 @@
             <div class="btn btn-default row-button" ng-click="draftRow($index);">Pick</div>
         </div>
         <div ng-repeat="card in row" class="col-xs-3 gridCol">
-            <card-image id="$parent.$index + '' + $index + 'gridCard'" card="card" cardservice="cardService"></card-image>
+            <card-image id="$parent.$index + '' + $index + 'gridCard'" card="card" 
+                cardservice="cardService"></card-image>
         </div>
         <div class="col-xs-1">
         </div>

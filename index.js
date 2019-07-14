@@ -48,6 +48,11 @@ function broadcast(event, data) {
     });
 }
 
+/**
+ * Emit 'draftUpdate' to all sockets associated with the specified draftId.
+ * Each player will receive an update to the public draft as well as their
+ * instance of draftSecret
+ */
 function draftBroadcast(draftId) {
     var draft = app.drafts[draftId];
     var playerNumber = 0;

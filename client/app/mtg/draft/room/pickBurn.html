@@ -1,7 +1,15 @@
-<div ng-hide="publicDraft.complete">
-    <div class="row pack-row">
-        <div ng-repeat="card in pack" class="pack-card">
-            <card-image id="$index + 'packCard'" card="card" cardservice="cardService" action="cardAction" actionlabel="cardActionLabel"></card-image>
+<div ng-hide="publicDraft.complete" class="row">
+        
+    <div class="col-xs-12">
+        <label>
+            <input type="checkbox" ng-model="stacked">
+            Stack cards
+        </label> 
+        <div class="pack-row" ng-class="{unstacked: !stacked}">
+            <div ng-repeat="card in pack" class="pack-card">
+                <card-image id="$index + 'packCard'" card="card" cardservice="cardService" 
+                    action="cardAction" actionlabel="cardActionLabel"></card-image>
+            </div>
         </div>
     </div>
 </div>
