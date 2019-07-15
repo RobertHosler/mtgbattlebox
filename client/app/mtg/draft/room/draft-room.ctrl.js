@@ -10,6 +10,7 @@ angular
             $scope.cardService = CardService;
             $scope.draftInclude = '';//once a new draft is detected, this will be set
             $scope.stacked = true;
+            $scope.cmc = false;//sort by color by default
             
             function draftServiceUpdate() {
                 init();

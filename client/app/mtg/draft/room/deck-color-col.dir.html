@@ -1,7 +1,7 @@
-<div class="color-column" ng-hide="cardList.length == 0">
+<div class="color-column" ng-hide="!cardList || cardList.length == 0">
     <div><strong>{{colName}} - {{cardList.length}}</strong></div>
     <div ng-repeat="card in cardList" class="deckRow">
-        <card-mana id="$index + colName + '-deckModal'" card="card" cardservice="cardService" 
+        <card-mana id="$index + colName + colType" card="card" cardservice="cardService" 
             action="cardAction" actionlabel="cardActionLabel"></card-mana>
     </div>
 </div>

@@ -202,7 +202,8 @@ angular.module('mtg')
         				multi: [],
         				land: [],
         				colorless: [],
-        				curve: [],
+                        curve: [],
+                        cmc: [],//array of arrays of cards at each cmc
         				mostOnCurve: 0,
         				noncreatureCount: 0,
                         creatureCount: 0,
@@ -254,6 +255,11 @@ angular.module('mtg')
                         } else if (card.type_line && !card.type_line.includes("Land")) {
             	            result.noncreatureCount++;
                         }
+                        if (result.cmc[card.cmc]) {
+                            result.cmc[card.cmc].push(card.name);
+                        } else {
+                            result.cmc[card.cmc] = [card.name];
+                        }
                         result.cardCount++;
             	    });
             	    result.curve.forEach(function(element) {
@@ -267,7 +273,7 @@ angular.module('mtg')
         			result.red.sort(self.compareCmc);
         			result.green.sort(self.compareCmc);
         			result.multi.sort(self.compareCmc);
-        			result.colorless.sort(self.compareCmc);
+                    result.colorless.sort(self.compareCmc);
         			self.cardNamesOnly(result.white);
         			self.cardNamesOnly(result.blue);
         			self.cardNamesOnly(result.black);

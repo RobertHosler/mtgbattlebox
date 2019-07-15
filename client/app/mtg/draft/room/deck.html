@@ -5,33 +5,52 @@
                 <div class="col-xs-6 col-sm-3">
                     <h3>Deck</h3>
                 </div>
+                <div class="col-xs-6 col-sm-3">
+                    <label class="btn btn-default">
+                        <input type="checkbox" ng-model="cmc" class="hidden">
+                        Toggle Sort
+                    </label>
+                </div>
             </div>
-            <div class="row">
+            <div class="row" ng-class="{sort-cmc: cmc}">
                 <div class="col-xs-6 col-sm-9">
 
-                    <card-col colname="'White'" coltype="'Deck'" cardlist="sortedDeck.white" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                    <div ng-class="{hidden: cmc}">
 
-                    <card-col colname="'Blue'" coltype="'Deck'" cardlist="sortedDeck.blue" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'White'" coltype="'Deck'" cardlist="sortedDeck.white" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Black'" coltype="'Deck'" cardlist="sortedDeck.black" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Blue'" coltype="'Deck'" cardlist="sortedDeck.blue" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Red'" coltype="'Deck'" cardlist="sortedDeck.red" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Black'" coltype="'Deck'" cardlist="sortedDeck.black" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Green'" coltype="'Deck'" cardlist="sortedDeck.green" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Red'" coltype="'Deck'" cardlist="sortedDeck.red" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Multi'" coltype="'Deck'" cardlist="sortedDeck.multi" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Green'" coltype="'Deck'" cardlist="sortedDeck.green" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Colorless'" coltype="'Deck'" cardlist="sortedDeck.colorless" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Multi'" coltype="'Deck'" cardlist="sortedDeck.multi" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
 
-                    <card-col colname="'Land'" coltype="'Deck'" cardlist="sortedDeck.land" 
-                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        <card-col colname="'Colorless'" coltype="'Deck'" cardlist="sortedDeck.colorless" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                        <card-col colname="'Land'" coltype="'Deck'" cardlist="sortedDeck.land" 
+                            cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    </div>
+
+                    <div ng-class="{hidden: !cmc}">
+
+                        <span ng-repeat="cmc in sortedDeck.cmc">
+                            <card-col colname="$index" coltype="'Deck'" cardlist="cmc" 
+                                cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+                        </span>
+                
+                    </div>
 
                 </div>
                 <div class="col-xs-6 col-sm-3">
@@ -67,54 +86,44 @@
                     <h3>Sideboard: {{secretDraft.sideboard.length}} Cards</h3>
                 </div>
             </div>
-            <div class="color-column" ng-hide="sortedSideboard.white.length == 0">
-                <div><strong>White</strong></div>
-                <div ng-repeat="card in sortedSideboard.white" class="deckRow">
-                    <card-mana id="$index + 'white-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
+
+                <div ng-class="{hidden: cmc}">
+
+                    <card-col colname="'White'" coltype="'Sideboard'" cardlist="sortedSideboard.white" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Blue'" coltype="'Sideboard'" cardlist="sortedSideboard.blue" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Black'" coltype="'Sideboard'" cardlist="sortedSideboard.black" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Red'" coltype="'Sideboard'" cardlist="sortedSideboard.red" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Green'" coltype="'Sideboard'" cardlist="sortedSideboard.green" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Multi'" coltype="'Sideboard'" cardlist="sortedSideboard.multi" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Colorless'" coltype="'Sideboard'" cardlist="sortedSideboard.colorless" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
+                    <card-col colname="'Land'" coltype="'Sideboard'" cardlist="sortedSideboard.land" 
+                        cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+
                 </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.blue.length == 0">
-                <div><strong>Blue</strong></div>
-                <div ng-repeat="card in sortedSideboard.blue" class="deckRow">
-                    <card-mana id="$index + 'blue-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
+
+                <div ng-class="{hidden: !cmc}">
+
+                    <span ng-repeat="cmc in sortedSideboard.cmc">
+                        <card-col colname="$index" coltype="'Sideboard'" cardlist="cmc" 
+                            cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-col>
+                    </span>
+            
                 </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.black.length == 0">
-                <div><strong>Black</strong></div>
-                <div ng-repeat="card in sortedSideboard.black" class="deckRow">
-                    <card-mana id="$index + 'black-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.red.length == 0">
-                <div><strong>Red</strong></div>
-                <div ng-repeat="card in sortedSideboard.red" class="deckRow">
-                    <card-mana id="$index + 'red-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.green.length == 0">
-                <div><strong>Green</strong></div>
-                <div ng-repeat="card in sortedSideboard.green" class="deckRow">
-                    <card-mana id="$index + 'green-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.multi.length == 0">
-                <div><strong>Multi</strong></div>
-                <div ng-repeat="card in sortedSideboard.multi" class="deckRow">
-                    <card-mana id="$index + 'multi-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.colorless.length == 0">
-                <div><strong>Colorless</strong></div>
-                <div ng-repeat="card in sortedSideboard.colorless" class="deckRow">
-                    <card-mana id="$index + 'colorless-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
-            <div class="color-column" ng-hide="sortedSideboard.land.length == 0">
-                <div><strong>Land</strong></div>
-                <div ng-repeat="card in sortedSideboard.land" class="deckRow">
-                    <card-mana id="$index + 'land-sideModal'" card="card" cardservice="cardService" action="moveToDeck" actionlabel="'Deck'"></card-mana> 
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
