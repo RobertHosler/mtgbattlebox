@@ -85,23 +85,23 @@ angular.module('mtg')
                     } else {
                         return placeholder ? placeholder : self.cardBack;
                     }
-                }
+                };
                 
                 self.getCardBack = function() {
                     return self.cardBack;
-                }
+                };
                 
                 self.loadCardImage = function(card) {
-                    var source = card.image_uris['normal'];
+                    var source = card.image_uris.normal;
                     return source;
                     // return self.loadCardSrc(id, card, source);
-                }
+                };
                 
                 self.loadCardFace = function(card) {
-                    var source = card.card_faces[0].image_uris['normal'];
+                    var source = card.card_faces[0].image_uris.normal;
                     return source;
                     // return self.loadCardSrc(id, card, source);
-                }
+                };
                 
                 self.loadCardSrc = function(card, source) {
                     var downloadingImage = new Image();
@@ -125,7 +125,7 @@ angular.module('mtg')
                         // return downloadingImage.src;
                     }
                     return imageSrc;
-                }
+                };
                 
                 self.getCardMana = function(cardName) {
                     var card = self.cards[cardName];
@@ -139,7 +139,7 @@ angular.module('mtg')
                     } else {
                         return [];
                     }
-                }
+                };
                 
                 self.symbolImageList = function(manaCost) {
                     var list = [];
@@ -150,7 +150,7 @@ angular.module('mtg')
             		    }
             		});
             		return list;
-                }
+                };
                 
                 self.prettySymbolText = function(textWithSymbols) {
             		if (!textWithSymbols) return "";
@@ -162,7 +162,7 @@ angular.module('mtg')
             		textWithSymbols = textWithSymbols.replace(/(?:\r\n|\r|\n)/g, '<div></div>');
             		textWithSymbols = textWithSymbols.replace(/\{|\}/g, ''); //remove braces
             		return textWithSymbols;
-                }
+                };
                 
                 self.manaSymbol = function(symbol) {
             		symbol = symbol.replace(/\/|\[|\]|\{|\}/g, ''); //remove braces
@@ -170,13 +170,13 @@ angular.module('mtg')
             		var imgSrc = "../img/mtg/symbols/" + symbol + ".svg";
             		result = "<img class=\"manaSymbol\" src=\"" + imgSrc + "\">";
             		return result;
-            	}
+            	};
                 
                 self.manaSymbolImgSrc = function(symbol) {
             		symbol = symbol.replace(/\/|\[|\]|\{|\}/g, ''); //remove braces
             		var imgSrc = "../img/mtg/symbols/" + symbol + ".svg";
             		return imgSrc;
-            	}
+            	};
             	
             	self.getLandMana = function(card) {
             	    var colors = "";
@@ -189,7 +189,7 @@ angular.module('mtg')
 					if (card.oracle_text.indexOf("Mountain") >= 0) { colors += "{R}"; }
 					if (card.oracle_text.indexOf("Forest") >= 0) { colors += "{G}"; }
 					return self.symbolImageList(colors);
-            	}
+            	};
             	
             	self.sortCardList = function(cardList) {
             	    if (!cardList) return {};
@@ -204,7 +204,9 @@ angular.module('mtg')
         				colorless: [],
         				curve: [],
         				mostOnCurve: 0,
-        				noncreatureCount: 0
+        				noncreatureCount: 0,
+                        creatureCount: 0,
+                        cardCount: 0
         			};
             	    cardList.forEach(function(cardName) {
                         var card = self.cards[cardName];
@@ -246,10 +248,13 @@ angular.module('mtg')
             	                    break;
             	            }
 			                result.curve[card.cmc] = result.curve[card.cmc] ? result.curve[card.cmc] + 1 : 1;
-            	        }
-            	        if (card.type_line && !card.type_line.includes("Creature") && !card.type_line.includes("Land")) {
+                        }
+                        if (card.type_line && card.type_line.includes("Creature")) {
+                            result.creatureCount++;
+                        } else if (card.type_line && !card.type_line.includes("Land")) {
             	            result.noncreatureCount++;
-            	        }
+                        }
+                        result.cardCount++;
             	    });
             	    result.curve.forEach(function(element) {
             	        if (element > result.mostOnCurve) {
@@ -272,14 +277,14 @@ angular.module('mtg')
         			self.cardNamesOnly(result.colorless);
         			self.cardNamesOnly(result.land);
         			return result;
-            	}
+            	};
             	
             	self.cardNamesOnly = function(cardList) {
             	    for (var i = 0; i < cardList.length; i++) {
             	        cardList[i] = cardList[i].name;
             	    }
             	    return cardList;
-            	}
+            	};
             	
             	self.compareCmc = function(cardA, cardB) {
             		var result;

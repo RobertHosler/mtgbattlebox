@@ -7,13 +7,15 @@
     <div id="{{id}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');"
         data-backdrop="false">
         <div class="modal-dialog">
-            <img hires="{{cardService.getCardImage(card)}}" alt="{{card}}" class="card-border"
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg" ></img>
-            <span ng-repeat="cardPart in cardService.cards[card].card_faces">
-                <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}} Part $index" class="card-border"></img>
-            </span>
-            <div ng-hide="!actionLabel" style="display: block; text-align: center; margin: 10px; max-width: 100%;">
-                <span ng-click="action(card);" class="btn btn-default btn-lg">{{actionLabel}}</span>
+            <div>
+                <img hires="{{cardService.getCardImage(card)}}" alt="{{card}}" class="card-border"
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg" ></img>
+                <span ng-repeat="cardPart in cardService.cards[card].card_faces">
+                    <img ng-show="cardPart.image_uris" src="{{cardPart.image_uris['normal']}}" alt="{{card}} Part $index" class="card-border"></img>
+                </span>
+                <div ng-hide="!actionLabel" class="card-action">
+                    <span ng-click="action(card);" class="btn btn-default btn-lg">{{actionLabel}}</span>
+                </div>
             </div>
         </div>
     </div>

@@ -8,55 +8,31 @@
             </div>
             <div class="row">
                 <div class="col-xs-6 col-sm-9">
-                    <div class="color-column" ng-hide="sortedDeck.white.length == 0">
-                        <div><strong>White</strong></div>
-                        <div ng-repeat="card in sortedDeck.white" class="deckRow">
-                            <card-mana id="$index + 'white-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana>
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.blue.length == 0">
-                        <div><strong>Blue</strong></div>
-                        <div ng-repeat="card in sortedDeck.blue" class="deckRow">
-                            <card-mana id="$index + 'blue-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.black.length == 0">
-                        <div><strong>Black</strong></div>
-                        <div ng-repeat="card in sortedDeck.black" class="deckRow">
-                            <card-mana id="$index + 'black-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.red.length == 0">
-                        <div><strong>Red</strong></div>
-                        <div ng-repeat="card in sortedDeck.red" class="deckRow">
-                            <card-mana id="$index + 'red-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.green.length == 0">
-                        <div><strong>Green</strong></div>
-                        <div ng-repeat="card in sortedDeck.green" class="deckRow">
-                            <card-mana id="$index + 'green-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.multi.length == 0">
-                        <div><strong>Multi</strong></div>
-                        <div ng-repeat="card in sortedDeck.multi" class="deckRow">
-                            <card-mana id="$index + 'multi-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.colorless.length == 0">
-                        <div><strong>Colorless</strong></div>
-                        <div ng-repeat="card in sortedDeck.colorless" class="deckRow">
-                            <card-mana id="$index + 'colorless-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana> 
-                        </div>
-                    </div>
-                    <div class="color-column" ng-hide="sortedDeck.land.length == 0">
-                        <div><strong>Land</strong></div>
-                        <div ng-repeat="card in sortedDeck.land" class="deckRow">
-                            <card-mana id="$index + 'land-deckModal'" card="card" cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-mana>
-                        </div>
-                    </div>
-                    
+
+                    <card-col colname="'White'" coltype="'Deck'" cardlist="sortedDeck.white" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Blue'" coltype="'Deck'" cardlist="sortedDeck.blue" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Black'" coltype="'Deck'" cardlist="sortedDeck.black" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Red'" coltype="'Deck'" cardlist="sortedDeck.red" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Green'" coltype="'Deck'" cardlist="sortedDeck.green" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Multi'" coltype="'Deck'" cardlist="sortedDeck.multi" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Colorless'" coltype="'Deck'" cardlist="sortedDeck.colorless" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
+                    <card-col colname="'Land'" coltype="'Deck'" cardlist="sortedDeck.land" 
+                        cardservice="cardService" action="moveToSideboard" actionlabel="'Sideboard'"></card-col>
+
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div>
@@ -72,9 +48,9 @@
                         </div>
                     </div>
                     <div>
-                        <div>{{secretDraft.deck.length}} Total Cards</div>
-                        <div>{{secretDraft.deck.length - sortedDeck.land.length}} Spells</div>
-                        <div>{{secretDraft.deck.length - sortedDeck.noncreatureCount}} Creatures</div>
+                        <div>{{sortedDeck.cardCount}} Total Cards</div>
+                        <div>{{sortedDeck.cardCount - sortedDeck.land.length}} Spells</div>
+                        <div>{{sortedDeck.creatureCount}} Creature Spells</div>
                         <div>{{sortedDeck.noncreatureCount}} Non-Creature Spells</div>
                     </div>
                 </div>
@@ -82,7 +58,7 @@
         </div>
     </div>
 </div>
-    
+
 <div class="row">
     <div class="col-xs-12">
         <div ondrop="dropInSideboard(event)" ondragover="allowDrop(event)" class="draft-card-list sideboard">

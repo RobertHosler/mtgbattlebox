@@ -30,6 +30,24 @@
   padding-right: 0px !important;
 }
 
+.card-action {
+    margin: 10px 0px;
+}
+.card-action > .btn {
+    margin: 10px 0px;
+    background: purple;
+    color: white;
+    text-shadow: none;
+    width: 100%;
+}
+.card-action > .btn:hover {
+    margin: 10px 0px;
+    background:#5d005d;
+    color: white;
+    text-shadow: none;
+    width: 100%;
+}
+
 .scrollable-chat tbody {
     display: block;
     height: 250px;
@@ -290,6 +308,7 @@ body {
     padding: 20px;
     overflow: hidden;
     border: 2px solid black;
+    overflow: auto;
 }
 .pack-row > .pack-card {
     float:left;

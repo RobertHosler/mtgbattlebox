@@ -6,7 +6,6 @@
 <!--    draggable="true" ondragstart="drag(event)"><img -->
 <!--    src="{{cardService.getCardImage(card)}}" alt="{{card}}" class="card one"></img></a>-->
 
-
     <div id="{{id}}Modal" class="card-modal modal modal-img" role="dialog" onclick="$('.card-modal').modal('hide');">
         <div class="modal-dialog">
             <img class="card-border" hires="{{cardService.getCardImage(card)}}" alt="{{card}}"
@@ -16,6 +15,9 @@
             </span>
             <div style="display: block; text-align: center; margin: 10px; max-width: 100%;">
                 <span ng-click="action(card);" class="btn btn-default btn-lg">Move to {{actionLabel}}</span>
+            </div>
+            <div ng-hide="!actionLabel" class="card-action">
+                <span ng-click="action(card);" class="btn btn-default btn-lg">{{actionLabel}}</span>
             </div>
         </div>
     </div>
