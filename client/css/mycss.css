@@ -132,15 +132,16 @@ body {
     /* height: 100px; */
     /* position: relative; */
     border-radius: 15px;
-    border: solid 2px black;
+/*     border: solid 2px #2d2a26; */
+    opacity: .92;
 }
 .card-border {
     border-radius: 15px;
 }
 .card:hover {
-    border: #7ec730 solid 2px;
+/*     border: #7ec730 solid 2px; */
     border-radius: 15px;
-    opacity: .9
+    opacity: 1;
 }
 @media only screen and (min-width: 992px) {
     .gridRow .gridCol {
@@ -153,6 +154,24 @@ body {
     padding: 0px;
     max-height: 175px;
     overflow: hidden;
+}
+.unstacked .gridCol {
+    max-height: none;
+}
+.pile {
+    margin-top: 105%;
+}
+.pile > .card {
+    display: block;
+    margin-top: -102%;
+    opacity: 1;
+    border-radius: 10px;
+}
+.active {
+    border: #7ec730 solid 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
 }
 @media only screen and (min-width: 700px) {
     .gridRow .gridCol {
@@ -335,10 +354,14 @@ body {
     max-height: none;
 }
 
-.pack-row > .pack-card:not(:first-child) {
+.stacked > .pack-card:last-child {
+    max-height: none;
+}
+
+/* .pack-row > .pack-card:not(:first-child) { */
 /*     margin-left: -5%; */
 /*     margin-bottom: -5px; */
-}
+/* } */
 
 /* .pack-row > .pack-card .card-image-link .card {
     transform: rotate(-0deg);

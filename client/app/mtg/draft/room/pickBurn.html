@@ -1,11 +1,11 @@
 <div ng-hide="publicDraft.complete" class="row">
         
     <div class="col-xs-12">
-        <label>
-            <input type="checkbox" ng-model="stacked">
-            Overlap cards
-        </label> 
-        <div class="pack-row" ng-class="{unstacked: !stacked}">
+        <label class="btn btn-default">
+            <input type="checkbox" ng-model="stacked" class="hidden">
+            Toggle Overlap
+        </label>
+        <div class="pack-row" ng-class="{unstacked: !stacked, stacked: stacked}">
             <div ng-repeat="card in pack" class="pack-card">
                 <card-image id="$index + 'packCard'" card="card" cardservice="cardService" 
                     action="cardAction" actionlabel="cardActionLabel"></card-image>

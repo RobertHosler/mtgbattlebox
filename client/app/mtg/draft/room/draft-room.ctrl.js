@@ -65,13 +65,20 @@ angular
 					} else if ($scope.publicDraft.type.name === "Glimpse") {
                         initPickBurnDraft();
 					} else if ($scope.publicDraft.type.name === "Winston") {
-					    
+					    initWinstonDraft();
 					} else if ($scope.publicDraft.type.name === "Winchester") {
 					    
                     }
                     if (newDraft) {
                         initDraftInclude();
                     } 
+                }
+            }
+
+            function initWinstonDraft() {
+                if ($scope.secretDraft.pile) {
+                    $scope.currentPile = $scope.secretDraft.pile.slice();
+                    setLoadingStatus([$scope.currentPile]);
                 }
             }
 
@@ -164,6 +171,25 @@ angular
             
             $scope.moveToDeck = function(cardName) {
                 socket.emit('moveToDeck', cardName);
+            };
+
+            $scope.pileLabel = function(count) {
+                if (count === 1) {
+                    return "1 Card";
+                } else {
+                    return count + " Cards";
+                }
+            };
+
+            $scope.getArrayNumber = function(number) {
+                if (number > 5) {
+                    number = 5;
+                }
+                return new Array(number);
+            };
+
+            $scope.isActivePile = function(pileNumber) {
+                return $scope.publicDraft.activePile === pileNumber;
             };
             
             $window.allowDrop = function(ev) {

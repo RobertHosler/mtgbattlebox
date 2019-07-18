@@ -148,7 +148,7 @@ function createDraftPublic(cube, poolSize) {
 function createGridDraft(cube, numGrids = 18, colSize = 3) {
     console.log("Creating Grid Draft", numGrids, colSize);
     var gridSize = colSize * colSize; //default is 9
-    var poolSize = gridSize * numGrids //default is 162
+    var poolSize = gridSize * numGrids; //default is 162
     var draft = createBaseDraft(cube, poolSize);
     //The maximum is exclusive and the minimum is inclusive
     draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
@@ -188,10 +188,26 @@ function createWinchesterDraft() {
     
 }
 
-function createWinstonDraft() {
+function createWinstonDraft(cube) {
     //The maximum is exclusive and the minimum is inclusive
-    // draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
-    
+    var poolSize = 15 * 6;//default is 6 packs of 15 cards, 90
+    var draft = createBaseDraft(cube, poolSize);
+    draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
+    draft.piles = [];
+    let thePile = draft.public.pool.slice();
+    MtgUtil.shuffle(thePile);
+    draft.piles[0] = thePile;
+    draft.piles[1] = [draft.piles[0].pop()];
+    draft.piles[2] = [draft.piles[0].pop()];
+    draft.piles[3] = [draft.piles[0].pop()];
+    draft.public.pileSizes = [];
+    draft.public.pileSizes[0] = draft.piles[0].length;
+    draft.public.pileSizes[1] = draft.piles[1].length;
+    draft.public.pileSizes[2] = draft.piles[2].length;
+    draft.public.pileSizes[3] = draft.piles[3].length;
+    draft.public.activePile = 1;
+    draft.secret[draft.public.activePlayer-1].pile = draft.piles[1];
+    return draft;
 }
 
 function createPancakeDraft(cube) {

@@ -1,27 +1,55 @@
 <div ng-hide="publicDraft.complete">
-    <div class="row gridRow">
-        <div class="col-xs-2">
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="pile">
+                <img alt="Card Back" class="card one" ng-repeat="card in getArrayNumber(publicDraft.pileSizes[0])"
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
+            </div>
+            <div>{{pileLabel(publicDraft.pileSizes[0])}}</div>
         </div>
-        <div class="col-xs-3 gridCol center">
-            <div class="btn btn-default" ng-click="draftCol(0);">Pick</div>
+        <div class="col-xs-3" ng-class="{active: isActivePile(1)}">
+            <div class="pile">
+                <img alt="Card Back" class="card one"
+                    ng-repeat="card in getArrayNumber(publicDraft.pileSizes[1])"
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
+            </div>
+            <div>{{pileLabel(publicDraft.pileSizes[1])}}</div>
         </div>
-        <div class="col-xs-3 gridCol center">
-            <div class="btn btn-default" ng-click="draftCol(1);">Pick</div>
+        <div class="col-xs-3" ng-class="{active: isActivePile(2)}">
+            <div class="pile">
+                <img alt="Card Back" class="card one"
+                    ng-repeat="card in getArrayNumber(publicDraft.pileSizes[2])"
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
+            </div>
+            <div>{{pileLabel(publicDraft.pileSizes[2])}}</div>
         </div>
-        <div class="col-xs-3 gridCol center">
-            <div class="btn btn-default" ng-click="draftCol(2);">Pick</div>
+        <div class="col-xs-3" ng-class="{active: isActivePile(3)}">
+            <div class="pile">
+                <img alt="Card Back" class="card one"
+                    ng-repeat="card in getArrayNumber(publicDraft.pileSizes[3])"
+                    src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Magic_the_gathering-card_back.jpg/200px-Magic_the_gathering-card_back.jpg"></img>
+            </div>
+            <div>{{pileLabel(publicDraft.pileSizes[3])}}</div>
         </div>
-        <div class="col-xs-1">
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <label class="btn btn-default">
+                <input type="checkbox" ng-model="stacked" class="hidden">
+                Toggle Overlap
+            </label>
+            <div class="pack-row" ng-class="{unstacked: !stacked, stacked: stacked}">
+                <div ng-repeat="card in currentPile" class="pack-card">
+                    <card-image id="$index + 'packCard'" card="card" cardservice="cardService" action="cardAction"
+                        actionlabel="cardActionLabel"></card-image>
+                </div>
+            </div>
+            <div class="btn btn-default" ng-click="draftPile();">Draft</div>
+            <div class="btn btn-default" ng-click="passPile();">Pass</div>
         </div>
     </div>
-    <div ng-repeat="row in grid" class="row gridRow">
-        <div class="col-xs-2 center">
-            <div class="btn btn-default row-button" ng-click="draftRow($index);">Pick</div>
-        </div>
-        <div ng-repeat="card in row" class="col-xs-3 gridCol">
-            <card-image id="$parent.$index + '' + $index + 'gridCard'" card="card" cardservice="cardService"></card-image>
-        </div>
-        <div class="col-xs-1">
-        </div>
-    </div>
+
 </div>
