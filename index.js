@@ -15,6 +15,7 @@ router.use(function(req, res) {
 
 var BattleboxSplitter = require('battlebox/Splitter');
 var Grid = require('draft/Grid');
+var Winston = require('draft/Winston');
 var PickBurn = require('draft/PickBurn');
 var DraftCreator = require('draft/DraftCreator');
 var Draft = require('draft/Draft');
@@ -58,7 +59,7 @@ function draftBroadcast(draftId) {
     var playerNumber = 0;
     draft.sockets.forEach(function(socket) {
         var draftSecret = draft.secret[playerNumber];
-        console.log("Notifying PlayerNumber", playerNumber);
+        console.log("Notifying ", socket.name, " PlayerNumber ", playerNumber);
         socket.emit('draftUpdate', draft.public, draftSecret, app.publicDrafts);
         playerNumber++;
     });
@@ -72,6 +73,7 @@ io.sockets.on('connection', (socket) => {
     var eventHandlers = {
         splitter: new BattleboxSplitter(app, socket),
         grid: new Grid(app, socket),
+        winston: new Winston(app, socket),
         pickBurn: new PickBurn(app, socket),
         draftCreator: new DraftCreator(app, socket),
         cards: new Cards(app, socket),

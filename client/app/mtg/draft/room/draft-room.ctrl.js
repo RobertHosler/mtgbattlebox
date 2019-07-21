@@ -156,6 +156,14 @@ angular
             $scope.burnCard = function(index) {
                 socket.emit('burnCard', index);
             };
+
+            $scope.draftPile = function() {
+                socket.emit('pickPile');
+            };
+
+            $scope.passPile = function() {
+                socket.emit('passPile');
+            };
             
             $scope.pickCardName = function(cardName) {
                 socket.emit('pickCardName', cardName);

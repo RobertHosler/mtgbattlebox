@@ -22,6 +22,7 @@ angular
                     pageName: "Art Portfolio",
                     section: "about"
                 })
+                .when("/resume", { redirectTo: '/about/resume' })
                 .when("/about/resume", {
                     templateUrl: 'app/pages/resume.html',
                     pageName: "Resume",
@@ -32,6 +33,7 @@ angular
                     pageName: "Development Portfolio",
                     section: "about"
                 })
+                .when("/contact", { redirectTo: '/about/contact' })
                 .when("/about/contact", {
                     templateUrl: 'app/pages/contact.html',
                     pageName: "Contact",

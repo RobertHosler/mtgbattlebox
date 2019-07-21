@@ -205,7 +205,11 @@ function createWinstonDraft(cube) {
     draft.public.pileSizes[1] = draft.piles[1].length;
     draft.public.pileSizes[2] = draft.piles[2].length;
     draft.public.pileSizes[3] = draft.piles[3].length;
+    draft.resetPileCounts = function() {
+
+    };
     draft.public.activePile = 1;
+    //initial the first secret pile for the active player
     draft.secret[draft.public.activePlayer-1].pile = draft.piles[1];
     return draft;
 }
