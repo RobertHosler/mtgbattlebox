@@ -60,7 +60,7 @@ function draftBroadcast(draftId) {
     draft.sockets.forEach(function(socket) {
         var draftSecret = draft.secret[playerNumber];
         console.log("Notifying ", socket.name, " PlayerNumber ", playerNumber);
-        socket.emit('draftUpdate', draft.public, draftSecret, app.publicDrafts);
+        socket.emit('draftUpdate', draft.common, draftSecret, app.publicDrafts);
         playerNumber++;
     });
 }

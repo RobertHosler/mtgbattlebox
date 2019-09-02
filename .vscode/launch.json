@@ -5,17 +5,21 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\index.js"
+            "program": "${workspaceFolder}\\.compile\\index.js"
         },
         {
-            "name": "Launch via NPM",
+            "name": "Debug via NPM",
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "runtimeExecutable": "npm.cmd",
+            "protocol": "inspector",
+            "address": "localhost",
             "runtimeArgs": [
                 "run-script", "debug"
             ],
+            "sourceMaps": true,
+            "outFiles": [ "${workspaceRoot}/.compiled/**/*.js" ],
             "port": 9229
         }
     ]

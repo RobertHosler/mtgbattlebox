@@ -23,8 +23,8 @@ function pickCardName(cardName) {
     pickCard(draft, playerNumber, index, cardName);
     
     // this.app.broadcast('drafts', this.app.publicDrafts);
-    // this.socket.emit('draftUpdate', draft.public.id, draft.secret[playerNumber]);
-    this.app.draftBroadcast(draft.public.id);
+    // this.socket.emit('draftUpdate', draft.common.id, draft.secret[playerNumber]);
+    this.app.draftBroadcast(draft.common.id);
 }
 
 function pickCardIndex(index) {
@@ -37,13 +37,13 @@ function pickCardIndex(index) {
     var cardName;
     pickCard(draft, playerNumber, index, cardName);
     
-    this.app.draftBroadcast(draft.public.id);
+    this.app.draftBroadcast(draft.common.id);
 }
 
 function pickCard(draft, playerNumber, index, cardName) {
     var draftSecret = draft.secret[playerNumber];
     draftSecret.picksThisTurn++;
-    var picksAllowed = draft.picks[draft.public.turn];
+    var picksAllowed = draft.picks[draft.common.turn];
     if (draftSecret.picksThisTurn > picksAllowed) {
     	//quit if number of picks is greater than the number of picks allowed this turn
     	console.log("Pick invalid, number of picks exceeded the limit", draftSecret.picksThisTurn);
@@ -66,7 +66,7 @@ function pickCard(draft, playerNumber, index, cardName) {
     
     if (draftSecret.picksThisTurn < picksAllowed) {
     	//another pick should be made.
-    } else if (draft.public.turn == draft.public.turns) {
+    } else if (draft.common.turn == draft.common.turns) {
     	//last turn, no more picks, burn the rest of the pack
         draft['packs'][packIndex] = [];//set an empty array
         draftSecret.pack = [];
@@ -74,14 +74,14 @@ function pickCard(draft, playerNumber, index, cardName) {
         //when both players are done, start new round or end the draft
 		if (draft.secret[0].pack.length == 0 && 
 			draft.secret[1].pack.length == 0) {
-    		if (draft.public.round < draft.public.rounds) {
+    		if (draft.common.round < draft.common.rounds) {
     			startNewRound(draft);
     		} else {
-    		    console.log("Draft is over.", "Rounds:", draft.public.rounds, "Round:", draft.public.round);
-				draft.public.complete = true;
+    		    console.log("Draft is over.", "Rounds:", draft.common.rounds, "Round:", draft.common.round);
+				draft.common.complete = true;
     		}
 		}
-    } else if (draft.burns[draft.public.turn] > 0) {
+    } else if (draft.burns[draft.common.turn] > 0) {
     	draftSecret.burning = true;
     	draftSecret.picking = false;
     } else {
@@ -100,7 +100,7 @@ function burnCardName(cardName) {
     var index;
     burnCard(draft, playerNumber, index, cardName);
     
-    this.app.draftBroadcast(draft.public.id);
+    this.app.draftBroadcast(draft.common.id);
 }
 
 function burnCardIndex(index) {
@@ -113,14 +113,14 @@ function burnCardIndex(index) {
     var cardName;
     burnCard(draft, playerNumber, index, cardName);
     
-    this.app.draftBroadcast(draft.public.id);
+    this.app.draftBroadcast(draft.common.id);
 }
 
 function burnCard(draft, playerNumber, index, cardName) {
     //remove card from pack
     var draftSecret = draft.secret[playerNumber];
     draftSecret.burnsThisTurn++;
-    var burnsAllowed = draft.burns[draft.public.turn];
+    var burnsAllowed = draft.burns[draft.common.turn];
     if (draftSecret.burnsThisTurn > burnsAllowed) {
     	//quit if number of burns is greater than the number of burns allowed this turn
     	console.log("Burn invalid, number of burns exceeded the limit", draftSecret.burnsThisTurn);
@@ -152,8 +152,8 @@ function burnCard(draft, playerNumber, index, cardName) {
 function startNewRound(draft) {
     draft = startNewTurn(draft);
     draft.currentTurn = 1;
-	var nextRound = draft.public.round + 1;
-	draft.public.round = nextRound;
+	var nextRound = draft.common.round + 1;
+	draft.common.round = nextRound;
 	draft.secret[0].packIndex = (nextRound * 2) - 1;//1,3,5,7,etc
 	draft.secret[1].packIndex = nextRound * 2;//2,4,6,8,etc
 	draft.secret[0].pack = draft.packs[draft.secret[0].packIndex];//assign new pack
@@ -169,7 +169,7 @@ function startNewTurn(draft) {
     draft.secret[1].picksThisTurn = 0;
     draft.secret[0].burnsThisTurn = 0;
     draft.secret[1].burnsThisTurn = 0;
-    draft.public.turn++;
+    draft.common.turn++;
 	draft.secret[0].picking = true;
 	draft.secret[1].picking = true;
 	draft.secret[0].burning = false;

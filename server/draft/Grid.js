@@ -16,17 +16,17 @@ function draftRow(index) {
     if (!draft) {
         return;
     }
-    var activePlayer = draft.public.activePlayer;
+    var activePlayer = draft.common.activePlayer;
     var socketIndex = activePlayer-1;
     if (isActivePlayer(draft, socketIndex, this.socket.name)) {
         console.log("Good socket", this.socket.name);
         var draftedCards = [];
         for (var i = 0; i < 3; i++) {
-            var card = draft.public.currentGrid[index][i];
+            var card = draft.common.currentGrid[index][i];
             if (card) {
                 draftedCards.push(card);
             }
-            draft.public.currentGrid[index][i] = '';
+            draft.common.currentGrid[index][i] = '';
         }
         if (draftedCards.length === 0) {
             console.log("Can't draft zero cards");
@@ -35,7 +35,7 @@ function draftRow(index) {
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
         incrementTurn(draft);
-        this.app.draftBroadcast(draft.public.id);
+        this.app.draftBroadcast(draft.common.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -48,16 +48,16 @@ function draftCol(index) {
     if (!draft) {
         return;
     }
-    var activePlayer = draft.public.activePlayer;
+    var activePlayer = draft.common.activePlayer;
     var socketIndex = activePlayer-1;
     if (isActivePlayer(draft, socketIndex, this.socket.name)) {
         console.log("Good socket", this.socket.name);
         var draftedCards = [];
         for (var i = 0; i < 3; i++) {
-            var card = draft.public.currentGrid[i][index];
+            var card = draft.common.currentGrid[i][index];
             if (card) {
                 draftedCards.push(card);
-                draft.public.currentGrid[i][index] = '';
+                draft.common.currentGrid[i][index] = '';
             }
         }
         if (draftedCards.length === 0) {
@@ -66,7 +66,7 @@ function draftCol(index) {
         console.log("DraftedCards:", draftedCards);
         draftCards(draft, draftedCards);
         incrementTurn(draft);
-        this.app.draftBroadcast(draft.public.id);
+        this.app.draftBroadcast(draft.common.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -90,27 +90,27 @@ function isActivePlayer(draft, socketIndex, socketName) {
  * Add cards to player's pool and deck
  */
 function draftCards(draft, draftedCards) {
-    var activePlayer = draft.public.activePlayer;
+    var activePlayer = draft.common.activePlayer;
     var index = activePlayer-1;
-    draft.public.playerPools[index] = draft.public.playerPools[index].concat(draftedCards);
+    draft.common.playerPools[index] = draft.common.playerPools[index].concat(draftedCards);
     draft.secret[index].deck = draft.secret[index].deck.concat(draftedCards);
     // console.log("Deck", draft.secret[index].deck);
 }
 
 function incrementTurn(draft) {
-    if (draft.public.turn === 1) {
-        draft.public.turn++;
-        draft.public.activePlayer = draft.public.activePlayer === 1 ? 2 : 1;
-    } else if (draft.public.turn === 2) {
-        draft.public.turn = 1;
-        draft.public.gridNumber++;
-        if (draft.public.gridNumber > draft.public.numGrids) {
+    if (draft.common.turn === 1) {
+        draft.common.turn++;
+        draft.common.activePlayer = draft.common.activePlayer === 1 ? 2 : 1;
+    } else if (draft.common.turn === 2) {
+        draft.common.turn = 1;
+        draft.common.gridNumber++;
+        if (draft.common.gridNumber > draft.common.numGrids) {
             //Draft is over!
-            draft.public.complete = true;
+            draft.common.complete = true;
         } else {
             //New Grid
-            draft.public.currentGrid = draft.grids[draft.public.gridNumber-1];
-            console.log("New grid", draft.public.currentGrid);
+            draft.common.currentGrid = draft.grids[draft.common.gridNumber-1];
+            console.log("New grid", draft.common.currentGrid);
         }
     }
 }

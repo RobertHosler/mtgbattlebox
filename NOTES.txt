@@ -1,0 +1,19 @@
+NOTES
+
+--20190902--
+babel added to compile es6 code within /server to /.compile using source maps for debugging.
+
+copied index.js to server folder to allow it to be converted from es6 using babel
+index.js at the root renamed as index---legacy.js should be removed when no longer needed for reference
+
+debugging settings configured to work with vscode
+
+changed Draft.public to Draft.common - public is a reserved word so its best practice to avoid it.
+
+Added draftCards method to Draft module to be shared among draft types
+
+Converted Winston to es6 module
+
+Pancake.js (contains php) moved to php folder.  Php code is from another drafting app I wrote in php.
+
+Tweeks to stacked card css

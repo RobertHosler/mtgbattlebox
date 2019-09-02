@@ -106,12 +106,12 @@ io.on('connection', function(socket) {
     } else {
       //Error - type not supported
     }
-    draft.public.id = draftId;
-    draft.public.players.push(String(playerName || 'Anonymous'));
-    draft.public.type = draftType;
+    draft.common.id = draftId;
+    draft.common.players.push(String(playerName || 'Anonymous'));
+    draft.common.type = draftType;
     draft.sockets = ['', socket];//add socket as player one
     drafts[draftId] = draft;//map draft to draft id
-    publicDrafts[draftId] = draft.public;//map draft to draft id
+    publicDrafts[draftId] = draft.common;//map draft to draft id
     draft.sockets[1].emit('draftUpdate', draft.secret[1]);//notify individual player of secret draft update
     broadcast('drafts', publicDrafts);//publish all public draft updates
   });

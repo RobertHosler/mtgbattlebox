@@ -1,7 +1,4 @@
 
-<?php
-include 'draft_state.php';
-
 //this file is called by the winston.js file
 $function = $_POST['function'];
 $response = array();

@@ -125,6 +125,9 @@ body {
     height: 500px;
 }
 
+.stacked .card {
+    opacity: 1;
+}
 .card {
     max-width: 200px;
     /* height: 204px; */
@@ -132,17 +135,13 @@ body {
     /* height: 100px; */
     /* position: relative; */
     border-radius: 15px;
-/*     border: solid 2px #2d2a26; */
+    /*     border: solid 2px #2d2a26; */
     opacity: .92;
 }
 .card-border {
     border-radius: 15px;
 }
-.card:hover {
-/*     border: #7ec730 solid 2px; */
-    border-radius: 15px;
-    opacity: 1;
-}
+.card:hover {/*     border: #7ec730 solid 2px; */border-radius: 15px;/* opacity: 1; */}
 @media only screen and (min-width: 992px) {
     .gridRow .gridCol {
         width: inherit;
@@ -369,6 +368,7 @@ body {
 
 .pack-card .card:hover {
     opacity: 1;
+    /* position: absolute; */
 }
 
 .navbar-bottom {

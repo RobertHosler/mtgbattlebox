@@ -1,25 +1,28 @@
-var Winston = function(app, socket) {
-    this.app = app;
-    this.socket = socket;
+import Draft from 'draft/Draft';
 
-    // Expose handler methods for events
-    this.handler = {
-        // use the bind function to access this.app and this.socket in events
-        pickPile: pickPile.bind(this),
-        passPile: passPile.bind(this)
-    };
-};
+class Winston {
+    constructor(app, socket) {
+        this.app = app;
+        this.socket = socket;
+        // Expose handler methods for events
+        this.handler = {
+            // use the bind function to access this.app and this.socket in events
+            pickPile: pickPile.bind(this),
+            passPile: passPile.bind(this)
+        };
+    }
+}
 
 function pickPile() {
     var draft = this.app.drafts[this.socket.draftId];
     if (!draft) {
         return;
     }
-    var activePlayer = draft.public.activePlayer;
+    var activePlayer = draft.common.activePlayer;
     if (isActivePlayer(draft, this.socket.name)) {
         let topCard = draft.piles[0].pop();
-        let activePile = draft.public.activePile;
-        draftCards(draft, draft.piles[activePile]);
+        let activePile = draft.common.activePile;
+        Draft.draftCards(draft, draft.piles[activePile]);
         if (topCard) {
             draft.piles[activePile] = [topCard];
         } else {
@@ -28,7 +31,7 @@ function pickPile() {
         changePlayer(draft);
         changePile(draft, 1);
         updatePileCounts(draft);
-        this.app.draftBroadcast(draft.public.id);
+        this.app.draftBroadcast(draft.common.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -41,14 +44,14 @@ function passPile() {
     if (!draft) {
         return;
     }
-    let activePlayer = draft.public.activePlayer;
+    let activePlayer = draft.common.activePlayer;
     let socketIndex = activePlayer-1;
     if (isActivePlayer(draft, this.socket.name)) {
         let topCard = draft.piles[0].pop();
-        let activePile = draft.public.activePile;
-        if (draft.public.activePile === 3) {
+        let activePile = draft.common.activePile;
+        if (draft.common.activePile === 3) {
             if (topCard) {
-                draftCards(draft, [topCard]);
+                Draft.draftCards(draft, [topCard]);
                 topCard = draft.piles[0].pop();
                 if (topCard) {
                     //add top card to pile
@@ -59,7 +62,7 @@ function passPile() {
                 }
             } else {
                 //this pile must be taken, no cards left in main, force player to take this pile
-                draftCards(draft, draft.piles[activePile]);
+                Draft.draftCards(draft, draft.piles[activePile]);
                 draft.piles[activePile] = [];//empty pile
             }
             changePlayer(draft);
@@ -73,7 +76,7 @@ function passPile() {
             changePile(draft, activePile+1);
         }
         updatePileCounts(draft);
-        this.app.draftBroadcast(draft.public.id);
+        this.app.draftBroadcast(draft.common.id);
     } else {
         //hey you aren't allowed in here!
         console.log("Bad socket", this.socket.name);
@@ -85,17 +88,17 @@ function passPile() {
  * Expose the size of each pile without exposing the cards
  */
 function updatePileCounts(draft) {
-    draft.public.pileSizes[0] = draft.piles[0].length;
-    draft.public.pileSizes[1] = draft.piles[1].length;
-    draft.public.pileSizes[2] = draft.piles[2].length;
-    draft.public.pileSizes[3] = draft.piles[3].length;
+    draft.common.pileSizes[0] = draft.piles[0].length;
+    draft.common.pileSizes[1] = draft.piles[1].length;
+    draft.common.pileSizes[2] = draft.piles[2].length;
+    draft.common.pileSizes[3] = draft.piles[3].length;
 }
 
 /**
  * Swap the active player number from 1 to 2 and 2 to 1
  */
 function changePlayer(draft) {
-    draft.public.activePlayer = draft.public.activePlayer === 1 ? 2 : 1;
+    draft.common.activePlayer = draft.common.activePlayer === 1 ? 2 : 1;
 }
 
 /**
@@ -110,12 +113,12 @@ function changePile(draft, currentPile) {
             break;
         }
     }
-    draft.public.activePile = currentPile;
+    draft.common.activePile = currentPile;
     //clear secret piles
     draft.secret[0].pile = [];
     draft.secret[1].pile = [];
     //set active players new pile
-    draft.secret[draft.public.activePlayer-1].pile = draft.piles[draft.public.activePile];
+    draft.secret[draft.common.activePlayer-1].pile = draft.piles[draft.common.activePile];
 }
 
 /**
@@ -123,7 +126,7 @@ function changePile(draft, currentPile) {
  */
 function isActivePlayer(draft, socketName) {
     let result = false;
-    let socketIndex = draft.public.activePlayer-1;
+    let socketIndex = draft.common.activePlayer-1;
     if (draft.sockets.length > socketIndex && 
             draft.sockets[socketIndex] && 
             draft.sockets[socketIndex].name === socketName) {
@@ -132,15 +135,4 @@ function isActivePlayer(draft, socketName) {
     return result;
 }
 
-/**
- * Add cards to player's pool and deck
- */
-function draftCards(draft, draftedCards) {
-    var activePlayer = draft.public.activePlayer;
-    var index = activePlayer-1;
-    draft.secret[index].deck = draft.secret[index].deck.concat(draftedCards);
-    console.log("Deck", draft.secret[index].deck);
-}
-
-
-module.exports = Winston;
+export default Winston;

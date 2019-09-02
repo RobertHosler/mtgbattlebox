@@ -4,7 +4,7 @@
 //Private is information only known to certain players, ex: the contents of their deck's
 
 // var Draft = {};
-// Draft.publicInfo = {};
+// draft.commonInfo = {};
 // Draft.playersInfo = [];
 
 // var playerInfo = {};
@@ -24,7 +24,7 @@
 
     var createDraft = function(cube, poolSize) {
         var draft = {};
-        draft.public = createDraftPublic();
+        draft.common = createDraftPublic();
         draft.secret = [{}, createDraftSecret(), createDraftSecret()];
     }
 

@@ -10,7 +10,7 @@ var DraftCreator = function(app, socket) {
     };
 };
 
-var MtgUtil = require('util/MtgUtil');
+import { shuffle } from 'util/MtgUtil';
 
 DraftCreator.draftTypes = [
     { 
@@ -41,14 +41,14 @@ function joinDraft(playerName, draftId) {
     var socketIndex = isNew(draft, this.socket);
     if (socketIndex >= 0) {
         console.log("RejoinDraft", playerName, draftId);
-        // this.socket.emit('draftUpdate', draft.public.id, draft.secret[socketIndex]); //notify individual player of secret draft update
+        // this.socket.emit('draftUpdate', draft.common.id, draft.secret[socketIndex]); //notify individual player of secret draft update
     } else {
         console.log("JoinDraft", playerName, draftId);
-        draft.public.players.push(this.socket.name);
+        draft.common.players.push(this.socket.name);
         draft.sockets.push(this.socket);
     }
     this.socket.draftId = draftId;
-    this.app.draftBroadcast(draft.public.id); 
+    this.app.draftBroadcast(draft.common.id); 
     // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
 
@@ -71,6 +71,9 @@ function isNew(draft, socket) {
  * TODO: prevent players from creating multiple drafts
  */
 function createDraft(playerName, draftType, cube) {
+    if (!(playerName && cube && draftType)) {
+        return;//Error - playerName, cube, and draftType required.
+    }
     console.log("CreateDraft", playerName, draftType.name, cube.name);
     let draft = {};
     if (draftType.name === "Grid") {
@@ -86,14 +89,14 @@ function createDraft(playerName, draftType, cube) {
         //Error - type not supported
     }
     let draftId = generateUniqueId(this.app);
-    draft.public.id = draftId;
-    draft.public.players.push(playerName);
-    draft.public.type = draftType;
+    draft.common.id = draftId;
+    draft.common.players.push(playerName);
+    draft.common.type = draftType;
     draft.sockets = [this.socket]; //add socket as player one
     console.log("Draft Created", draftId, playerName, draftType.name, cube.name);
     this.socket.draftId = draftId;
     this.app.drafts[draftId] = draft; //map draft to draft id
-    this.app.publicDrafts[draftId] = draft.public; //map draft to draft id
+    this.app.publicDrafts[draftId] = draft.common; //map draft to draft id
     this.app.draftBroadcast(draftId); //notify individual player of secret draft update
     // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
@@ -116,7 +119,7 @@ function generateUniqueId(app) {
 
 function createBaseDraft(cube, poolSize) {
     var draft = {};
-    draft.public = createDraftPublic(cube, poolSize);
+    draft.common = createDraftPublic(cube, poolSize);
     draft.secret = [createDraftSecret(0), createDraftSecret(1)];
     return draft;
 }
@@ -132,17 +135,17 @@ function createDraftSecret(index) {
 
 function createDraftPublic(cube, poolSize) {
     var shuffledCube = cube.cards.slice(); //make a copy of the cube
-    MtgUtil.shuffle(shuffledCube); //shuffle it
-    var public = {};
-    public.poolSize = poolSize;
+    shuffle(shuffledCube); //shuffle it
+    var common = {};
+    common.poolSize = poolSize;
     //TODO: check if poolSize is larger than cube
-    public.pool = shuffledCube.slice(0, poolSize);
-    public.playerPools = [ [] , [] ];
-    public.players = [];
-    public.complete = false;
-    public.creationTime = displayTime(new Date());
-    public.cube = cube;
-    return public;
+    common.pool = shuffledCube.slice(0, poolSize);
+    common.playerPools = [ [] , [] ];
+    common.players = [];
+    common.complete = false;
+    common.creationTime = displayTime(new Date());
+    common.cube = cube;
+    return common;
 }
 
 function createGridDraft(cube, numGrids = 18, colSize = 3) {
@@ -151,18 +154,18 @@ function createGridDraft(cube, numGrids = 18, colSize = 3) {
     var poolSize = gridSize * numGrids; //default is 162
     var draft = createBaseDraft(cube, poolSize);
     //The maximum is exclusive and the minimum is inclusive
-    draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
-    draft.public.colSize = colSize;
-    draft.public.gridSize = gridSize;
-    draft.public.numGrids = numGrids;
-    draft.grids = createGrids(draft.public.pool, numGrids, colSize);
+    draft.common.activePlayer = Math.floor((Math.random() * 2) + 1);
+    draft.common.colSize = colSize;
+    draft.common.gridSize = gridSize;
+    draft.common.numGrids = numGrids;
+    draft.grids = createGrids(draft.common.pool, numGrids, colSize);
     console.log("Starting grids", draft.grids);
-    draft.public.gridNumber = 1;
-    draft.public.turn = 1;
-    draft.public.currentGrid = draft.grids[0]; //current grid is the only public grid.
-    console.log("Starting grid", draft.public.currentGrid);
-    draft.public.rowTaken;
-    draft.public.colTaken;
+    draft.common.gridNumber = 1;
+    draft.common.turn = 1;
+    draft.common.currentGrid = draft.grids[0]; //current grid is the only public grid.
+    console.log("Starting grid", draft.common.currentGrid);
+    draft.common.rowTaken;
+    draft.common.colTaken;
     return draft;
 }
 
@@ -184,7 +187,7 @@ var createGrids = function(pool, numGrids, colSize) {
 
 function createWinchesterDraft() {
     //The maximum is exclusive and the minimum is inclusive
-    // draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
+    // draft.common.activePlayer = Math.floor((Math.random() * 2) + 1);
     
 }
 
@@ -192,25 +195,25 @@ function createWinstonDraft(cube) {
     //The maximum is exclusive and the minimum is inclusive
     var poolSize = 15 * 6;//default is 6 packs of 15 cards, 90
     var draft = createBaseDraft(cube, poolSize);
-    draft.public.activePlayer = Math.floor((Math.random() * 2) + 1);
+    draft.common.activePlayer = Math.floor((Math.random() * 2) + 1);
     draft.piles = [];
-    let thePile = draft.public.pool.slice();
-    MtgUtil.shuffle(thePile);
+    let thePile = draft.common.pool.slice();
+    shuffle(thePile);
     draft.piles[0] = thePile;
     draft.piles[1] = [draft.piles[0].pop()];
     draft.piles[2] = [draft.piles[0].pop()];
     draft.piles[3] = [draft.piles[0].pop()];
-    draft.public.pileSizes = [];
-    draft.public.pileSizes[0] = draft.piles[0].length;
-    draft.public.pileSizes[1] = draft.piles[1].length;
-    draft.public.pileSizes[2] = draft.piles[2].length;
-    draft.public.pileSizes[3] = draft.piles[3].length;
+    draft.common.pileSizes = [];
+    draft.common.pileSizes[0] = draft.piles[0].length;
+    draft.common.pileSizes[1] = draft.piles[1].length;
+    draft.common.pileSizes[2] = draft.piles[2].length;
+    draft.common.pileSizes[3] = draft.piles[3].length;
     draft.resetPileCounts = function() {
 
     };
-    draft.public.activePile = 1;
+    draft.common.activePile = 1;
     //initial the first secret pile for the active player
-    draft.secret[draft.public.activePlayer-1].pile = draft.piles[1];
+    draft.secret[draft.common.activePlayer-1].pile = draft.piles[1];
     return draft;
 }
 
@@ -247,12 +250,12 @@ function createGlimpseDraft(cube) {
 function createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns) {
     var poolSize = numPacks * packSize;
     var draft = createBaseDraft(cube, poolSize);
-    var packs = buildPacks(draft.public.pool, packSize, numPacks);
+    var packs = buildPacks(draft.common.pool, packSize, numPacks);
     draft.packs = packs;
-    draft.public.turn = 1;
-    draft.public.turns = turns;
-    draft.public.round = 1;
-    draft.public.rounds = numPacks/2;
+    draft.common.turn = 1;
+    draft.common.turns = turns;
+    draft.common.round = 1;
+    draft.common.rounds = numPacks/2;
     draft.secret[0].packIndex = 1;//first player gets pack 1
     draft.secret[1].packIndex = 2;//second player gets pack 2
     draft.secret[0].pack = draft.packs[draft.secret[0].packIndex];
@@ -265,8 +268,8 @@ function createPickBurnDraft(cube, numPacks, packSize, picks, burns, turns) {
     draft.secret[1].burnsThisTurn = 0;
 	draft.secret[0].burning = false;
 	draft.secret[1].burning = false;
-    draft.public.currentPicks = picks[draft.public.turn];//number of picks in the turn
-    draft.public.currentBurns = burns[draft.public.turn];//number of burns in the turn
+    draft.common.currentPicks = picks[draft.common.turn];//number of picks in the turn
+    draft.common.currentBurns = burns[draft.common.turn];//number of burns in the turn
     draft.picks = picks;//number of picks on each turn in a round
     draft.burns = burns;//number of burns on each turn in a round
     draft.packSize = packSize;
@@ -313,4 +316,4 @@ function displayTime(time) {
     return str;
 }
 
-module.exports = DraftCreator;
+export default DraftCreator;

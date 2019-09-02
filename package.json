@@ -1,10 +1,13 @@
 {
   "name": "chat-example",
   "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
-  "main": "index.js",
-  "repository": "",
-  "author": "Mostafa Eweda <mo.eweda@gmail.com>",
+  "description": "",
+  "main": "server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobertHosler/mtgbattlebox.git"
+  },
+  "author": "Robert Hosler <rph731@gmail.com>",
   "dependencies": {
     "async": "^0.2.10",
     "cross-env": "^5.2.0",
@@ -18,10 +21,14 @@
     "socket.io": "^0.9.19"
   },
   "scripts": {
-    "start": "cross-env NODE_PATH=server node --trace-warnings index.js",
-    "debug": "cross-env NODE_PATH=server node --nolazy --inspect-brk=9229 index.js"
+    "start": "cross-env NODE_PATH=.compiled node --trace-warnings .compiled/index.js",
+    "debug": "cross-env NODE_PATH=.compiled node --nolazy --inspect-brk=9229 .compiled/index.js",
+    "build": "babel --presets es2015 --out-dir .compiled server",
+    "compile": "babel server --watch --out-dir .compiled --source-maps"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-include-source": "^1.1.0"
   }

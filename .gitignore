@@ -1,1 +1,10 @@
+#Node JS files
 node_modules
+
+#VS Code workspace files - launch configuration files seem to be good to share for the time being.
+#.vscode
+
+#Generated files from babel
+lib
+.compiled
+
