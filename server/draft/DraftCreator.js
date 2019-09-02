@@ -42,7 +42,7 @@ class DraftCreator {
                     ]
                 },
                 { 
-                    name: 'Burn Four', 
+                    name: 'BurnFour', 
                     description: [
                         '12 Rounds of 3 turns',
                         'Pack size - 15 cards',
@@ -130,6 +130,10 @@ function createDraft(playerName, draftType, cube) {
         draft = createWinstonDraft(cube);
     } else if (draftType.name === "Pancake") {
         draft = createPancakeDraft(cube);
+    } else if (draftType.name === "Glimpse") {
+        draft = createGlimpseDraft(cube);
+    } else if (draftType.name === "BurnFour") {
+        draft = createBurnFourDraft(cube);
     } else if (draftType.name === "Winchester") {
         draft = createWinchesterDraft(cube);
     } else {
