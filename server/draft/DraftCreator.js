@@ -1,49 +1,90 @@
-var DraftCreator = function(app, socket) {
-    this.app = app;
-    this.socket = socket;
-
-    // Expose handler methods for events
-    this.handler = {
-        // use the bind function to access this.app and this.socket in events
-        createDraft: createDraft.bind(this),
-        joinDraft: joinDraft.bind(this)
-    };
-};
-
 import { shuffle } from 'util/MtgUtil';
 
-DraftCreator.draftTypes = [
-    { 
-        name: 'Winston',
-        description: [
-            'Take turns looking through 3 piles of cards refiled with the pool of extra cards.'
-        ]},
-    { 
-        name: 'Grid', 
-        description: [
-            'Take turns picking a row or column from a grid of 9 cards.'
-        ]},
-    { 
-        name: 'Pancake', 
-        description: [
-            '9 Rounds of 3 turns',
-            'Pack size - 11 cards',
-            'Turn 1 - Each player takes 1 card then passes the pack to the other player.',
-            'Turn 2 - Each player takes 2 cards then burns 2 and passes back to the other player.',
-            'Turn 3 - Each player takes 2 cards then discards the remaining card.',
-            'Each player will draft 45 cards total.'
-        ]}
-];
+class DraftCreator {
 
+    constructor(app, socket) {
+        this.app = app;
+        this.socket = socket;
+
+        // Expose handler methods for events
+        this.handler = {
+            // use the bind function to access this.app and this.socket in events
+            createDraft: createDraft.bind(this),
+            joinDraft: joinDraft.bind(this)
+        };
+
+    }
+
+    static draftTypes() {
+        return [
+                { 
+                    name: 'Winston',
+                    description: [
+                        'Take turns looking through 3 piles of cards refiled with the pool of extra cards.'
+                    ]
+                },
+                { 
+                    name: 'Grid', 
+                    description: [
+                        'Take turns picking a row or column from a grid of 9 cards.',
+                        'The grid is reset every 2 picks.'
+                    ]
+                },
+                { 
+                    name: 'Pancake', 
+                    description: [
+                        '9 Rounds of 3 turns',
+                        'Pack size - 11 cards',
+                        'Turn 1 - Each player takes 1 card then passes the pack to the other player.',
+                        'Turn 2 - Each player takes 2 cards then burns 2 and passes back to the other player.',
+                        'Turn 3 - Each player takes 2 cards then discards the remaining card.',
+                        'Each player will draft 45 cards total.'
+                    ]
+                },
+                { 
+                    name: 'Burn Four', 
+                    description: [
+                        '12 Rounds of 3 turns',
+                        'Pack size - 15 cards',
+                        'Each turn take 1 card for your deck, remove 4 cards from the pack, then pass the pack to the other player.',
+                        'Each player will draft 36 cards total.'
+                    ]
+                },
+                {
+                    name: 'Glimpse', 
+                    description: [
+                        '9 Rounds of 5 turns',
+                        'Pack size - 15 cards',
+                        'Each turn take 1 card for your deck, remove 2 cards from the pack, then pass the pack to the other player.',
+                        'Each player will draft 45 cards total.'
+                    ]
+                },
+                {
+                    name: 'Winchester - 88', 
+                    description: [
+                        'Take turns picking from 1 of 4 available piles.',
+                        'After each pick, every pile receives an additional card from the remaining pool of cards.'
+                    ]
+                }
+            ];
+    }
+
+}
+
+/**
+ * Add this socket's user to the draft as a new or existing drafter.
+ * @param {*} playerName 
+ * @param {*} draftId 
+ */
 function joinDraft(playerName, draftId) {
     var draft = this.app.drafts[draftId];
     //Add the player to the list and emit their secret part of the draft
     var socketIndex = isNew(draft, this.socket);
     if (socketIndex >= 0) {
-        console.log("RejoinDraft", playerName, draftId);
+        console.log("Rejoining Draft", playerName, draftId);
         // this.socket.emit('draftUpdate', draft.common.id, draft.secret[socketIndex]); //notify individual player of secret draft update
     } else {
-        console.log("JoinDraft", playerName, draftId);
+        console.log("Joining Draft", playerName, draftId);
         draft.common.players.push(this.socket.name);
         draft.sockets.push(this.socket);
     }
@@ -52,6 +93,13 @@ function joinDraft(playerName, draftId) {
     // this.app.broadcast('drafts', this.app.publicDrafts); //publish all public draft updates
 }
 
+/**
+ * Determine if socket's name is already in the sockets list for the given draft.  If it is,
+ * then return the socketIndex of the socket in the socket array.
+ * 
+ * @param {*} draft 
+ * @param {*} socket 
+ */
 function isNew(draft, socket) {
     var socketIndex = -1;
     for (var i = 0; i < draft.sockets.length; i++) {
@@ -117,13 +165,28 @@ function generateUniqueId(app) {
     return draftId;
 }
 
+/**
+ * Create the skeleton of a draft that is common to all draft types.
+ * The draft object is designed such that the common property may be shared among
+ * all players, the secret property contains information private to the corresponding
+ * players, and anything at the base of the draft is hidden from all players. For instance
+ * while drafting in Grid, only 1 grid will be public on the common property at a time, but
+ * all grids are known to the app directly off the draft object.
+ * @param {*} cube 
+ * @param {*} poolSize 
+ */
 function createBaseDraft(cube, poolSize) {
     var draft = {};
-    draft.common = createDraftPublic(cube, poolSize);
+    draft.common = createDraftCommon(cube, poolSize);
     draft.secret = [createDraftSecret(0), createDraftSecret(1)];
     return draft;
 }
 
+/**
+ * Create a draft secret that will store the user's draft specific data that
+ * should not be revealed to the other player.  Ex: Deck and sideboard composition.
+ * @param {*} index 
+ */
 function createDraftSecret(index) {
     var secret = {};
     secret.index = index;
@@ -133,7 +196,12 @@ function createDraftSecret(index) {
     return secret;
 }
 
-function createDraftPublic(cube, poolSize) {
+/**
+ * Create the base common draft information that will be visible to all players.
+ * @param {*} cube 
+ * @param {*} poolSize 
+ */
+function createDraftCommon(cube, poolSize) {
     var shuffledCube = cube.cards.slice(); //make a copy of the cube
     shuffle(shuffledCube); //shuffle it
     var common = {};
@@ -148,6 +216,12 @@ function createDraftPublic(cube, poolSize) {
     return common;
 }
 
+/**
+ * Add the grid specific properties to the base draft object.
+ * @param {*} cube 
+ * @param {*} numGrids 
+ * @param {*} colSize 
+ */
 function createGridDraft(cube, numGrids = 18, colSize = 3) {
     console.log("Creating Grid Draft", numGrids, colSize);
     var gridSize = colSize * colSize; //default is 9
@@ -169,15 +243,24 @@ function createGridDraft(cube, numGrids = 18, colSize = 3) {
     return draft;
 }
 
-var createGrids = function(pool, numGrids, colSize) {
+/**
+ * Create X arrays of length 3 where each index contains another array of length 3.  This
+ * array will represent a grid to be drafted.
+ * @param {*} pool 
+ * @param {*} numGrids 
+ * @param {*} colSize 
+ */
+function createGrids(pool, numGrids, colSize) {
     var grids = []; //grids is an array of grids
     for (var n = 0; n < numGrids; n++) {
         var grid = []; //grid is an array of rows
         for (var i = 0; i < colSize; i++) {
             var row = []; //row is an array of the cards in each column of that row
             for (var j = 0; j < colSize; j++) {
+                //Remove a card from the pool and add it to the row.
                 row.push(pool.pop());
             }
+            //Add a row to the grid
             grid.push(row);
         }
         grids.push(grid);
@@ -185,10 +268,20 @@ var createGrids = function(pool, numGrids, colSize) {
     return grids;
 }
 
-function createWinchesterDraft() {
+function createWinchesterDraft(cube) {
     //The maximum is exclusive and the minimum is inclusive
-    // draft.common.activePlayer = Math.floor((Math.random() * 2) + 1);
-    
+    let poolSize = 23 * 4;//Pool size should be a multiple of 4 to ensure that each pile can be replenished.
+    draft = createBaseDraft(cube, poolSize);
+    draft.common.activePlayer = Math.floor((Math.random() * 2) + 1);
+    //The piles are public information in winchester
+    draft.common.piles = [];
+    draft.pile = draft.common.pool.slice();//copy the pool into a shuffled pile
+    shuffle(draft.pile);
+    draft.common.piles[0] = draft.pile.pop();
+    draft.common.piles[1] = draft.pile.pop();
+    draft.common.piles[2] = draft.pile.pop();
+    draft.common.piles[3] = draft.pile.pop();
+    return draft;
 }
 
 function createWinstonDraft(cube) {
@@ -239,7 +332,7 @@ function createBurnFourDraft(cube) {
 
 function createGlimpseDraft(cube) {
     var numPacks = 18;
-    var packSize = 11;
+    var packSize = 15;
     var picks = [0, 1, 1, 1, 1, 1];
     var burns = [0, 2, 2, 2, 2, 0];
     var turns = 5;

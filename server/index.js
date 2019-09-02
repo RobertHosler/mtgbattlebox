@@ -17,7 +17,7 @@ import BattleboxSplitter from 'battlebox/Splitter';
 import Grid from 'draft/Grid';
 import Winston from 'draft/Winston';
 import PickBurn from 'draft/PickBurn';
-import DraftCreator, { draftTypes as _draftTypes } from 'draft/DraftCreator';
+import DraftCreator from 'draft/DraftCreator';
 import Draft from 'draft/Draft';
 import { battleboxLands as _battleboxLands, battleboxes as _battleboxes, cubes as _cubes, allCards as _allCards, saveDeck, saveAllCards } from 'mtg/FileReader';
 import Cards from 'mtg/Cards';
@@ -33,7 +33,7 @@ var app = {
     cube: {
         cubes: _cubes
     },
-    draftTypes: _draftTypes,
+    draftTypes: DraftCreator.draftTypes(),
     allCards: _allCards,
     broadcast: broadcast,
     draftBroadcast: draftBroadcast
