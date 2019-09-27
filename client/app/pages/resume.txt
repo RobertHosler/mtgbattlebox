@@ -1,0 +1,21 @@
+Web developer with 6+ years of experience working with enterprise Java web applications and the Android framework.  Proven ability to work independently and as a team to design and implement solutions.  
+
+Prides himself on creating maintainable solutions in an ever changing environment.
+    - Adapting to customer needs?
+
+Solid understanding of responsive design and an active desire to explore the latest in web technologies.  Bachelors degrees in Computer Science and Studio Art from Lebanon Valley College.
+
+Content delivery - TeamSite workflow/forms/AEM
+Responsive design - MDB rewrite/other sites
+CSS/JS - redesign - jquery and bootstrap plugins
+Android
+
+
+Contributed to major rewrite of web application using responsive web design frameworks
+<strong>Led design and development of native Android application</strong with fingerprint authentication and REST service integration
+
+<li>Responsible for the design and development of features in multiple applications</li>
+<li>Backend development consuming REST and SOAP APIs as well as IBM's mainframe technologies</li>
+<li>Worked with external partner to provide single sign on access and customized branding solutions</li>
+<li></li>
+<li>Mentored junior developers on best practices, technologies, and design principles</li>
