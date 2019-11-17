@@ -9,7 +9,9 @@ Content delivery - TeamSite workflow/forms/AEM
 Responsive design - MDB rewrite/other sites
 CSS/JS - redesign - jquery and bootstrap plugins
 Android
-
+Single Sign On
+Legacy Code - object oriented
+Complex Requirements
 
 Contributed to major rewrite of web application using responsive web design frameworks
 <strong>Led design and development of native Android application</strong with fingerprint authentication and REST service integration
