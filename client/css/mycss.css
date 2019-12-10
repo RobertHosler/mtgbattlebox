@@ -428,3 +428,65 @@ body {
     text-align: center;
     max-height: 350px;
 }
+
+.home-link {
+    max-width: 500px;
+    height: 350px;
+    display: block;
+    position: relative;
+    box-shadow: 2px 2px 5px #000;
+    border-radius: 5px;
+    margin-bottom: 75px;
+    color: #ddd;
+    background-color: #666;
+    text-shadow: 2px 2px 5px #000;
+    font-family: Arial Black;
+}
+@media (max-width: 1199px) {
+    .home-link {
+        margin-bottom: 25px;
+    }
+}
+.home-link:hover {
+    color: #fff;
+    box-shadow: 2px 2px 8px #000;
+}
+.home-link > div {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 20px;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+.home-developer {
+    background-image: url("https://i.imgur.com/Zzq0A66.jpg");
+}
+.home-developer:hover {
+    background-image: url("https://i.imgur.com/lPCXTdK.jpg");
+}
+.home-gamer {
+    background-image: url("https://i.imgur.com/7f7wydD.jpg");
+}
+.home-gamer:hover {
+    background-image: url("https://i.imgur.com/ADmvHxm.jpg");
+}
+.home-artist {
+    background-image: url("https://i.imgur.com/0rMMOx9.jpg");
+}
+.home-artist:hover {
+    background-image: url("https://i.imgur.com/1Or4qsN.jpg");
+}
+.home-artist > div {
+  left: -44%;
+  right: 15%;
+  bottom: 156px;
+}
+.home-human {
+    background-image: url("https://i.imgur.com/1BmUg8T.jpg");
+}
+.home-human:hover {
+    background-image: url("https://i.imgur.com/FOoyl1g.jpg");
+}
