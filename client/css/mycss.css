@@ -442,6 +442,10 @@ body {
     text-shadow: 2px 2px 5px #000;
     font-family: Arial Black;
     background-position: center;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: center;
 }
 @media (max-width: 1199px) {
     .home-link {
@@ -464,9 +468,11 @@ body {
 }
 .home-developer {
     background-image: url("https://i.imgur.com/Zzq0A66.jpg");
+    background-color: #fff;
 }
 .home-developer:hover {
     background-image: url("https://i.imgur.com/lPCXTdK.jpg");
+    background-color: #fff;
 }
 .home-gamer {
     background-image: url("https://i.imgur.com/7f7wydD.jpg");
