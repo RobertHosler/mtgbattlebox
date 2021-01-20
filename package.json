@@ -18,7 +18,7 @@
     "jslint": "^0.12.1",
     "moment": "^2.24.0",
     "scryfall-sdk": "^1.5.0",
-    "socket.io": "^0.9.19"
+    "socket.io": "^2.4.0"
   },
   "scripts": {
     "start": "cross-env NODE_PATH=.compiled node --trace-warnings .compiled/index.js",
